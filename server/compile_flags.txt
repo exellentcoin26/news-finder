@@ -1,0 +1,14 @@
+-std=c++17
+
+-Wall
+-Wextra
+-Wpedantic
+
+-DTEST
+
+-Isrc
+
+-Ilib/nlohmann/include
+-Ilib/doctest/include
+-Ilib/crow/include
+-Ilib/asio/asio/include
