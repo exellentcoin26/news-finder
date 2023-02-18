@@ -3,6 +3,7 @@
 -Wall
 -Wextra
 -Wpedantic
+-Wno-deprecated
 
 -DTEST
 
@@ -12,3 +13,4 @@
 -Ilib/doctest/include
 -Ilib/crow/include
 -Ilib/asio/asio/include
+-Ilib/pqxx/include

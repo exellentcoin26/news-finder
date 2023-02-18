@@ -24,8 +24,8 @@ RM := rm -r
 # 	   Compile Flags
 # =========================
 
-# CPPFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Werror -Wno-deprecated
-CPPFLAGS ?= -std=c++17
+CPPFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Werror -Wno-deprecated
+# CPPFLAGS ?= -std=c++17
 CPPFLAGS_DEBUG := -g -O0 -fdebug-default-version=4 -fno-limit-debug-info
 
 SRCS := $(shell find $(SRCDIR) -name "*.$(CPP_SRC_EXTENSION)")
@@ -38,14 +38,22 @@ TEST_OBJS := $(patsubst %.$(CPP_SRC_EXTENSION),$(BUILDDIR)/%.o,$(TEST_SRCS))
 INCFLAGS += -I$(SRCDIR)
 
 # =========================
-#      Library Linking
+#      Library Including
 # =========================
 
 INCFLAGS += -I$(LIBDIR)/nlohmann/include
 INCFLAGS += -I$(LIBDIR)/crow/include
 INCFLAGS += -I$(LIBDIR)/asio/asio/include
+INCFLAGS += -I$(LIBDIR)/pqxx/include
 
 TEST_INCFLAGS += -I$(LIBDIR)/doctest/include
+TEST_INCFLAGS += -I$(LIBDIR)/pqxx/include
+
+# =========================
+#	   Library Linking
+# =========================
+LDFLAGS += -L$(LIBDIR)/pqxx/src
+LDFLAGS += -lpq -lpqxx
 
 # =========================
 #		Miscellaneous
@@ -67,7 +75,7 @@ all: build build-test
 build: libs $(BUILDDIR)/$(BIN)
 
 build-test: CPPFLAGS += $(TEST_INCFLAGS) -DTEST
-build-test: $(BUILDDIR)/$(TEST)
+build-test: libs $(BUILDDIR)/$(TEST)
 
 $(BUILDDIR)/%.o: %.$(CPP_SRC_EXTENSION)
 	mkdir -p $(dir $@)
@@ -77,9 +85,11 @@ $(BUILDDIR)/$(BIN): $(OBJS)
 	$(CXX) $(OBJS) $(LDFLAGS) -o $@
 
 $(BUILDDIR)/$(TEST): $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@
+	$(CXX) $(TEST_OBJS) $(LDFLAGS) -o $@
 
 libs:
+	# pqxx
+	cd $(LIBDIR)/pqxx && cmake . && $(MAKE) -s pqxx
 
 run: build
 	$(BUILDDIR)/$(BIN)
@@ -89,6 +99,9 @@ test: build-test
 
 clean:
 	$(RM) $(BUILDDIR)
+
+clean-all: clean
+	git submodule foreach --recursive git clean -xfd
 
 # header file dependency checking
 -include $(shell find $(BUILDDIR) -name "*.d")

@@ -4,3 +4,7 @@
 [submodule "server/lib/crow"]
 	path = server/lib/crow
 	url = https://github.com/CrowCpp/Crow
+[submodule "server/lib/pqxx"]
+	path = server/lib/pqxx
+    url = https://github.com/jtv/libpqxx.git
+    ignore = dirty
