@@ -1,1 +1,10 @@
-/build
+# python virtualenv directory
+/env
+/venv
+
+# mypy type checker
+/pyproject.toml
+/.mypy_cache
+
+# python cache
+__pycache__
