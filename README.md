@@ -10,7 +10,7 @@ News aggregator application made for the `Project databases 2023` course at the 
 |   |-- requirements.txt - Pip package requirements
 |   |-- src - Python flask source code
 |
-|-- client (TypeScript) - Webpage built using ReactJS that interacts with the C++ core.
+|-- client (TypeScript) - Webpage built using ReactJS that interacts with the Python core.
 |   |-- src - React source code
 |
 |-- db (SQL) - Database definition and migrations managed by DbMate.
