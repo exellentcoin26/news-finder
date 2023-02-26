@@ -14,7 +14,7 @@ jobs:
           command: "pip3 install prisma"
       - run:
           name: "Validate prisma schema"
-          command: "cd server && prisma validate"
+          command: "cd db && prisma validate"
 
   mypy:
     resource_class: small
@@ -27,7 +27,7 @@ jobs:
           command: "cd server && pip3 install -r requirements.txt"
       - run:
           name: "Generate Prisma definitions"
-          command: "cd server && prisma generate"
+          command: "cd db && prisma generate"
       - run:
           name: "Run mypy"
           command: "cd server && mypy ./src"
