@@ -3,6 +3,19 @@
 version: 2.1
 
 jobs:
+  prisma:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: "Install Prisma CLI"
+          command: "pip3 install prisma"
+      - run:
+          name: "Validate prisma schema"
+          command: "cd server && prisma validate"
+
   mypy:
     resource_class: small
     docker:
@@ -13,9 +26,12 @@ jobs:
           name: "Install pip packages"
           command: "cd server && pip3 install -r requirements.txt"
       - run:
+          name: "Generate Prisma definitions"
+          command: "cd server && prisma generate"
+      - run:
           name: "Run mypy"
           command: "cd server && mypy ./src"
-  
+
   tsc:
     resource_class: small
     docker:
@@ -32,6 +48,7 @@ jobs:
 workflows:
   server:
     jobs:
+      - prisma
       - mypy
 
   client:
