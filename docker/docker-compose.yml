@@ -3,7 +3,8 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: news-finder
+      POSTGRES_USER: ppdb_admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ppdb
     ports:
        - "5432:5432"
