@@ -1,12 +1,15 @@
+#!/usr/bin/env python3
+
 import asyncio
 from prisma import Prisma
 
 # This file seeds an empty database for testing purposes
 
+
 async def main() -> None:
     db = Prisma()
     await db.connect()
-    
+
     async with db.batch_() as batcher:
         batcher.users.create(
             data={

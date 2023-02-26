@@ -13,4 +13,4 @@ if __name__ == '__main__':
     app.register_blueprint(user_bp)
     app.register_blueprint(error_bp)    # global error handling blueprint
 
-    app.run()  # foo
+    app.run()
