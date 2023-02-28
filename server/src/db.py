@@ -17,5 +17,4 @@ async def get_db() -> Prisma:
 
         g.db = db
 
-    assert isinstance(g.db, Prisma), "database instance is a prisma object"
     return g.db

@@ -1,12 +1,3 @@
-[tool.mypy]
-strict = true
-mypy_path = "./src"
-plugins = "prisma.mypy"
-
-[tool.prisma-mypy]
-strict = true
-
-[tool.pylsp-mypy]
-enabled = true
-live_mode = true
-strict = true
+[tool.pyright]
+typeCheckingMode = "strict"
+reportMissingTypeStubs = true

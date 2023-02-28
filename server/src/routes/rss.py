@@ -1,8 +1,6 @@
 from flask import Blueprint, Response, request
-from urllib.parse import urlparse
+from urllib.parse import ParseResult, urlparse
 from jsonschema import SchemaError, validate, ValidationError
-
-from prisma.errors import PrismaError
 
 from db import get_db
 
@@ -30,7 +28,7 @@ async def add_rss_feed() -> Response:
     Add rss feeds to database for scraping later on. The news source will be
     extracted from the hostname of the url.
 
-    # Feed json structure: (checked usign schema validation)
+    # Feed json structure: (checked using schema validation)
     {
         "feeds": [
             "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
@@ -61,7 +59,7 @@ async def add_rss_feed() -> Response:
 
     for rss_feed in data["feeds"]:
         # extract news source and news source url from rss feed url
-        url_components = urlparse(rss_feed)
+        url_components: ParseResult = urlparse(rss_feed)
 
         news_source = url_components.netloc
         news_source_url = url_components.scheme + url_components.netloc
@@ -82,9 +80,9 @@ async def add_rss_feed() -> Response:
                 },
                 "update": {
                     "rss": {
-                        "create": {
+                        "create": [{
                             "feed": rss_feed,
-                        }
+                        }]
                     }
                 }
 
@@ -95,7 +93,6 @@ async def add_rss_feed() -> Response:
         await b.commit()
     except Exception as e:
         print(e.with_traceback(None))
-        print("foo")
         return Response(status=500)
 
     return Response(status=200)

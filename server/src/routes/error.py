@@ -19,4 +19,6 @@ def generic_error(e: Exception) -> Response:
     if isinstance(e, HTTPException):
         return make_response(e)
 
+    print(e.with_traceback(None))
+
     return Response("<h1>500 - error occurred</h1>", status=500)
