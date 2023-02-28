@@ -29,7 +29,7 @@ jobs:
           name: "Generate Prisma definitions"
           command: "cd db && prisma generate"
       - run:
-          name: "Run mypy"
+          name: "Run pyright"
           command: "cd server && pyright ."
 
   tsc:
