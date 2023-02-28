@@ -48,7 +48,7 @@ Add the following line to `/etc/postgresql/14/main/pg_hba.conf` (you need root a
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # app
-local   ppdb_admin      ppdb                                    trust
+local   ppdb            ppdb_admin                              trust
 ```
 Now you can restart postgres:
 ```bash
@@ -74,7 +74,7 @@ python3 seeding.py
 ```
 
 #### Sidenote
-When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleard if this is done the other way around.
+When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleared if this is done the other way around.
 
 ### Client
 
