@@ -16,7 +16,7 @@ jobs:
           name: "Validate prisma schema"
           command: "cd db && prisma validate"
 
-  mypy:
+  pyright:
     resource_class: small
     docker:
       - image: python:3
@@ -29,8 +29,8 @@ jobs:
           name: "Generate Prisma definitions"
           command: "cd db && prisma generate"
       - run:
-          name: "Run mypy"
-          command: "cd server && mypy ./src"
+          name: "Run pyright"
+          command: "cd server && pyright ."
 
   tsc:
     resource_class: small
@@ -49,7 +49,7 @@ workflows:
   server:
     jobs:
       - prisma
-      - mypy
+      - pyright
 
   client:
     jobs:

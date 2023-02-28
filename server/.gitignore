@@ -3,7 +3,6 @@
 /venv
 
 # mypy type checker
-/pyproject.toml
 /.mypy_cache
 
 # python cache
