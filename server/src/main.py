@@ -8,6 +8,8 @@ from routes.error import error_bp
 from routes.user import user_bp
 from routes.rss import rss_bp
 
+# from db import close_db
+
 
 async def main() -> None:
     app = Flask(__name__)
@@ -15,10 +17,10 @@ async def main() -> None:
     # register subapplications/subroutes here
     app.register_blueprint(user_bp)
     app.register_blueprint(rss_bp)
-    app.register_blueprint(error_bp)    # global error handling blueprint
+    app.register_blueprint(error_bp)  # global error handling blueprint
 
-    app.run()  # foo
+    app.run(debug=True)
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    asyncio.run(main(), debug=True)
