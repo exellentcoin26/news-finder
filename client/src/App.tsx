@@ -4,6 +4,7 @@ import Home from './routes/Home';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import Admin from './routes/Admin';
+import About from './routes/About';
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/about" element={<About />} />
             </Routes>
         </BrowserRouter>
     );
