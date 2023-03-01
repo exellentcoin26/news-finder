@@ -15,6 +15,8 @@ jobs:
       - run:
           name: "Validate prisma schema"
           command: "cd db && prisma validate"
+    environment:
+      DATABASE_URL: "postgres://user:password@127.0.0.1:5432/database"
 
   pyright:
     resource_class: small
