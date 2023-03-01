@@ -10,7 +10,7 @@ const Login = () => {
                 <div>
                     <label> Password </label>
                     <input type={"password"}/>
-                </div>
+                </div>  
             </form>
         </>
     )
