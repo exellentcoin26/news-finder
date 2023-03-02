@@ -65,12 +65,12 @@ pip3 install -r requirements
 
 #### 4.Add tables to database:
 ```bash
-prisma db push
+prisma db push --schema ../db/schema.prisma
 ```
 
 **(optional)** You can seed the database using:
 ```bash
-python3 seeding.py
+python3 src/seeding.py
 ```
 
 #### Sidenote
