@@ -1,0 +1,14 @@
+# python virtualenv directory
+/env
+/venv
+
+# mypy type checker
+/.mypy_cache
+
+# python cache
+__pycache__
+
+pyproject.toml
+.gitignore
+.env.example
+rss-feeds.txt
