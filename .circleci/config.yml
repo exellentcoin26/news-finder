@@ -47,12 +47,25 @@ jobs:
           name: "Run tsc"
           command: "cd client && npm run check"
 
+  deploy-to-gcp:
+    resource_class: small
+    docker:
+      - image: bash
+    steps:
+      - run: "echo \"Hello, World!\""
+
 workflows:
-  server:
+  main:
     jobs:
       - prisma
-      - pyright
-
-  client:
-    jobs:
+      - pyright:
+          requires:
+            - prisma
       - tsc
+      - deploy-to-gcp:
+          filters:
+            branches:
+              only: docker-compose
+          requires:
+            - pyright
+            - tsc
