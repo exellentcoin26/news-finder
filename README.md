@@ -22,20 +22,43 @@ News aggregator application made for the `Project databases 2023` course at the 
 
 ## Quick start
 
-### Server
+### Using docker
 
-#### 1. Install postgres
+```bash
+# make postgresql data directory
+mkdir data
+# start all containers
+docker compose -f docker/docker-compose.yml up
+# stop and remove all containers
+docker compose -f docker/docker-compose.yml down
+```
+
+**Note**: when rebuilding first run `docker compose -f docker/docker-compose.yml build`.
+
+**Note**: To access the front-end application go to route: `http://localhost:80`.
+To access the back-end go to route: `http://localhost:1337`
+
+### Manual installation
+
+#### Server
+
+##### 1. Install postgres
+
 ```bash
 sudo apt install postgresql
 ```
-#### 2. Create the database
+
+##### 2. Create the database
+
 First configure the database using the postgres user:
+
 ```bash
 sudo su postgres
 psql
 ```
 
 Then create a role 'app' that will create the database and be used by the application:
+
 ```bash
 CREATE ROLE ppdb_admin WITH LOGIN CREATEDB PASSWORD 'admin';
 CREATE DATABASE ppdb OWNER ppdb_admin;
@@ -50,12 +73,15 @@ Add the following line to `/etc/postgresql/14/main/pg_hba.conf` (you need root a
 # app
 local   ppdb            ppdb_admin                              trust
 ```
+
 Now you can restart postgres:
+
 ```bash
 sudo systemctl restart postgresql
 ```
 
-#### 3.Create virtual environment:
+##### 3.Create virtual environment:
+
 ```bash
 cd server
 python -m venv venv
@@ -63,17 +89,20 @@ source venv/bin/activate
 pip3 install -r requirements
 ```
 
-#### 4.Add tables to database:
+##### 4.Add tables to database:
+
 ```bash
 prisma db push --schema ../db/schema.prisma
 ```
 
 **(optional)** You can seed the database using:
+
 ```bash
 python3 src/seeding.py
 ```
 
 #### Sidenote
+
 When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleared if this is done the other way around.
 
 ### Client
