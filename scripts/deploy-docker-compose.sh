@@ -19,9 +19,6 @@ else
     git clone "$GIT_URL" && cd "$APP_DIR"
 fi
 
-# TODO: remove
-git checkout docker-compose
-
 # run docker compose file
 if [[ ! -f "$DOCKER_COMPOSE_FILE" ]] ; then
     echo "Could not find docker compose file"

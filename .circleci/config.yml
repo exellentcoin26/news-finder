@@ -73,7 +73,7 @@ workflows:
       - deploy-to-gcp:
           filters:
             branches:
-              only: docker-compose
+              only: main
           requires:
             - pyright
             - tsc
