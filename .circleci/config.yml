@@ -2,6 +2,9 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  gcp-cli: circleci/gcp-cli@2.4.1
+
 jobs:
   prisma:
     resource_class: small
@@ -49,11 +52,14 @@ jobs:
 
   deploy-to-gcp:
     resource_class: small
-    docker:
-      - image: bash
+    executor: gcp-cli/default
     steps:
-      - run: "echo \"Hello, World!\""
-
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run:
+          name: "Deploy application to google cloud"
+          command: gcloud --quiet compute ssh app@ppdb --tunnel-through-iap --command="$(cat scripts/deploy-docker-compose.sh)"
 workflows:
   main:
     jobs:
@@ -61,7 +67,9 @@ workflows:
       - pyright:
           requires:
             - prisma
+
       - tsc
+
       - deploy-to-gcp:
           filters:
             branches:
