@@ -1,0 +1,79 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@2.4.1
+
+jobs:
+  prisma:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: "Install Prisma CLI"
+          command: "pip3 install prisma"
+      - run:
+          name: "Validate prisma schema"
+          command: "cd db && prisma validate"
+    environment:
+      DATABASE_URL: "postgres://user:password@127.0.0.1:5432/database"
+
+  pyright:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: "Install pip packages"
+          command: "cd server && pip3 install -r requirements.txt"
+      - run:
+          name: "Generate Prisma definitions"
+          command: "cd db && prisma generate"
+      - run:
+          name: "Run pyright"
+          command: "cd server && pyright ."
+
+  tsc:
+    resource_class: small
+    docker:
+      - image: node
+    steps:
+      - checkout
+      - run:
+          name: "Install npm packages"
+          command: "cd client && npm install"
+      - run:
+          name: "Run tsc"
+          command: "cd client && npm run check"
+
+  deploy-to-gcp:
+    resource_class: small
+    executor: gcp-cli/default
+    steps:
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run:
+          name: "Deploy application to google cloud"
+          command: gcloud --quiet compute ssh app@ppdb --tunnel-through-iap --command="$(cat scripts/deploy-docker-compose.sh)"
+workflows:
+  main:
+    jobs:
+      - prisma
+      - pyright:
+          requires:
+            - prisma
+
+      - tsc
+
+      - deploy-to-gcp:
+          filters:
+            branches:
+              only: main
+          requires:
+            - pyright
+            - tsc

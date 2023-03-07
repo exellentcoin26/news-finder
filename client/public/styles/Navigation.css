@@ -1,0 +1,25 @@
+.primary_color {
+    background-color: #0a1f44;
+}
+
+.secondary_color {
+    background-color: #26d38e;
+}
+
+.nav_text {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Outfit, sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+}
+
+.nav_text:hover {
+    color: #26d38e;
+}
+
+.home_text {
+    font-size: 30px;
+    font-weight: 1000;
+}
