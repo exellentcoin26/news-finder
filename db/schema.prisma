@@ -1,14 +1,14 @@
 // database
 datasource db {
   provider = "postgresql"
-  url      = "postgres://ppdb_admin:admin@localhost:5432/ppdb"
+  url      = env("DATABASE_URL")
 }
 
 // generator
 generator client {
   provider             = "prisma-client-py"
   interface            = "asyncio"
-  recursive_type_depth = 5
+  recursive_type_depth = -1
 }
 
 // data models
@@ -45,9 +45,7 @@ model NewsSources {
 model RssEntries {
   source NewsSources @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   id     Int
-  feed   String
-
-  @@id([id, feed])
+  feed   String      @id
 }
 
 model NewsArticles {
@@ -60,8 +58,17 @@ model NewsArticles {
   photo            Bytes
   publication_date DateTime
   labels           NewsArticleLabels[]
-  similar1         NewsArticles[]      @relation("similar")
-  similar2         NewsArticles[]      @relation("similar")
+  similar_relation SimilarArticles[]   @relation("similar_relation")
+  similar_articles SimilarArticles[]   @relation("similar")
+}
+
+model SimilarArticles {
+  article NewsArticles @relation("similar_relation", fields: [id1], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id1     Int
+  similar NewsArticles @relation("similar", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id2     Int
+
+  @@id([id1, id2])
 }
 
 model Labels {

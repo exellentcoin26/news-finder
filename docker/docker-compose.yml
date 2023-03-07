@@ -1,5 +1,5 @@
 services:
-  postgres-database:
+  db:
     image: postgres
     restart: always
     environment:
@@ -7,4 +7,56 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: ppdb
     ports:
-       - "5432:5432"
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-U",
+          "ppdb_admin",
+          "-d",
+          "ppdb"
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  db-migration:
+    build:
+      context: ../
+      dockerfile: ./docker/migration/Dockerfile
+    env_file: ./database-url.env
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+
+  server:
+    build:
+      context: ../
+      dockerfile: ./server/Dockerfile
+    env_file: ./database-url.env
+    ports:
+      - "1337:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully
+    healthcheck:
+      test: curl --fail -s http://localhost:5000/healthcheck || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  client:
+    build: ./client
+    ports:
+      - "80:8080"
+    depends_on:
+      server:
+        condition: service_healthy

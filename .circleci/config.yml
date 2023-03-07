@@ -2,6 +2,9 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  gcp-cli: circleci/gcp-cli@2.4.1
+
 jobs:
   prisma:
     resource_class: small
@@ -15,8 +18,10 @@ jobs:
       - run:
           name: "Validate prisma schema"
           command: "cd db && prisma validate"
+    environment:
+      DATABASE_URL: "postgres://user:password@127.0.0.1:5432/database"
 
-  mypy:
+  pyright:
     resource_class: small
     docker:
       - image: python:3
@@ -29,8 +34,8 @@ jobs:
           name: "Generate Prisma definitions"
           command: "cd db && prisma generate"
       - run:
-          name: "Run mypy"
-          command: "cd server && mypy ./src"
+          name: "Run pyright"
+          command: "cd server && pyright ."
 
   tsc:
     resource_class: small
@@ -45,12 +50,30 @@ jobs:
           name: "Run tsc"
           command: "cd client && npm run check"
 
+  deploy-to-gcp:
+    resource_class: small
+    executor: gcp-cli/default
+    steps:
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run:
+          name: "Deploy application to google cloud"
+          command: gcloud --quiet compute ssh app@ppdb --tunnel-through-iap --command="$(cat scripts/deploy-docker-compose.sh)"
 workflows:
-  server:
+  main:
     jobs:
       - prisma
-      - mypy
+      - pyright:
+          requires:
+            - prisma
 
-  client:
-    jobs:
       - tsc
+
+      - deploy-to-gcp:
+          filters:
+            branches:
+              only: main
+          requires:
+            - pyright
+            - tsc

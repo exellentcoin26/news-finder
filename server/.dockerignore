@@ -7,3 +7,8 @@
 
 # python cache
 __pycache__
+
+pyproject.toml
+.gitignore
+.env.example
+rss-feeds.txt

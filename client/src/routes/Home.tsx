@@ -1,6 +1,37 @@
-/// Main article feed route. When user is not logged in redirect to login page
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Article from '../components/Article';
+import '../../public/styles/Home.css';
+
 const Home = () => {
-    return <p>Home Page</p>;
+    return (
+        <Container className="home-container">
+            <Row>
+                <Col>
+                    <Article
+                        title="Local Cat Elected Mayor of Small Town"
+                        img_src="../../public/cat.jpg"
+                        alt="Cat elected mayor"
+                    />
+                </Col>
+                <Col>
+                    <Article
+                        title="Local Cat Elected Mayor of Small Town"
+                        img_src="../../public/cat.jpg"
+                        alt="Cat elected mayor"
+                    />
+                </Col>
+                <Col>
+                    <Article
+                        title="Local Cat Elected Mayor of Small Town"
+                        img_src="../../public/cat.jpg"
+                        alt="Cat elected mayor"
+                    />
+                </Col>
+            </Row>
+        </Container>
+    );
 };
 
 export default Home;
