@@ -1,3 +1,19 @@
-.button_color {
-    background-color: #5C2CFF;
+.button {
+    border: none;
+    color: aliceblue;
+    padding: 4px 9px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button1{
+    background-color: #0a1f44;
+  }
+
+.button2{
+    background-color: #5F021F;
 }
