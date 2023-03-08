@@ -4,7 +4,7 @@ const Admin = () => {
     return (
         <>
             
-        <p>Login Page</p>
+        <p>Admin Page</p>
             <form>
                 <div>
                     <label> RSS-feed</label><br/>
