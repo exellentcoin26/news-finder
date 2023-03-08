@@ -7,22 +7,21 @@ const Admin = () => {
         <p>Login Page</p>
             <form>
                 <div>
-                    <label> Add RSS-feed</label><br/>
-                    <input type='text'/>
+                    <label> RSS-feed</label><br/>
+                    <input type='text'/><br/>
+                    <Button type='submit'>add</Button>
+                    <Button type='submit'>remove</Button>
                 </div>
                 <div>
                     <label> Xml xpaths</label><br/>
-                    <input type='text'/>
+                    <input type='text'/><br/>
+                    <Button type='submit'>add</Button>
                 </div>  
                 <div>
-                    <label> Add Admin</label><br/>
-                    <input type='text'/>                    
-                </div>
-                <div>
-                    <label> Remove RSS-feed </label><br/>
+                    <label>Admin</label><br/>
                     <input type='text'/><br/>
-                </div>
-                    <Button>submit</Button>
+                    <Button type='submit'>add</Button>                   
+                </div>            
             </form>
         
             
