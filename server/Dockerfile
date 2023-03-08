@@ -6,7 +6,7 @@ COPY ./db/schema.prisma /app
 
 WORKDIR /app
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install .
 
 RUN prisma generate
 

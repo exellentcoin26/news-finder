@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: "Install pip packages"
-          command: "cd server && pip3 install -r requirements.txt"
+          command: "cd server && pip3 install ."
       - run:
           name: "Generate Prisma definitions"
           command: "cd db && prisma generate"
