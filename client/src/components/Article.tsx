@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
 import React from 'react';
-import '../../public/styles/Article.css';
+import '../styles/Article.css';
 import { Link } from 'react-router-dom';
 
 const Article: React.FC<{ title: string; img_src: string; alt: string }> = ({

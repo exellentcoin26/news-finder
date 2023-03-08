@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Article from '../components/Article';
-import '../../public/styles/Home.css';
+import '../styles/Home.css';
 
 const Home = () => {
     return (
@@ -11,21 +11,21 @@ const Home = () => {
                 <Col>
                     <Article
                         title="Local Cat Elected Mayor of Small Town"
-                        img_src="../../public/cat.jpg"
+                        img_src="/images/cat.jpg"
                         alt="Cat elected mayor"
                     />
                 </Col>
                 <Col>
                     <Article
                         title="Local Cat Elected Mayor of Small Town"
-                        img_src="../../public/cat.jpg"
+                        img_src="/images/cat.jpg"
                         alt="Cat elected mayor"
                     />
                 </Col>
                 <Col>
                     <Article
                         title="Local Cat Elected Mayor of Small Town"
-                        img_src="../../public/cat.jpg"
+                        img_src="/images/cat.jpg"
                         alt="Cat elected mayor"
                     />
                 </Col>
