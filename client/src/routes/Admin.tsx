@@ -29,11 +29,7 @@ const Admin = () => {
                         <label>username</label>
                         <input type='text'/> <br />
                     </div>
-                    <div>
-                        <label>password</label>
-                        <input type='text' /> <br />
-                        <Button>login</Button>
-                    </div>
+                    <Button>login</Button>
                 </div>            
             </form>
             </body>
