@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "news-finder"
 version = "0.1.1"
 requires-python = ">=3.8"
-license = {text = "MIT and Apache 2.0"}
+license = { text = "MIT and Apache 2.0" }
 dependencies = [
     "anyio==3.6.2",
     "asgiref==3.6.0",
@@ -40,7 +40,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["news_finder"]  # alternatively: `exclude = ["additional*"]`
+include = ["news_finder"]
 namespaces = false
 
 [tool.pyright]

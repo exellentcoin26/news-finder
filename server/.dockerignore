@@ -12,4 +12,4 @@ __pycache__
 .env.example
 rss-feeds.txt
 
-/*.egg-info
+*.egg-info
