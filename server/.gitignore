@@ -7,3 +7,6 @@
 
 # python cache
 __pycache__
+
+# build tool artifacts
+*.egg-info

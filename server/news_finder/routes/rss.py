@@ -2,7 +2,7 @@ from flask import Blueprint, Response, request
 from urllib.parse import ParseResult, urlparse
 from jsonschema import SchemaError, validate, ValidationError
 
-from db import get_db
+from news_finder.db import get_db
 
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
 
