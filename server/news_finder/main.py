@@ -4,10 +4,10 @@ import asyncio
 
 from flask import Flask
 
-from routes.root import root_bp
-from routes.error import error_bp
-from routes.user import user_bp
-from routes.rss import rss_bp
+from news_finder.routes.root import root_bp
+from news_finder.routes.error import error_bp
+from news_finder.routes.user import user_bp
+from news_finder.routes.rss import rss_bp
 
 
 async def main():

@@ -86,8 +86,10 @@ sudo systemctl restart postgresql
 cd server
 python -m venv venv
 source venv/bin/activate
-pip3 install -r requirements
+pip3 install .
 ```
+
+**Note**: If installing for development use `pip3 install --editable .`
 
 ##### 4.Add tables to database:
 
