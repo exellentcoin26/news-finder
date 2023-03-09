@@ -40,7 +40,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["news_finder"] # alternatively: `exclude = ["additional*"]`
+include = ["news_finder"]
 namespaces = false
 
 [tool.pyright]
