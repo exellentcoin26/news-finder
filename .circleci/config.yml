@@ -32,7 +32,7 @@ jobs:
           command: "cd server && pip3 install ."
       - run:
           name: "Generate Prisma definitions"
-          command: "cd db && prisma generate"
+          command: "cd db && prisma generate --generator server"
       - run:
           name: "Run pyright"
           command: "cd server && pyright ."
