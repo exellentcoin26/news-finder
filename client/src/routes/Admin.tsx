@@ -12,18 +12,21 @@ const Admin = () => {
                 <div>
                     <div>
                         <label>RSS-feed</label>
-                        <input type='text'/><br/>
+                        <input type='text'/>
+                        <br/>
                         <button className='button button1'>add</button>
                         <button className='button button2'>remove</button>
                     </div>
                     <div>
                         <label>Xml-xpaths</label>
-                        <input type='text'/><br/>
+                        <input type='text'/>
+                        <br/>
                         <button className='button button1'>add</button>
                     </div>  
                     <div>
                         <label>Admin</label>
-                        <input type='text'/><br/>
+                        <input type='text'/>
+                        <br/>
                         <button className='button button1'>add</button>                   
                     </div>
                 </div>            
