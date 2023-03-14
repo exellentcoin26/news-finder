@@ -10,3 +10,6 @@ __pycache__
 
 # build tool artifacts
 *.egg-info
+
+# pytest cache
+/.pytest_cache
