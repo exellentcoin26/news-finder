@@ -10,4 +10,7 @@ pub enum Error {
 
     #[error(transparent)]
     Rss(#[from] rss::Error),
+
+    #[error(transparent)]
+    Io(#[from] std::io::Error),
 }
