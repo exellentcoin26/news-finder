@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Article from '../components/Article';
-import '../../public/styles/Home.css';
+import '../styles/Home.css';
 
 const Home = () => {
     return (
