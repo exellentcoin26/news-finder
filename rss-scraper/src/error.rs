@@ -9,7 +9,7 @@ pub enum Error {
     Reqwest(#[from] reqwest::Error),
 
     #[error(transparent)]
-    Rss(#[from] rss::Error),
+    Rss(#[from] feed_rs::parser::ParseFeedError),
 
     #[error(transparent)]
     Io(#[from] std::io::Error),

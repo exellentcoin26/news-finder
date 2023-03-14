@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use crate::{prelude::*, prisma::PrismaClient};
-use rss::Channel;
 use std::{
     fs,
     io::{BufRead, BufWriter, Write},
@@ -55,7 +54,7 @@ async fn check_rss_feeds_from_file(input_file_name: &str, output_file_name: &str
             }
         };
 
-        let channel = match Channel::read_from(&content[..]) {
+        let feed = match feed_rs::parser::parse(&content[..]) {
             Ok(channel) => channel,
             Err(err) => {
                 rss_errors.push((
@@ -95,40 +94,40 @@ async fn check_rss_feeds_from_file(input_file_name: &str, output_file_name: &str
     Ok(())
 }
 
-async fn parse_rss_feeds(client: &PrismaClient) -> Result<()> {
-    let mut file = fs::File::create("rss-feeds.txt").expect("failed to open file");
-    let mut buf = BufWriter::new(&mut file);
-
-    let rss_feeds = &client.rss_entries().find_many(vec![]).exec().await.unwrap();
-    println!("amount of rss feeds: {}", rss_feeds.len());
-
-    let mut success = 0;
-
-    for feed in rss_feeds {
-        let url = &feed.feed;
-        let content = reqwest::get(url).await?.bytes().await?;
-
-        // println!("{}", std::str::from_utf8(&content[..]).unwrap());
-
-        let channel = match Channel::read_from(&content[..]) {
-            Ok(channel) => channel,
-            Err(err) => continue,
-        };
-
-        println!("Successful rss feed: `{url}`");
-
-        success += 1;
-
-        buf.write(url.as_bytes());
-        buf.write(b"\n");
-
-        // for item in channel.items() {
-        //     println!("{item:?}");
-        // }
-    }
-
-    buf.flush().unwrap();
-    println!("Amount of successful rss feeds: {success}");
-
-    Ok(())
-}
+// async fn parse_rss_feeds(client: &PrismaClient) -> Result<()> {
+//     let mut file = fs::File::create("rss-feeds.txt").expect("failed to open file");
+//     let mut buf = BufWriter::new(&mut file);
+//
+//     let rss_feeds = &client.rss_entries().find_many(vec![]).exec().await.unwrap();
+//     println!("amount of rss feeds: {}", rss_feeds.len());
+//
+//     let mut success = 0;
+//
+//     for feed in rss_feeds {
+//         let url = &feed.feed;
+//         let content = reqwest::get(url).await?.bytes().await?;
+//
+//         // println!("{}", std::str::from_utf8(&content[..]).unwrap());
+//
+//         let channel = match Channel::read_from(&content[..]) {
+//             Ok(channel) => channel,
+//             Err(err) => continue,
+//         };
+//
+//         println!("Successful rss feed: `{url}`");
+//
+//         success += 1;
+//
+//         buf.write(url.as_bytes());
+//         buf.write(b"\n");
+//
+//         // for item in channel.items() {
+//         //     println!("{item:?}");
+//         // }
+//     }
+//
+//     buf.flush().unwrap();
+//     println!("Amount of successful rss feeds: {success}");
+//
+//     Ok(())
+// }

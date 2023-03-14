@@ -8,3 +8,4 @@ https://www.standaard.be/rss/section/8f693cea-dba8-46e4-8575-807d1dc2bcb7
 https://www.demorgen.be/in-het-nieuws/rss.xml
 https://www.gva.be/rss/section/ca750cdf-3d1e-4621-90ef-a3260118e21c
 https://rss.nytimes.com/services/xml/rss/nyt/World.xml
+https://www.vrt.be/vrtnieuws/nl.rss.articles.xml
