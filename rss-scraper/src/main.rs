@@ -1,6 +1,9 @@
 #![allow(unused)]
 
-use crate::{prelude::*, prisma::PrismaClient};
+use crate::{error::PrismaError, prelude::*, prisma::PrismaClient};
+use dotenv::dotenv;
+use error::RssError;
+use feed_rs::model::Feed;
 use std::{
     fs,
     io::{BufRead, BufWriter, Write},
@@ -12,16 +15,109 @@ mod prisma;
 
 #[tokio::main]
 async fn main() {
-    // let client = prisma::new_client()
-    //     .await
-    //     .expect("failed to connect to prisma database");
-    // println!("Start scraping the feeds ...");
-    // parse_rss_feeds(&client).await.unwrap();
-    // println!("Finished scraping!")
+    // load environment variables from `.env` file if present
+    dotenv().ok();
 
-    check_rss_feeds_from_file("rss-feeds.txt", "tmp.txt")
+    let client = prisma::new_client()
         .await
-        .unwrap();
+        .expect("failed to connect to prisma database");
+    println!("Start scraping the rss feeds ...");
+    scrape_rss_feeds(&client).await.unwrap();
+
+    // check_rss_feeds_from_file("rss-feeds.txt", "tmp.txt")
+    //     .await
+    //     .unwrap();
+}
+
+async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
+    let rss_feeds = match client.rss_entries().find_many(vec![]).exec().await {
+        Ok(rss_feeds) => rss_feeds,
+        Err(err) => return Err(PrismaError::from(err).into()),
+    };
+
+    for rss_feed in rss_feeds {
+        let rss_feed = rss_feed.feed;
+
+        let feed = match get_rss_and_validate(&rss_feed).await {
+            Ok(feed) => feed,
+            Err(err) => {
+                // An error occurred where either `reqwest` failed to fetch the url or the rss feed
+                // is invalid.
+                // TODO: Print an error here about the feed.
+                // TODO: Should I remove the feed if it was invalid? It is possible that the feed
+                // was reachable at this time, but is completely valid.
+                eprintln!("Rss feed invalid or (temporarily) not reachable");
+                continue;
+            }
+        };
+
+        // TODO: Store the language of the article for equality checking
+
+        /* scrape the rss feed */
+
+        for entry in feed.entries {
+            /*
+                Required fields:
+                    * Source id
+                    * Url
+                    * Title
+
+                Optional fields:
+                    * Photo
+                    * Description
+                    * Publication date
+                    * Labels
+            */
+
+            let url = match entry
+                .links
+                .iter()
+                .filter(|link| {
+                    if let Some(ref media_type) = link.media_type {
+                        return media_type == "text/html";
+                    }
+
+                    true
+                })
+                .next()
+            {
+                Some(link) => link.href.to_string(),
+                None => {
+                    eprintln!("Article entry has no link to the article (rss feed: `{rss_feed}`)");
+                    continue;
+                }
+            };
+
+            let title = match entry.title {
+                Some(title) => title.content,
+                None => {
+                    eprintln!("Article entry has no title (rss feed: `{rss_feed}`)");
+                    continue;
+                }
+            };
+
+            let description = entry
+                .summary
+                .map(|description| description.content.to_string());
+
+            let photo = entry
+                .links
+                .iter()
+                .filter(|link| {
+                    link.media_type
+                        .as_ref()
+                        .map_or(false, |media_type| media_type == "image/jpeg")
+                })
+                .next()
+                .map(|link| link.href.to_string());
+
+            let pub_date = entry.published;
+
+            println!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`");
+        }
+    }
+
+    Ok(())
 }
 
 async fn check_rss_feeds_from_file(input_file_name: &str, output_file_name: &str) -> Result<()> {
@@ -94,40 +190,9 @@ async fn check_rss_feeds_from_file(input_file_name: &str, output_file_name: &str
     Ok(())
 }
 
-// async fn parse_rss_feeds(client: &PrismaClient) -> Result<()> {
-//     let mut file = fs::File::create("rss-feeds.txt").expect("failed to open file");
-//     let mut buf = BufWriter::new(&mut file);
-//
-//     let rss_feeds = &client.rss_entries().find_many(vec![]).exec().await.unwrap();
-//     println!("amount of rss feeds: {}", rss_feeds.len());
-//
-//     let mut success = 0;
-//
-//     for feed in rss_feeds {
-//         let url = &feed.feed;
-//         let content = reqwest::get(url).await?.bytes().await?;
-//
-//         // println!("{}", std::str::from_utf8(&content[..]).unwrap());
-//
-//         let channel = match Channel::read_from(&content[..]) {
-//             Ok(channel) => channel,
-//             Err(err) => continue,
-//         };
-//
-//         println!("Successful rss feed: `{url}`");
-//
-//         success += 1;
-//
-//         buf.write(url.as_bytes());
-//         buf.write(b"\n");
-//
-//         // for item in channel.items() {
-//         //     println!("{item:?}");
-//         // }
-//     }
-//
-//     buf.flush().unwrap();
-//     println!("Amount of successful rss feeds: {success}");
-//
-//     Ok(())
-// }
+async fn get_rss_and_validate(url: &str) -> std::result::Result<Feed, RssError> {
+    let content = reqwest::get(url).await?.bytes().await?;
+    let feed = feed_rs::parser::parse(&content[..])?;
+
+    Ok(feed)
+}

@@ -9,3 +9,13 @@ https://www.demorgen.be/in-het-nieuws/rss.xml
 https://www.gva.be/rss/section/ca750cdf-3d1e-4621-90ef-a3260118e21c
 https://rss.nytimes.com/services/xml/rss/nyt/World.xml
 https://www.vrt.be/vrtnieuws/nl.rss.articles.xml
+https://www.vrt.be/vrtnieuws/en.rss.articles.xml
+https://sporza.be/nl.rss.xml
+https://sporza.be/nl/categorie/auto-motor.rss.xml
+https://sporza.be/nl/categorie/zaalsporten/basketbal.rss.xml
+https://sporza.be/nl/categorie/voetbal.rss.xml
+https://sporza.be/nl/categorie/wielrennen.rss.xml
+http://rss.cnn.com/rss/edition_world.rss
+http://rss.cnn.com/rss/edition_europe.rss
+http://rss.cnn.com/rss/edition_motorsport.rss
+https://www.huffpost.com/section/front-page/feed?x=1
