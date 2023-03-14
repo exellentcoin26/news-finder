@@ -87,7 +87,9 @@ workflows:
 
       - tsc
 
-      - cargo
+      - cargo:
+          requires:
+            - prisma
 
       - deploy-to-gcp:
           filters:
