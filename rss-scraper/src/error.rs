@@ -12,16 +12,10 @@ pub enum Error {
     Rss(#[from] feed_rs::parser::ParseFeedError),
 
     #[error(transparent)]
-    Prisma(#[from] PrismaError),
+    Prisma(#[from] prisma_client_rust::QueryError),
 
     #[error(transparent)]
     Io(#[from] std::io::Error),
-}
-
-#[derive(thiserror::Error, Debug)]
-pub enum PrismaError {
-    #[error(transparent)]
-    Query(#[from] prisma_client_rust::QueryError),
 }
 
 #[derive(thiserror::Error, Debug)]

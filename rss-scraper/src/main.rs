@@ -1,6 +1,7 @@
 #![allow(unused)]
 
-use crate::{error::PrismaError, prelude::*, prisma::PrismaClient};
+use crate::{prelude::*, prisma::PrismaClient};
+use chrono::DateTime;
 use dotenv::dotenv;
 use error::RssError;
 use feed_rs::model::Feed;
@@ -30,13 +31,14 @@ async fn main() {
 }
 
 async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
-    let rss_feeds = match client.rss_entries().find_many(vec![]).exec().await {
-        Ok(rss_feeds) => rss_feeds,
-        Err(err) => return Err(PrismaError::from(err).into()),
-    };
+    let rss_feeds = client.rss_entries().find_many(vec![]).exec().await?;
 
     for rss_feed in rss_feeds {
+        let source_id = rss_feed.source_id;
         let rss_feed = rss_feed.feed;
+
+        let mut label_batch = Vec::new();
+        let mut article_batch = Vec::new();
 
         let feed = match get_rss_and_validate(&rss_feed).await {
             Ok(feed) => feed,
@@ -96,6 +98,8 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 }
             };
 
+            // TODO: Fix photo's for some rss feeds
+
             let description = entry
                 .summary
                 .map(|description| description.content.to_string());
@@ -104,17 +108,57 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 .links
                 .iter()
                 .filter(|link| {
-                    link.media_type
-                        .as_ref()
-                        .map_or(false, |media_type| media_type == "image/jpeg")
+                    link.media_type.as_ref().map_or(false, |media_type| {
+                        media_type == "image/jpeg" || media_type == "image/png"
+                    })
                 })
                 .next()
                 .map(|link| link.href.to_string());
 
-            let pub_date = entry.published;
+            let pub_date: Option<chrono::DateTime<chrono::FixedOffset>> =
+                entry.published.map(|date| date.into());
+
+            let labels: Vec<String> = entry
+                .categories
+                .iter()
+                .map(|category| category.term.clone())
+                .collect();
 
             println!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`");
+
+            /* insert scraped data into db */
+
+            // TODO: Connect labels to articles.
+
+            // insert labels
+            for label in labels {
+                label_batch.push(client.labels().upsert(
+                    prisma::labels::name::equals(label.clone()),
+                    prisma::labels::create(label, vec![]),
+                    vec![],
+                ))
+            }
+
+            // insert articles
+            article_batch.push(client.news_articles().upsert(
+                prisma::news_articles::url::equals(url.clone()),
+                prisma::news_articles::create(
+                    prisma::news_sources::id::equals(source_id),
+                    url,
+                    title,
+                    vec![],
+                ),
+                // Update is not needed, because we want to ignore articles that have been inserted
+                // before.
+                vec![
+                    prisma::news_articles::description::set(description),
+                    prisma::news_articles::photo::set(photo),
+                    prisma::news_articles::publication_date::set(pub_date),
+                ],
+            ));
         }
+
+        client._batch((label_batch, article_batch)).await?;
     }
 
     Ok(())
