@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import '../../public/styles/Admin.css';
+import '../styles/Admin.css';
 
 const Admin = () => {
     return (
