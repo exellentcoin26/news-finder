@@ -13,7 +13,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install Prisma CLI"
+          name: "Install prisma cli"
           command: "pip3 install prisma"
       - run:
           name: "Validate prisma schema"
@@ -50,6 +50,23 @@ jobs:
           name: "Run tsc"
           command: "cd client && npm run check"
 
+  cargo:
+    resource_class: small
+    docker:
+      - image: cimg/rust:1.67.1-node
+    steps:
+      - checkout
+      - run:
+          name: "Install prisma cli"
+          command: "npm install -g prisma"
+      - run:
+          name: "Generate prisma defitions"
+          command: "cd rss-scraper && prisma generate --generator rss-scraper --schema ../db/schema.prisma"
+      - run:
+          name: "Run cargo check"
+          command: "cd rss-scraper && cargo check"
+
+
   deploy-to-gcp:
     resource_class: small
     executor: gcp-cli/default
@@ -70,6 +87,8 @@ workflows:
 
       - tsc
 
+      - cargo
+
       - deploy-to-gcp:
           filters:
             branches:
@@ -77,3 +96,4 @@ workflows:
           requires:
             - pyright
             - tsc
+            - cargo
