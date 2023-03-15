@@ -1,7 +1,5 @@
 # cargo build artifacts
 /target
-# cargo lock file (can be checked in later)
-/Cargo.lock
 
 # prisma generated client
 /src/prisma.rs
