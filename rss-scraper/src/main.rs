@@ -42,7 +42,6 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             Err(_) => {
                 // An error occurred where either `reqwest` failed to fetch the url or the rss feed
                 // is invalid.
-                // TODO: Print an error here about the feed.
                 // TODO: Should I remove the feed if it was invalid? It is possible that the feed
                 // was reachable at this time, but is completely valid.
                 eprintln!("Rss feed invalid or (temporarily) not reachable");
