@@ -13,5 +13,5 @@ app.register_blueprint(error_bp)
 
 
 @pytest.fixture
-def client() -> Flask.test_client:
+def client() -> Flask.testing:
     return app.test_client()
