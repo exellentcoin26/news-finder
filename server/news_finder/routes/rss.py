@@ -1,8 +1,13 @@
-from flask import Blueprint, Response, request
+from flask import Blueprint, Response, request, make_response
 from urllib.parse import ParseResult, urlparse
+from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
+from prisma.errors import UniqueViolationError
 
 from news_finder.db import get_db
+from news_finder.utils.error_response import make_error_response, ResponseError
+
+import sys
 
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
 
@@ -37,20 +42,21 @@ async def add_rss_feed() -> Response:
     }
     """
 
-    # TODO: Check for success and handle accordingly
     data = request.get_json(silent=True)
     if not data:
-        return Response({"error": "invalid json"}, status=400)
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
 
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return Response(
-            {"error": "json schema validation failed", "message": e.message},
-            status=400
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message,
+            HTTPStatus.BAD_REQUEST
         )
     except SchemaError as e:
-        print("jsonschema is invalid: ", e.message)
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
         raise e
 
     db = await get_db()
@@ -64,6 +70,8 @@ async def add_rss_feed() -> Response:
         news_source = url_components.netloc
         news_source_url = url_components.scheme + url_components.netloc
 
+        # Update news-source with new rss entry if news-source already present,
+        # else insert a new news-source with the rss feed.
         b.newssources.upsert(
             where={
                 "name": news_source
@@ -91,8 +99,16 @@ async def add_rss_feed() -> Response:
 
     try:
         await b.commit()
+    except UniqueViolationError as e:
+        return make_error_response(
+            ResponseError.UniqueViolationError,
+            str(e.with_traceback(None)), HTTPStatus.BAD_REQUEST
+        )
     except Exception as e:
-        print(e.with_traceback(None))
-        return Response(status=500)
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "",
+            HTTPStatus.INTERNAL_SERVER_ERROR
+        )
 
-    return Response(status=200)
+    return make_response("", HTTPStatus.OK)
