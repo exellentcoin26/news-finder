@@ -22,7 +22,7 @@ async fn main() {
     println!("Start scraping the rss feeds ...");
     scrape_rss_feeds(&client).await.unwrap();
 
-    // check_rss_feeds_from_file("rss-feeds.txt", "tmp.txt")
+    // check_rss_feeds_from_file("rss-feeds.txt", "working.txt")
     //     .await
     //     .unwrap();
 }

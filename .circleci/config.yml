@@ -59,13 +59,21 @@ jobs:
       - run:
           name: "Install prisma cli"
           command: "npm install -g prisma"
+      - restore_cache:
+          name: "Restore cargo dependency cache"
+          keys:
+            - cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
       - run:
           name: "Generate prisma defitions"
           command: "cd rss-scraper && prisma generate --generator rss-scraper --schema ../db/schema.prisma"
       - run:
           name: "Run cargo check"
-          command: "cd rss-scraper && cargo check"
-
+          command: "cd rss-scraper && cargo check --locked"
+      - save_cache:
+          name: "Save cargo dependencies to chache"
+          key: cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
+          paths:
+            - rss-scraper/target
 
   deploy-to-gcp:
     resource_class: small
