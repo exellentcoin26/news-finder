@@ -52,3 +52,7 @@ namespaces = false
 [tool.pyright]
 typeCheckingMode = "strict"
 reportMissingTypeStubs = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
