@@ -1,13 +1,10 @@
-#![allow(unused)]
-
 use crate::{prelude::*, prisma::PrismaClient};
-use chrono::DateTime;
 use dotenv::dotenv;
 use error::RssError;
 use feed_rs::model::Feed;
 use std::{
     fs,
-    io::{BufRead, BufWriter, Write},
+    io::{BufRead, BufReader, BufWriter, Write},
 };
 
 mod error;
@@ -42,7 +39,7 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
 
         let feed = match get_rss_and_validate(&rss_feed).await {
             Ok(feed) => feed,
-            Err(err) => {
+            Err(_) => {
                 // An error occurred where either `reqwest` failed to fetch the url or the rss feed
                 // is invalid.
                 // TODO: Print an error here about the feed.
@@ -164,12 +161,13 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
     Ok(())
 }
 
+#[allow(dead_code)]
 async fn check_rss_feeds_from_file(input_file_name: &str, output_file_name: &str) -> Result<()> {
     let input_file = fs::File::open(input_file_name)?;
     let mut output_file = fs::File::create(output_file_name)?;
 
-    let input = std::io::BufReader::new(input_file);
-    let mut output = std::io::BufWriter::new(&mut output_file);
+    let input = BufReader::new(input_file);
+    let mut output = BufWriter::new(&mut output_file);
 
     let mut rss_amount = 0;
     let mut success_amount = 0;
@@ -194,16 +192,13 @@ async fn check_rss_feeds_from_file(input_file_name: &str, output_file_name: &str
             }
         };
 
-        let feed = match feed_rs::parser::parse(&content[..]) {
-            Ok(channel) => channel,
-            Err(err) => {
-                rss_errors.push((
-                    rss_feed,
-                    err.into(),
-                    std::str::from_utf8(&content[..]).unwrap().to_string(),
-                ));
-                continue;
-            }
+        if let Err(err) = feed_rs::parser::parse(&content[..]) {
+            rss_errors.push((
+                rss_feed,
+                err.into(),
+                std::str::from_utf8(&content[..]).unwrap().to_string(),
+            ));
+            continue;
         };
 
         success_amount += 1;

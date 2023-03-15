@@ -1,5 +1,6 @@
 //! Main crate error type.
 
+#[allow(dead_code)]
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("Generic {0}")]
