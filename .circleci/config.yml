@@ -37,6 +37,22 @@ jobs:
           name: "Run pyright"
           command: "cd server && pyright ."
 
+  pytest:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: "Install pip packages"
+          command: "cd server && pip3 install ."
+      - run:
+          name: "Generate Prisma definitions"
+          command: "cd db && prisma generate"
+      - run:
+          name: "Run pytest"
+          command: "cd server && pytest"
+
   tsc:
     resource_class: small
     docker:
@@ -67,6 +83,9 @@ workflows:
       - pyright:
           requires:
             - prisma
+      - pytest:
+          requires:
+            - pyright
 
       - tsc
 
