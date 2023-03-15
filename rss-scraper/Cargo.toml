@@ -14,6 +14,7 @@ thiserror = "1.0.39"
 serde = "1.0.154"
 dotenv = "0.15.0"
 chrono = "0.4.24"
+mime = "0.3.16"
 
 [dependencies.prisma-client-rust]
 git = "https://github.com/Brendonovich/prisma-client-rust"
