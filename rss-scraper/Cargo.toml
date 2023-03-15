@@ -18,6 +18,6 @@ mime = "0.3.16"
 
 [dependencies.prisma-client-rust]
 git = "https://github.com/Brendonovich/prisma-client-rust"
-tag = "0.6.5"
+tag = "0.6.4"
 default-features = false
 features = ["postgresql"]
