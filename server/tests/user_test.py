@@ -1,4 +1,4 @@
-from tests import client
+from tests import client    # pyright: ignore
 from flask import Flask
 
 
