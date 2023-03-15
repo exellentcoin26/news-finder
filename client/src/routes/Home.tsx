@@ -11,21 +11,21 @@ const Home = () => {
                 <Col>
                     <Article
                         title="Local Cat Elected Mayor of Small Town"
-                        img_src="../../public/cat.jpg"
+                        img_src="images/cat.jpg"
                         alt="Cat elected mayor"
                     />
                 </Col>
                 <Col>
                     <Article
                         title="Local Cat Elected Mayor of Small Town"
-                        img_src="../../public/cat.jpg"
+                        img_src="images/cat.jpg"
                         alt="Cat elected mayor"
                     />
                 </Col>
                 <Col>
                     <Article
                         title="Local Cat Elected Mayor of Small Town"
-                        img_src="../../public/cat.jpg"
+                        img_src="images/cat.jpg"
                         alt="Cat elected mayor"
                     />
                 </Col>
