@@ -12,4 +12,4 @@ RUN prisma generate
 
 EXPOSE 5000
 
-CMD python3 src/main.py
+CMD python3 news_finder/main.py
