@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import path_setup  # pyright: ignore # noqa
+
 import asyncio
 
 from flask import Flask
@@ -25,5 +27,5 @@ async def main():
         print(e.with_traceback(None))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main(), debug=True)

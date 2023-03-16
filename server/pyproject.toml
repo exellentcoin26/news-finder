@@ -40,7 +40,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["news_finder"]
+include = ["."]
 namespaces = false
 
 [tool.pyright]
