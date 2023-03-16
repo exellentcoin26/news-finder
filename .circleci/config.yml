@@ -55,6 +55,15 @@ jobs:
           name: "Generate Prisma definitions"
           command: "cd db && prisma generate"
       - run:
+          name: install dockerize
+          command: |
+            wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
+            tar -xzvf dockerize-linux-amd64-v0.6.1.tar.gz
+            sudo mv dockerize /usr/local/bin/
+      - run:
+          name: "Wait for postgres"
+          command: "dockerize -wait tcp://localhost:5432 -timeout 1m"
+      - run:
           name: "Start Postgres"
           command: "docker run -d -p 5432:5432 --name test-postgres -e POSTGRES_DB=ppdb_test -e POSTGRES_USER=ppdb_admin -e POSTGRES_PASSWORD=admin postgres:latest"
       - run:
