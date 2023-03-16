@@ -1,5 +1,4 @@
-from tests import *    # pyright: ignore
-from flask import Flask
+from tests import *  # pyright: ignore
 
 
 def test_add(client: Flask.testing) -> None:
