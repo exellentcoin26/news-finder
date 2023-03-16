@@ -1,4 +1,4 @@
-from tests import *    # pyright: ignore
+from tests import *  # pyright: ignore
 from flask import Flask
 
 
