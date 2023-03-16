@@ -9,7 +9,7 @@ jobs:
   prisma:
     resource_class: small
     docker:
-      - image: python:3
+      - image: python:3.11
     steps:
       - checkout
       - run:
@@ -24,7 +24,7 @@ jobs:
   pyright:
     resource_class: small
     docker:
-      - image: python:3
+      - image: python:3.11
     steps:
       - checkout
       - run:
@@ -40,7 +40,7 @@ jobs:
   pytest:
     resource_class: small
     docker:
-      - image: python:3
+      - image: python:3.11
       - image: postgres:latest
         environment:
           POSTGRES_DB: ppdb_test
