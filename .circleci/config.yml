@@ -41,6 +41,11 @@ jobs:
     resource_class: small
     docker:
       - image: python:3
+      - image: postgres:latest
+        environment:
+          POSTGRES_DB: ppdb_test
+          POSTGRES_USER: ppdb_admin
+          POSTGRES_PASSWORD: admin
     steps:
       - checkout
       - run:
@@ -49,6 +54,12 @@ jobs:
       - run:
           name: "Generate Prisma definitions"
           command: "cd db && prisma generate"
+      - run:
+          name: "Start Postgres"
+          command: "docker run -d -p 5432:5432 --name test-postgres -e POSTGRES_DB=ppdb_test -e POSTGRES_USER=ppdb_admin -e POSTGRES_PASSWORD=admin postgres:latest"
+      - run:
+          name: "Load tables"
+          command: "export DATABASE_URL=postgresql://ppdb_admin:admin@localhost:5432/ppdb_test && prisma db push --schema db/schema.prisma"
       - run:
           name: "Run pytest"
           command: "cd server && pytest"
