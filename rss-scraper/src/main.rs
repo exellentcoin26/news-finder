@@ -101,10 +101,6 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 .as_ref()
                 .map(|description| description.content.to_string());
 
-            // TODO: Fix photo's for some rss feeds
-            // For Rss 2.0, photos are located in the enclosure tag. Which is located in the
-            // `entry::content::src::..` tag.
-
             let photo = get_photos_from_entry(&entry).into_iter().next();
 
             let pub_date: Option<chrono::DateTime<chrono::FixedOffset>> =
