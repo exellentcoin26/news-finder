@@ -60,11 +60,6 @@ jobs:
           command: |
             cd db
             prisma generate
-      - run: 
-          name: Install postgresql-client
-          command: |
-            apt update
-            apt install postgresql-client -y
       - run:
           name: Load tables to database
           command: |
