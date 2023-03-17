@@ -41,6 +41,8 @@ jobs:
     resource_class: small
     docker:
       - image: python:3.11
+        environment:
+          DATABASE_URL: postgres://ppdb_admin:admin@localhost:5432/ppdb_test
       - image: postgres:latest
         environment:
           POSTGRES_DB: ppdb_test
@@ -49,29 +51,30 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install pip packages"
-          command: "cd server && pip3 install ."
-      - run:
-          name: "Generate Prisma definitions"
-          command: "cd db && prisma generate"
-      - run:
-          name: install dockerize
+          name: Install dependencies
           command: |
-            wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
-            tar -xzvf dockerize-linux-amd64-v0.6.1.tar.gz
-            sudo mv dockerize /usr/local/bin/
+            cd server
+            pip3 install .
       - run:
-          name: "Wait for postgres"
-          command: "dockerize -wait tcp://localhost:5432 -timeout 1m"
+          name: Generate Prisma definitions
+          command: |
+            cd db
+            prisma generate
+      - run: 
+          name: Install postgresql-client
+          command: |
+            apt update
+            apt install postgresql-client -y
       - run:
-          name: "Start Postgres"
-          command: "docker run -d -p 5432:5432 --name test-postgres -e POSTGRES_DB=ppdb_test -e POSTGRES_USER=ppdb_admin -e POSTGRES_PASSWORD=admin postgres:latest"
+          name: Load tables to database
+          command: |
+            cd db
+            prisma db push
       - run:
-          name: "Load tables"
-          command: "export DATABASE_URL=postgresql://ppdb_admin:admin@localhost:5432/ppdb_test && prisma db push --schema db/schema.prisma"
-      - run:
-          name: "Run pytest"
-          command: "cd server && pytest"
+          name: Run pytest
+          command: |
+            cd server
+            pytest
 
   tsc:
     resource_class: small
