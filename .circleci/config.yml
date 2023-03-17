@@ -96,6 +96,19 @@ jobs:
             cd client
             npm run check
 
+  eslint:
+    resource_class: small
+    docker:
+      - image: node
+    steps:
+      - checkout
+      - run:
+          name: "Install npm packages"
+          command: "cd client && npm install"
+      - run:
+          name: "Run eslint"
+          command: "cd client && npm run lint"
+
   deploy-to-gcp:
     resource_class: small
     executor: gcp-cli/default
@@ -118,6 +131,9 @@ workflows:
             - pyright
 
       - tsc
+      - eslint:
+          requires:
+            - tsc
 
       - deploy-to-gcp:
           filters:

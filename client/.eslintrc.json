@@ -23,5 +23,9 @@
         "react": {
             "version": "detect"
         }
-    }
+    },
+    "ignorePatterns": [
+        "vite.config.ts",
+        "dist"
+    ]
 }
