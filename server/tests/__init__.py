@@ -1,23 +1,14 @@
 import pytest
-from os import environ
 import pytest_asyncio
+from os import environ
 from prisma import Prisma
 from flask import Flask
-from news_finder.routes.root import root_bp
-from news_finder.routes.error import error_bp
-from news_finder.routes.user import user_bp
-from news_finder.routes.rss import rss_bp
-
-app = Flask(__name__)
-app.register_blueprint(user_bp)
-app.register_blueprint(rss_bp)
-app.register_blueprint(root_bp)
-app.register_blueprint(error_bp)
+from news_finder.app import get_app
 
 
 @pytest.fixture
 def client() -> Flask.testing:
-    return app.test_client()
+    return get_app().test_client()
 
 
 @pytest.fixture(scope="session", autouse=True)
