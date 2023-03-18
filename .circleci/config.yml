@@ -9,7 +9,7 @@ jobs:
   prisma:
     resource_class: small
     docker:
-      - image: python:3.11
+      - image: python:3
         environment:
           DATABASE_URL: "postgres://user:password@127.0.0.1:5432/database"
     steps:
@@ -26,7 +26,7 @@ jobs:
   pyright:
     resource_class: small
     docker:
-      - image: python:3.11
+      - image: python:3
     steps:
       - checkout
       - run:
@@ -48,7 +48,7 @@ jobs:
   pytest:
     resource_class: small
     docker:
-      - image: python:3.11
+      - image: python:3
         environment:
           DATABASE_URL: postgres://ppdb_admin:admin@localhost:5432/ppdb_test
       - image: postgres:latest
