@@ -1,2 +1,4 @@
 .env
 .idea
+
+db/migration/.DS_Store

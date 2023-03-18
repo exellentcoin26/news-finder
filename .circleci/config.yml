@@ -49,6 +49,19 @@ jobs:
       - run:
           name: "Run tsc"
           command: "cd client && npm run check"
+          
+  eslint:
+    resource_class: small
+    docker:
+      - image: node
+    steps:
+      - checkout
+      - run:
+          name: "Install npm packages"
+          command: "cd client && npm install"
+      - run:
+          name: "Run eslint"
+          command: "cd client && npm run lint"
 
   cargo:
     resource_class: small
@@ -88,6 +101,7 @@ jobs:
           paths:
             - rss-scraper/src/prisma.rs
 
+
   deploy-to-gcp:
     resource_class: small
     executor: gcp-cli/default
@@ -107,6 +121,9 @@ workflows:
             - prisma
 
       - tsc
+      - eslint:
+          requires:
+            - tsc
 
       - cargo:
           requires:
@@ -117,6 +134,8 @@ workflows:
             branches:
               only: main
           requires:
+            - prisma
             - pyright
             - tsc
+            - eslint
             - cargo

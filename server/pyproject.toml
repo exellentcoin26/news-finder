@@ -25,7 +25,7 @@ dependencies = [
     "jsonschema==4.17.3",
     "MarkupSafe==2.1.2",
     "nodeenv==1.7.0",
-    "prisma==0.8.1",
+    "prisma==0.8.2",
     "pydantic==1.10.5",
     "pyright==1.1.296",
     "pyrsistent==0.19.3",
@@ -40,7 +40,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["news_finder"]
+include = ["."]
 namespaces = false
 
 [tool.pyright]
