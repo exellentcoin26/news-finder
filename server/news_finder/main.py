@@ -6,20 +6,22 @@ import asyncio
 
 from flask import Flask
 
-from news_finder.routes.root import root_bp
+from news_finder.routes.admin import admin_bp
 from news_finder.routes.error import error_bp
-from news_finder.routes.user import user_bp
+from news_finder.routes.root import root_bp
 from news_finder.routes.rss import rss_bp
+from news_finder.routes.user import user_bp
 
 
 async def main():
     app = Flask(__name__)
 
     # register subapplications/subroutes here
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(error_bp)  # global error handling blueprint
+    app.register_blueprint(root_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(rss_bp)
-    app.register_blueprint(root_bp)
-    app.register_blueprint(error_bp)  # global error handling blueprint
 
     try:
         app.run(debug=True, host="0.0.0.0")

@@ -14,6 +14,7 @@ class ResponseError(Enum):
     # JSON object does not comply with schema.
     JsonValidationError = 2
     UniqueViolationError = 3
+    RecordNotFoundError = 4
 
     ServerError = 500
 
