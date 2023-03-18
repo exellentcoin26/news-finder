@@ -38,7 +38,7 @@ jobs:
           name: Generate Prisma definitions
           command: |
             cd db
-            prisma generate
+            prisma generate --generator server
       - run:
           name: Run pyright
           command: |
@@ -134,8 +134,8 @@ jobs:
           name: Generate prisma defitions if not exitst
           command: |
             if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
-              cd rss-scraper
-              prisma generate --generator rss-scraper --schema ../db/schema.prisma
+              cd db
+              prisma generate --generator rss-scraper
             fi
       - run:
           name: Run cargo check
