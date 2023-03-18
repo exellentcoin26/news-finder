@@ -72,7 +72,7 @@ jobs:
           name: Load tables to database
           command: |
             cd db
-            prisma db push
+            prisma db push --skip-generate
       - run:
           name: Run pytest
           command: |
