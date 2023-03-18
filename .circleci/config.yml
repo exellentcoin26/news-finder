@@ -95,7 +95,7 @@ jobs:
           command: |
             cd client
             npm run check
-
+            
   eslint:
     resource_class: small
     docker:
@@ -103,11 +103,56 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install npm packages"
-          command: "cd client && npm install"
+          name: Install npm packages
+          command: |
+            cd client
+            npm install
       - run:
-          name: "Run eslint"
-          command: "cd client && npm run lint"
+          name: Run eslint
+          command: |
+            cd client
+            npm run lint
+
+  cargo:
+    resource_class: small
+    docker:
+      - image: cimg/rust:1.67.1-node
+    steps:
+      - checkout
+      - run:
+          name: Install prisma cli
+          command: npm install -g prisma
+      - restore_cache:
+          name: Restore cargo dependency cache
+          keys:
+            - cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
+      - restore_cache:
+          name: Restore prisma generated files
+          keys:
+            - prisma-gen-{{ checksum "db/schema.prisma" }}
+      - run:
+          name: Generate prisma defitions if not exitst
+          command: |
+            if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
+              cd rss-scraper
+              prisma generate --generator rss-scraper --schema ../db/schema.prisma
+            fi
+      - run:
+          name: Run cargo check
+          command: |
+            cd rss-scraper
+            cargo check --locked
+      - save_cache:
+          name: Save cargo dependencies to chache
+          key: cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
+          paths:
+            - rss-scraper/target
+      - save_cache:
+          name: Save prisma generated files to cache
+          key: prisma-gen-{{ checksum "db/schema.prisma" }}
+          paths:
+            - rss-scraper/src/prisma.rs
+
 
   deploy-to-gcp:
     resource_class: small
@@ -135,10 +180,17 @@ workflows:
           requires:
             - tsc
 
+      - cargo:
+          requires:
+            - prisma
+
       - deploy-to-gcp:
           filters:
             branches:
               only: main
           requires:
+            - prisma
             - pyright
             - tsc
+            - eslint
+            - cargo

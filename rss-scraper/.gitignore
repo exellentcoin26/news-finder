@@ -1,0 +1,7 @@
+# cargo build artifacts
+/target
+
+# prisma generated client
+/src/prisma.rs
+
+/tmp.txt
