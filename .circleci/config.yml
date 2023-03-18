@@ -63,9 +63,17 @@ jobs:
           name: "Restore cargo dependency cache"
           keys:
             - cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
+      - restore_cache:
+          name: "Restore prisma generated files"
+          keys:
+            - prisma-gen-{{ checksum "db/schema.prisma" }}
       - run:
-          name: "Generate prisma defitions"
-          command: "cd rss-scraper && prisma generate --generator rss-scraper --schema ../db/schema.prisma"
+          name: "Generate prisma defitions if not exitst"
+          command: |
+            if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
+              cd rss-scraper
+              prisma generate --generator rss-scraper --schema ../db/schema.prisma
+            fi
       - run:
           name: "Run cargo check"
           command: "cd rss-scraper && cargo check --locked"
@@ -74,6 +82,11 @@ jobs:
           key: cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
           paths:
             - rss-scraper/target
+      - save_cache:
+          name: "Save prisma generated files to cache"
+          key: prisma-gen-{{ checksum "db/schema.prisma" }}
+          paths:
+            - rss-scraper/src/prisma.rs
 
   deploy-to-gcp:
     resource_class: small
