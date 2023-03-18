@@ -67,7 +67,7 @@ jobs:
           name: Generate Prisma definitions
           command: |
             cd db
-            prisma generate
+            prisma generate --generator server
       - run:
           name: Load tables to database
           command: |
