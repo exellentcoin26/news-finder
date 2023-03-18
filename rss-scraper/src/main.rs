@@ -2,9 +2,11 @@ use crate::{prelude::*, prisma::PrismaClient};
 use dotenv::dotenv;
 use error::RssError;
 use feed_rs::model::Feed;
+use job_scheduler::{Job, JobScheduler};
 use std::{
     fs,
     io::{BufRead, BufReader, BufWriter, Write},
+    time::Duration,
 };
 
 mod error;
@@ -12,15 +14,42 @@ mod prelude;
 mod prisma;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> ! {
     // load environment variables from `.env` file if present
     dotenv().ok();
 
+    let mut schedule = JobScheduler::new();
+
+    schedule.add(Job::new(
+        // run every 5 minutes
+        "* 1/10 * * * * *"
+            .parse()
+            .expect("failed to parse cron job time schedule"),
+        || {
+            tokio::spawn(run_scraper());
+        },
+    ));
+
+    loop {
+        schedule.tick();
+        std::thread::sleep(Duration::from_secs(30));
+        println!(
+            "Time remaining untill next job starts: {} seconds.",
+            schedule.time_till_next_job().as_secs()
+        )
+    }
+}
+
+async fn run_scraper() {
     let client = prisma::new_client()
         .await
         .expect("failed to connect to prisma database");
+
     println!("Start scraping the rss feeds ...");
+
     scrape_rss_feeds(&client).await.unwrap();
+
+    println!("Successfully scraped rss feeds!")
 
     // check_rss_feeds_from_file("rss-feeds.txt", "working.txt")
     //     .await
