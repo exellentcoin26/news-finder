@@ -13,3 +13,4 @@ __pycache__
 rss-feeds.txt
 
 *.egg-info
+*.pytest_cache
