@@ -28,19 +28,6 @@ schema = {
 
 @delete_rss_bp.post("/")
 async def delete_rss_feed() -> Response:
-    """
-    Add rss feeds to database for scraping later on. The news source will be
-    extracted from the hostname of the url.
-
-    # Feed json structure: (checked using schema validation)
-    {
-        "feeds": [
-            "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
-            ...
-        ]
-    }
-    """
-
     data = request.get_json(silent=True)
     if not data:
         return make_error_response(
@@ -63,6 +50,9 @@ async def delete_rss_feed() -> Response:
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
+        # extract news source from rss feed url
+        url_components: ParseResult = urlparse(rss_feed)
+        news_source = url_components.netloc
         b.newssources.delete(
             where={
                 "name": news_source
@@ -73,7 +63,7 @@ async def delete_rss_feed() -> Response:
         await b.commit()
     except RecordNotFoundError as e:
         return make_error_response(
-            ResponseError.RecordNotFounderError,
+            ResponseError.RecordNotFoundError,
             str(e.with_traceback(None)), HTTPStatus.BAD_REQUEST
         )
     except Exception as e:
