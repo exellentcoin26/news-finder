@@ -26,8 +26,8 @@ schema = {
 }
 
 
-@rss_bp.post("/")
-async def add_rss_feed() -> Response:
+@delete_rss_bp.post("/")
+async def delete_rss_feed() -> Response:
     """
     Add rss feeds to database for scraping later on. The news source will be
     extracted from the hostname of the url.
@@ -63,14 +63,6 @@ async def add_rss_feed() -> Response:
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
-        # extract news source and news source url from rss feed url
-        url_components: ParseResult = urlparse(rss_feed)
-
-        news_source = url_components.netloc
-        news_source_url = url_components.scheme + url_components.netloc
-
-        # Update news-source with new rss entry if news-source already present,
-        # else insert a new news-source with the rss feed.
         b.newssources.delete(
             where={
                 "name": news_source
