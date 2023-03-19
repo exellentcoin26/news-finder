@@ -118,8 +118,8 @@ class similar:
         for term in self.tfidftable:
             magnitude_vectorA += pow(self.tfidftable[term][articleA],2)
             magnitude_vectorB += pow(self.tfidftable[term][articleB],2)
-        print(sum/(magnitude_vectorA + magnitude_vectorB))
-        return sum/(magnitude_vectorA + magnitude_vectorB)
+        print(sum/(math.sqrt(magnitude_vectorA) * math.sqrt(magnitude_vectorB)))
+        return sum/(math.sqrt(magnitude_vectorA) * math.sqrt(magnitude_vectorB))
 
     
 
