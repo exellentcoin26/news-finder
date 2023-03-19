@@ -10,6 +10,7 @@ from news_finder.routes.root import root_bp
 from news_finder.routes.error import error_bp
 from news_finder.routes.user import user_bp
 from news_finder.routes.rss import rss_bp
+from news_finder.routes.delete_rss import delete_rss_bp
 
 
 async def main():
@@ -20,6 +21,7 @@ async def main():
     app.register_blueprint(rss_bp)
     app.register_blueprint(root_bp)
     app.register_blueprint(error_bp)  # global error handling blueprint
+    app.register_blueprint(delete_rss_bp)
 
     try:
         app.run(debug=True, host="0.0.0.0")
