@@ -26,23 +26,6 @@ schema = {
     "required": ["feeds"]
 }
 
-def data_validation(data):
-    if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
-        )
-
-    try:
-        validate(instance=data, schema=schema)
-    except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message,
-            HTTPStatus.BAD_REQUEST
-        )
-    except SchemaError as e:
-        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
-        raise e
-
 
 @rss_bp.post("/")
 async def add_rss_feed() -> Response:
@@ -60,7 +43,21 @@ async def add_rss_feed() -> Response:
     """
 
     data = request.get_json(silent=True)
-    data_validation(data)
+    if not data:
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
+
+    try:
+        validate(instance=data, schema=schema)
+    except ValidationError as e:
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message,
+            HTTPStatus.BAD_REQUEST
+        )
+    except SchemaError as e:
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+        raise e
 
     db = await get_db()
 
@@ -119,7 +116,21 @@ async def add_rss_feed() -> Response:
 @rss_bp.delete("/")
 async def delete_rss() -> Response:
     data = request.get_json(silent=True)
-    data_validation(data)
+    if not data:
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
+
+    try:
+        validate(instance=data, schema=schema)
+    except ValidationError as e:
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message,
+            HTTPStatus.BAD_REQUEST
+        )
+    except SchemaError as e:
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+        raise e
 
     db = await get_db()
 
@@ -128,7 +139,7 @@ async def delete_rss() -> Response:
     for rss_feed in data["feeds"]:
         b.rssentries.delete(
             where={
-                "name": rss_feed
+                "feed": rss_feed
             }
         )
 
@@ -147,3 +158,4 @@ async def delete_rss() -> Response:
         )
 
     return make_response("", HTTPStatus.OK)
+
