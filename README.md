@@ -7,15 +7,16 @@ News aggregator application made for the `Project databases 2023` course at the 
 ```
 |
 |-- server (Python) - Core api package that handles recommendations and filtering.
-|   |-- requirements.txt - Pip package requirements
-|   |-- src - Python flask source code
+|   |-- pyproject.toml - Pip package requirements and plugin configurations
+|   |-- news_finder - Python flask source code
+|   |-- test - Test files
 |
 |-- client (TypeScript) - Webpage built using ReactJS that interacts with the Python core.
 |   |-- src - React source code
 |
-|-- db (SQL) - Database definition and migrations managed by DbMate.
-|   |-- schema.sql - Database sql definition
+|-- db (SQL) - Database definition and migrations managed by Prisma.
 |   |-- migrations - Set of migrations needed to construct the database
+|   |-- schema.prisma - Database definition
 |
 |-- ...
 ```
@@ -106,6 +107,9 @@ python3 src/seeding.py
 #### Sidenote
 
 When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleared if this is done the other way around.
+
+### Testing
+The steps to setup the testing framework for the server are described [here](server/tests/README.md).
 
 ### Client
 
