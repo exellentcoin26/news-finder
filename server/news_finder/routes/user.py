@@ -47,7 +47,7 @@ async def register_user() -> Response:
         "id": user.id
     })
 
-    cookie = None
+    cookie = ""
     while cookie is None:
         try:
             cookie = await create_cookie_for_user(prisma, user.id)
