@@ -14,6 +14,9 @@ class ResponseError(Enum):
     # JSON object does not comply with schema.
     JsonValidationError = 2
     UniqueViolationError = 3
+    CookieNotSet = 4
+    CookieNotFound = 5
+    UserAlreadyPresent = 6
 
     ServerError = 500
 
@@ -22,10 +25,6 @@ class ResponseError(Enum):
 
 
 def make_error_response(
-    error: ResponseError,
-    message: str,
-    error_code: HTTPStatus
+    error: ResponseError, message: str, error_code: HTTPStatus
 ) -> Response:
-    return make_response(
-        jsonify({"error": str(error), "message": message}), error_code
-    )
+    return make_response(jsonify({"error": str(error), "message": message}), error_code)
