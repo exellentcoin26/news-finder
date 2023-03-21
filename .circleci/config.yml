@@ -10,16 +10,18 @@ jobs:
     resource_class: small
     docker:
       - image: python:3
+        environment:
+          DATABASE_URL: "postgres://user:password@127.0.0.1:5432/database"
     steps:
       - checkout
       - run:
-          name: "Install prisma cli"
-          command: "pip3 install prisma"
+          name: Install Prisma CLI
+          command: pip3 install prisma
       - run:
-          name: "Validate prisma schema"
-          command: "cd db && prisma validate"
-    environment:
-      DATABASE_URL: "postgres://user:password@127.0.0.1:5432/database"
+          name: Validate prisma schema
+          command: |
+            cd db
+            prisma validate
 
   pyright:
     resource_class: small
@@ -28,14 +30,54 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install pip packages"
-          command: "cd server && pip3 install ."
+          name: Install pip packages
+          command: |
+            cd server
+            pip3 install .
       - run:
-          name: "Generate Prisma definitions"
-          command: "cd db && prisma generate --generator server"
+          name: Generate Prisma definitions
+          command: |
+            cd db
+            prisma generate --generator server
       - run:
-          name: "Run pyright"
-          command: "cd server && pyright ."
+          name: Run pyright
+          command: |
+            cd server
+            pyright .
+
+  pytest:
+    resource_class: small
+    docker:
+      - image: python:3
+        environment:
+          DATABASE_URL: postgres://ppdb_admin:admin@localhost:5432/ppdb_test
+      - image: postgres:latest
+        environment:
+          POSTGRES_DB: ppdb_test
+          POSTGRES_USER: ppdb_admin
+          POSTGRES_PASSWORD: admin
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            cd server
+            pip3 install .
+      - run:
+          name: Generate Prisma definitions
+          command: |
+            cd db
+            prisma generate --generator server
+      - run:
+          name: Load tables to database
+          command: |
+            cd db
+            prisma db push --skip-generate
+      - run:
+          name: Run pytest
+          command: |
+            cd server
+            pytest
 
   tsc:
     resource_class: small
@@ -44,12 +86,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install npm packages"
-          command: "cd client && npm install"
+          name: Install npm packages
+          command: |
+            cd client
+            npm install
       - run:
-          name: "Run tsc"
-          command: "cd client && npm run check"
-          
+          name: Run tsc
+          command: |
+            cd client
+            npm run check
+            
   eslint:
     resource_class: small
     docker:
@@ -57,11 +103,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install npm packages"
-          command: "cd client && npm install"
+          name: Install npm packages
+          command: |
+            cd client
+            npm install
       - run:
-          name: "Run eslint"
-          command: "cd client && npm run lint"
+          name: Run eslint
+          command: |
+            cd client
+            npm run lint
 
   cargo:
     resource_class: small
@@ -70,33 +120,35 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install prisma cli"
-          command: "npm install -g prisma"
+          name: Install prisma cli
+          command: npm install -g prisma
       - restore_cache:
-          name: "Restore cargo dependency cache"
+          name: Restore cargo dependency cache
           keys:
             - cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
       - restore_cache:
-          name: "Restore prisma generated files"
+          name: Restore prisma generated files
           keys:
             - prisma-gen-{{ checksum "db/schema.prisma" }}
       - run:
-          name: "Generate prisma defitions if not exitst"
+          name: Generate prisma defitions if not exitst
           command: |
             if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
-              cd rss-scraper
-              prisma generate --generator rss-scraper --schema ../db/schema.prisma
+              cd db
+              prisma generate --generator rss-scraper
             fi
       - run:
-          name: "Run cargo check"
-          command: "cd rss-scraper && cargo check --locked"
+          name: Run cargo check
+          command: |
+            cd rss-scraper
+            cargo check --locked
       - save_cache:
-          name: "Save cargo dependencies to chache"
+          name: Save cargo dependencies to chache
           key: cargo-deps-{{ checksum "rss-scraper/Cargo.lock" }}
           paths:
             - rss-scraper/target
       - save_cache:
-          name: "Save prisma generated files to cache"
+          name: Save prisma generated files to cache
           key: prisma-gen-{{ checksum "db/schema.prisma" }}
           paths:
             - rss-scraper/src/prisma.rs
@@ -110,7 +162,7 @@ jobs:
       - gcp-cli/install
       - gcp-cli/initialize
       - run:
-          name: "Deploy application to google cloud"
+          name: Deploy application to google cloud
           command: gcloud --quiet compute ssh app@ppdb --tunnel-through-iap --command="$(cat scripts/deploy-docker-compose.sh)"
 workflows:
   main:
@@ -119,6 +171,9 @@ workflows:
       - pyright:
           requires:
             - prisma
+      - pytest:
+          requires:
+            - pyright
 
       - tsc
       - eslint:
