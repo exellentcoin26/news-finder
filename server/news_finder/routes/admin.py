@@ -143,4 +143,9 @@ async def is_admin() -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
+    if user is None:
+        return make_error_response(
+            ResponseError.RecordNotFoundError,
+            "", HTTPStatus.BAD_REQUEST
+        )
     return make_response(jsonify({"admin": user.admin}), HTTPStatus.OK)
