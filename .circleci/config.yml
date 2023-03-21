@@ -116,7 +116,7 @@ jobs:
   cargo:
     resource_class: small
     docker:
-      - image: cimg/rust:1.67.1-node
+      - image: cimg/rust:1.68-node
     steps:
       - checkout
       - run:

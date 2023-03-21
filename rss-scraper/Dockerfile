@@ -1,4 +1,4 @@
-FROM rust:1.67
+FROM rust:1.68
 
 COPY ./rss-scraper /app/rss-scraper
 
