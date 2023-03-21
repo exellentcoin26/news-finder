@@ -13,12 +13,12 @@ def test_add_admin(client: Flask.testing):
     response_make_admin: Flask.response_class = client.post("/admin/", json={"usernames": ["Jan", "piet-joris"]})
     assert response_make_admin.status_code == 200
 
-    response_check_admin: Flask.response_class = client.post("/admin/is-admin", json={"username": "Jan"})
+    response_check_admin: Flask.response_class = client.post("/admin/is-admin/", json={"username": "Jan"})
     assert response_check_admin.status_code == 200
     assert response_check_admin.get_json()["admin"]
-    response_check_admin: Flask.response_class = client.post("/admin/is-admin", json={"username": "PIET-JORIS"})
+    response_check_admin: Flask.response_class = client.post("/admin/is-admin/", json={"username": "PIET-JORIS"})
     assert response_check_admin.status_code == 200
     assert response_check_admin.get_json()["admin"]
-    response_check_admin: Flask.response_class = client.post("/admin/is-admin", json={"username": "Korneel"})
+    response_check_admin: Flask.response_class = client.post("/admin/is-admin/", json={"username": "Korneel"})
     assert response_check_admin.status_code == 200
     assert not response_check_admin.get_json()["admin"]
