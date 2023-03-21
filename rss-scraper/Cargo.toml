@@ -1,6 +1,6 @@
 [package]
 name = "rss-scraper"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [workspace]
@@ -15,7 +15,7 @@ serde = "1.0.154"
 dotenv = "0.15.0"
 chrono = "0.4.24"
 mime = "0.3.16"
-job_scheduler = "1.2.1"
+job_scheduler_ng = "2.0.4"
 
 [dependencies.prisma-client-rust]
 git = "https://github.com/Brendonovich/prisma-client-rust"
