@@ -121,7 +121,7 @@ jobs:
       - checkout
       - run:
           name: Install prisma cli
-          command: npm install -g prisma
+          command: sudo npm install -g prisma
       - restore_cache:
           name: Restore cargo dependency cache
           keys:
