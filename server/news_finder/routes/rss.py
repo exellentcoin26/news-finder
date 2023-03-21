@@ -134,11 +134,6 @@ async def delete_rss() -> Response:
                 "feed": rss_feed #TODO: remove news source if it has no rss entries
             }
         )
-        url_components: ParseResult = urlparse(rss_feed)
-
-        news_source = url_components.netloc
-        news_source_url = url_components.scheme + "://" + url_components.netloc
-
 
     try:
         await b.commit()
