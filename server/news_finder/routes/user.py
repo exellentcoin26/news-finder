@@ -24,7 +24,7 @@ async def create_cookie_for_user(prisma: Prisma, user_id: int):
     return cookie
 
 
-@user_bp.post("/register")
+@user_bp.post("/")
 async def register_user() -> Response:
     prisma: Prisma = await get_db()
 
