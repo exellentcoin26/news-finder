@@ -116,12 +116,12 @@ jobs:
   cargo:
     resource_class: small
     docker:
-      - image: cimg/rust:1.67.1-node
+      - image: cimg/rust:1.68-node
     steps:
       - checkout
       - run:
           name: Install prisma cli
-          command: npm install -g prisma
+          command: sudo npm install -g prisma
       - restore_cache:
           name: Restore cargo dependency cache
           keys:
