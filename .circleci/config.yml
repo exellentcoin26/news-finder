@@ -95,7 +95,7 @@ jobs:
           command: |
             cd client
             npm run check
-            
+
   eslint:
     resource_class: small
     docker:
@@ -134,8 +134,8 @@ jobs:
           name: Generate prisma defitions if not exitst
           command: |
             if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
-              cd db
-              prisma generate --generator rss-scraper
+              cd rss-scraper
+              prisma generate --generator rss-scraper --schema ../db/schema.prisma
             fi
       - run:
           name: Run cargo check
