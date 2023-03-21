@@ -23,10 +23,12 @@ def test_login(client: Flask.testing) -> None:
     response_create_user: Flask.response_class = client.post("/user/", json={"username": "jan", "password": "qwerty"})
     assert response_create_user.status_code == 200
 
-    response_login: Flask.response_class = client.post("/user/login/", json={"username": "jan", "password": "qwerty"})
+    response_login: Flask.response_class = client.post("/user/login/", json={"username": "jan", "password": "qwerty",
+                                                                             "cookie": "ksdaflsakdjfhdsalkfjh"})
     assert response_login.status_code == 200
 
 
 def test_wrong_login(client: Flask.testing) -> None:
-    response_login: Flask.response_class = client.post("/user/login/", json={"username": "jan", "password": "qwerty"})
+    response_login: Flask.response_class = client.post("/user/login/", json={"username": "jan", "password": "qwerty",
+                                                                             "cookie": "ksdaflsakdjfhdsalkfjh"})
     assert response_login.status_code == 400

@@ -80,9 +80,13 @@ async def login_user() -> Response:
             "password": {
                 "description": "password of the user to be logged in",
                 "type": "string"
+            },
+            "cookie": {
+                "description": "session cookie",
+                "type": "string"
             }
         },
-        "required": ["username", "password"],
+        "required": ["username", "password", "cookie"],
     }
 
     data = request.get_json(silent=True)
@@ -158,6 +162,19 @@ async def login_user() -> Response:
             ResponseError.WrongPassword, "",
             HTTPStatus.UNAUTHORIZED
         )
+
+    await db.users.update(
+        where={
+            "username": data["username"]
+        },
+        data={
+            "cookies": {
+                "create": [{
+                    "cookie": data["cookie"]
+                }]
+            }
+        }
+    )
 
     return make_response("", HTTPStatus.OK)
 
