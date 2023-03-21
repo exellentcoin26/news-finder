@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import '../../public/styles/Navigation.css';
+import '../styles/Navigation.css';
 
 const Navigation = () => {
     return (
@@ -23,6 +23,11 @@ const Navigation = () => {
                         </Nav.Link>
                     </Nav>
                     <Nav>
+                        <Nav.Link>
+                            <Link to="/admin" className="nav_text">
+                                admin
+                            </Link>
+                        </Nav.Link>
                         <Nav.Link>
                             <Link to="/login" className="nav_text">
                                 login

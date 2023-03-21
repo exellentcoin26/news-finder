@@ -7,26 +7,31 @@ News aggregator application made for the `Project databases 2023` course at the 
 ```
 |
 |-- server (Python) - Core api package that handles recommendations and filtering.
-|   |-- requirements.txt - Pip package requirements
-|   |-- src - Python flask source code
+|   |-- pyproject.toml - Pip package requirements and plugin configurations
+|   |-- news_finder - Python flask source code
+|   |-- test - Test files
 |
 |-- client (TypeScript) - Webpage built using ReactJS that interacts with the Python core.
 |   |-- src - React source code
 |
-|-- db (SQL) - Database definition and migrations managed by DbMate.
-|   |-- schema.sql - Database sql definition
+|-- db (SQL) - Database definition and migrations managed by Prisma.
 |   |-- migrations - Set of migrations needed to construct the database
+|   |-- schema.prisma - Database definition
+|
+|-- rss-scraper (Rust) - RSS scraping application that runs periodically
+|   |-- src - Rust source code
+|   |-- prisma-cli - Rust prisma client cli application
 |
 |-- ...
 ```
 
 ## Quick start
 
-### Using docker
+### Using docker (production)
 
 ```bash
 # make postgresql data directory
-mkdir data
+mkdir docker/data
 # start all containers
 docker compose -f docker/docker-compose.yml up
 # stop and remove all containers
@@ -38,7 +43,7 @@ docker compose -f docker/docker-compose.yml down
 **Note**: To access the front-end application go to route: `http://localhost:80`.
 To access the back-end go to route: `http://localhost:1337`
 
-### Manual installation
+### Manual installation (development)
 
 #### Server
 
@@ -86,8 +91,10 @@ sudo systemctl restart postgresql
 cd server
 python -m venv venv
 source venv/bin/activate
-pip3 install -r requirements
+pip3 install .
 ```
+
+**Note**: If installing for development use `pip3 install --editable .`
 
 ##### 4.Add tables to database:
 
@@ -98,12 +105,15 @@ prisma db push --schema ../db/schema.prisma
 **(optional)** You can seed the database using:
 
 ```bash
-python3 src/seeding.py
+python3 news_finder/seeding.py
 ```
 
 #### Sidenote
 
 When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleared if this is done the other way around.
+
+### Testing
+The steps to setup the testing framework for the server are described [here](server/tests/README.md).
 
 ### Client
 

@@ -20,7 +20,7 @@ services:
           "-d",
           "ppdb"
         ]
-      interval: 10s
+      interval: 30s
       timeout: 10s
       retries: 10
 
@@ -49,7 +49,7 @@ services:
         condition: service_completed_successfully
     healthcheck:
       test: curl --fail -s http://localhost:5000/healthcheck || exit 1
-      interval: 10s
+      interval: 30s
       timeout: 10s
       retries: 10
 
@@ -60,3 +60,14 @@ services:
     depends_on:
       server:
         condition: service_healthy
+
+  rss-scraper:
+    build:
+      context: ../
+      dockerfile: ./rss-scraper/Dockerfile
+    env_file: ./database-url.env
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully
