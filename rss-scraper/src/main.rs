@@ -2,7 +2,7 @@ use crate::{prelude::*, prisma::PrismaClient};
 use dotenv::dotenv;
 use error::RssError;
 use feed_rs::model::Feed;
-use job_scheduler::{Job, JobScheduler};
+use job_scheduler_ng::{Job, JobScheduler};
 use std::{
     fs,
     io::{BufRead, BufReader, BufWriter, Write},
@@ -21,7 +21,7 @@ async fn main() -> ! {
     let mut schedule = JobScheduler::new();
 
     schedule.add(Job::new(
-        // run every 5 minutes
+        // run every 10 minutes
         "* 1/10 * * * * *"
             .parse()
             .expect("failed to parse cron job time schedule"),
@@ -32,7 +32,7 @@ async fn main() -> ! {
 
     loop {
         schedule.tick();
-        std::thread::sleep(Duration::from_secs(30));
+        std::thread::sleep(Duration::from_secs(3));
         println!(
             "Time remaining untill next job starts: {} seconds.",
             schedule.time_till_next_job().as_secs()

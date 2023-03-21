@@ -1,2 +1,5 @@
+[registries.crates-io]
+protocol = "sparse"
+
 [alias]
 prisma = "run -p prisma-cli --"

@@ -15,7 +15,9 @@ class ResponseError(Enum):
     JsonValidationError = 2
     UniqueViolationError = 3
     RecordNotFoundError = 4
-
+    CookieNotSet = 5
+    CookieNotFound = 6
+    UserAlreadyPresent = 7
     ServerError = 500
 
     def __str__(self) -> str:
@@ -23,10 +25,6 @@ class ResponseError(Enum):
 
 
 def make_error_response(
-    error: ResponseError,
-    message: str,
-    error_code: HTTPStatus
+    error: ResponseError, message: str, error_code: HTTPStatus
 ) -> Response:
-    return make_response(
-        jsonify({"error": str(error), "message": message}), error_code
-    )
+    return make_response(jsonify({"error": str(error), "message": message}), error_code)

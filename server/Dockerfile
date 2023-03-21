@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN pip3 install .
 
-RUN prisma generate
+RUN prisma generate --generator server
 
 EXPOSE 5000
 

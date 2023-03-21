@@ -361,13 +361,13 @@ dependencies = [
 
 [[package]]
 name = "cron"
-version = "0.6.1"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab00a636277f7ea5d8dd92ac7a5099fc9a46e5327bba84d3640b41ae127eada9"
+checksum = "1ff76b51e4c068c52bfd2866e1567bee7c567ae8f24ada09fd4307019e25eab7"
 dependencies = [
  "chrono",
- "error-chain",
- "nom 4.1.1",
+ "nom",
+ "once_cell",
 ]
 
 [[package]]
@@ -575,7 +575,7 @@ dependencies = [
  "schema-ast",
  "serde",
  "serde_json",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -662,15 +662,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "error-chain"
-version = "0.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9435d864e017c3c6afeac1654189b06cdb491cf2ff73dbf0d73b0f292f42ff8"
-dependencies = [
- "backtrace",
-]
-
-[[package]]
 name = "failure"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -722,7 +713,7 @@ dependencies = [
  "serde_json",
  "siphasher",
  "url",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -1182,14 +1173,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "453ad9f582a441959e5f0d088b02ce04cfe8d51a8eaf077f12ac6d3e94164ca6"
 
 [[package]]
-name = "job_scheduler"
-version = "1.2.1"
+name = "job_scheduler_ng"
+version = "2.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51f368c9c76dde2282714ae32dc274b79c27527a0c06c816f6dda048904d0d7c"
+checksum = "10bbdf445513bbe53f4666218b7057d265c76fa0b30475e121a6bf05dbaacaae"
 dependencies = [
  "chrono",
  "cron",
- "uuid 0.8.2",
+ "uuid",
 ]
 
 [[package]]
@@ -1565,15 +1556,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77a5d83df9f36fe23f0c3648c6bbb8b0298bb5f1939c8f2704431371f4b84d43"
 dependencies = [
  "smallvec",
-]
-
-[[package]]
-name = "nom"
-version = "4.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c349f68f25f596b9f44cf0e7c69752a5c633b0550c3ff849518bfba0233774a"
-dependencies = [
- "memchr",
 ]
 
 [[package]]
@@ -2012,7 +1994,7 @@ dependencies = [
  "postgres-protocol",
  "serde",
  "serde_json",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2054,7 +2036,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "user-facing-errors",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2126,7 +2108,7 @@ dependencies = [
  "regex",
  "serde",
  "serde_json",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2222,7 +2204,7 @@ dependencies = [
  "tracing",
  "tracing-core",
  "url",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2258,7 +2240,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "user-facing-errors",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2302,7 +2284,7 @@ dependencies = [
  "tracing-subscriber",
  "url",
  "user-facing-errors",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2550,12 +2532,12 @@ dependencies = [
 
 [[package]]
 name = "rss-scraper"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "dotenv",
  "feed-rs",
- "job_scheduler",
+ "job_scheduler_ng",
  "mime",
  "prisma-client-rust",
  "reqwest",
@@ -2886,7 +2868,7 @@ dependencies = [
  "tracing-futures",
  "url",
  "user-facing-errors",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2917,7 +2899,7 @@ dependencies = [
  "tracing-futures",
  "tracing-opentelemetry",
  "user-facing-errors",
- "uuid 1.3.0",
+ "uuid",
 ]
 
 [[package]]
@@ -2947,7 +2929,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c12bc9199d1db8234678b7051747c07f517cdcf019262d1847b94ec8b1aee3e"
 dependencies = [
  "itertools",
- "nom 7.1.3",
+ "nom",
  "unicode_categories",
 ]
 
@@ -3364,15 +3346,6 @@ dependencies = [
  "serde_json",
  "tracing",
  "user-facing-error-macros",
-]
-
-[[package]]
-name = "uuid"
-version = "0.8.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc5cf98d8186244414c848017f0e2676b3fcb46807f6668a97dfe67359a3c4b7"
-dependencies = [
- "getrandom 0.2.8",
 ]
 
 [[package]]
