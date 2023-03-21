@@ -101,7 +101,7 @@ prisma db push --schema ../db/schema.prisma
 **(optional)** You can seed the database using:
 
 ```bash
-python3 src/seeding.py
+python3 news_finder/seeding.py
 ```
 
 #### Sidenote
