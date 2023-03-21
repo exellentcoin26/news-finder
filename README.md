@@ -18,16 +18,20 @@ News aggregator application made for the `Project databases 2023` course at the 
 |   |-- migrations - Set of migrations needed to construct the database
 |   |-- schema.prisma - Database definition
 |
+|-- rss-scraper (Rust) - RSS scraping application that runs periodically
+|   |-- src - Rust source code
+|   |-- prisma-cli - Rust prisma client cli application
+|
 |-- ...
 ```
 
 ## Quick start
 
-### Using docker
+### Using docker (production)
 
 ```bash
 # make postgresql data directory
-mkdir data
+mkdir docker/data
 # start all containers
 docker compose -f docker/docker-compose.yml up
 # stop and remove all containers
@@ -39,7 +43,7 @@ docker compose -f docker/docker-compose.yml down
 **Note**: To access the front-end application go to route: `http://localhost:80`.
 To access the back-end go to route: `http://localhost:1337`
 
-### Manual installation
+### Manual installation (development)
 
 #### Server
 
