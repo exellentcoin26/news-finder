@@ -2,8 +2,8 @@ from flask import Blueprint, Response, request, make_response
 from prisma import Prisma
 from prisma.errors import UniqueViolationError 
 
-from ..db import get_db
-import secrets
+from news_finder.db import get_db
+from news_finder.utils.error_response import make_error_response, ResponseError
 
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
@@ -14,7 +14,7 @@ def hello_user() -> Response:
 
 
 async def create_cookie_for_user(prisma: Prisma, user_id: int) -> str:
-    user_cookie: str = secrets.token_hex(32)
+    user_cookie: str = str(uuid4())
 
     await prisma.usercookies.create(data={
         "cookie": user_cookie,
@@ -48,14 +48,14 @@ async def register_user() -> Response:
     })
 
     cookie = ""
-    while cookie is None:
+    while cookie == "":
         try:
             cookie = await create_cookie_for_user(prisma, user.id)
         except UniqueViolationError:
             pass
 
     resp: Response
-    resp = make_response("", 200)
+    resp = make_response("", HTTPStatus.OK)
     resp.set_cookie("session", cookie)
 
     return resp
@@ -64,13 +64,21 @@ async def register_user() -> Response:
 @user_bp.post("/logout")
 async def logout_user() -> Response:
     prisma = await get_db()
-    cookie: str = request.cookies.get("session")
+    cookie: str | None = request.cookies.get("session")
 
-    await prisma.usercookies.delete(
-        where={
-            "cookie": cookie
-        }
-    )
+    if cookie is None:
+        return make_error_response(ResponseError.CookieNotSet, "Cookie header not set in request", HTTPStatus.BAD_REQUEST)
 
+
+    try:
+        await prisma.usercookies.delete(
+            where={
+                "cookie": cookie
+            }
+        )
+    except RecordNotFoundError:
+        return make_error_response(ResponseError.CookieNotFound, "Cookie is not found in the database", HTTPStatus.BAD_REQUEST)
+    except Exception:
+        return make_error_response(ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR)
 
     return make_response("", 200)
