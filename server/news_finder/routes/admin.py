@@ -61,7 +61,7 @@ async def add_admin() -> Response:
     for user in data["usernames"]:
         b.users.update(
             where={
-                "username": user
+                "username": user.lower()
             },
             data={
                 "admin": True
@@ -128,7 +128,7 @@ async def is_admin() -> Response:
     try:
         user = await db.users.find_first(
             where={
-                "username": data["username"],
+                "username": data["username"].lower(),
             }
         )
     except RecordNotFoundError as e:
