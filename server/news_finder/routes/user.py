@@ -70,6 +70,17 @@ async def register_user() -> Response:
 
 @user_bp.post("/login/")
 async def login_user() -> Response:
+    """
+    Log a user in.
+
+    # Json structure: (checked using schema validation)
+    {
+        "username",
+        "password",
+        "cookie"
+    }
+    """
+
     schema = {
         "type": "object",
         "properties": {
