@@ -116,12 +116,17 @@ jobs:
   cargo:
     resource_class: small
     docker:
-      - image: cimg/rust:1.68-node
+      - image: cimg/rust:1.68
     steps:
       - checkout
       - run:
+          name: Install pip3
+          command: |
+            sudo apt-get update
+            sudo apt-get install python3-pip
+      - run:
           name: Install prisma cli
-          command: sudo npm install -g prisma
+          command: pip3 install prisma
       - restore_cache:
           name: Restore cargo dependency cache
           keys:
