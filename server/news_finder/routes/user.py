@@ -1,6 +1,9 @@
 from flask import Blueprint, Response, request, make_response
 from prisma import Prisma
-from prisma.errors import UniqueViolationError 
+from prisma.errors import UniqueViolationError, RecordNotFoundError
+
+from uuid import uuid4
+from http import HTTPStatus
 
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
@@ -24,7 +27,7 @@ async def create_cookie_for_user(prisma: Prisma, user_id: int) -> str:
     return user_cookie
 
 
-@user_bp.post("/register")
+@user_bp.post("/")
 async def register_user() -> Response:
     prisma = await get_db()
     data = request.get_json()

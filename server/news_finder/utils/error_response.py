@@ -14,6 +14,8 @@ class ResponseError(Enum):
     # JSON object does not comply with schema.
     JsonValidationError = 2
     UniqueViolationError = 3
+    CookieNotSet = 4
+    CookieNotFound = 5
 
     ServerError = 500
 
