@@ -1,3 +1,4 @@
+// database
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
@@ -33,7 +34,7 @@ model UserLogins {
 
 model UserCookies {
     user      Users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    user_id   Int
+    user_id        Int
     cookie    String  @id
 }
 
@@ -70,7 +71,6 @@ model SimilarArticles {
     id1     Int
     similar NewsArticles @relation("similar", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
     id2     Int
-    
     @@id([id1, id2])
 }
 
@@ -84,6 +84,5 @@ model NewsArticleLabels {
     id           Int
     label_object Labels       @relation(fields: [label], references: [name], onDelete: Cascade, onUpdate: Cascade)
     label        String
-
     @@id([id, label])
 }
