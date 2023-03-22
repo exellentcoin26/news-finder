@@ -16,11 +16,6 @@ generator rss-scraper {
     output   = "../rss-scraper/src/prisma.rs"
 }
 
-generator rss-scraper {
-  provider = "cargo prisma"
-  output   = "../rss-scraper/src/prisma.rs"
-}
-
 // data models
 model Users {
     id         Int           @id @default(autoincrement())
