@@ -1,6 +1,9 @@
 from flask import Blueprint, Response, request, make_response
 from prisma import Prisma
 from prisma.errors import UniqueViolationError, RecordNotFoundError
+from jsonschema import validate, SchemaError, ValidationError
+
+import sys
 
 from uuid import uuid4
 from http import HTTPStatus
@@ -16,7 +19,7 @@ def hello_user() -> Response:
     return Response("Hello, User!")
 
 
-async def create_cookie_for_user(prisma: Prisma, user_id: int):
+async def create_cookie_for_user(prisma: Prisma, user_id: int) -> str:
     cookie = str(uuid4())
 
     await prisma.usercookies.create(data={"cookie": cookie, "user_id": user_id})
@@ -65,7 +68,118 @@ async def register_user() -> Response:
     return resp
 
 
-@user_bp.post("/logout")
+@user_bp.post("/login/")
+async def login_user() -> Response:
+    """
+    Log a user in.
+
+    # Json structure: (checked using schema validation)
+    {
+        "username",
+        "password",
+    }
+    """
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "username": {
+                "description": "username for the user to be logged in",
+                "type": "string",
+            },
+            "password": {
+                "description": "password of the user to be logged in",
+                "type": "string"
+            },
+        },
+        "required": ["username", "password"],
+    }
+
+    data = request.get_json(silent=True)
+    if not data:
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
+
+    try:
+        validate(instance=data, schema=schema)
+    except ValidationError as e:
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        )
+    except SchemaError as e:
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+        raise e
+
+    db = await get_db()
+
+    try:
+        user = await db.users.find_first(
+            where={
+                "username": data["username"]
+            }
+        )
+    except RecordNotFoundError:
+        return make_error_response(
+            ResponseError.RecordNotFoundError, "",
+            HTTPStatus.BAD_REQUEST
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
+    if user is None:
+        return make_error_response(
+            ResponseError.RecordNotFoundError, "",
+            HTTPStatus.BAD_REQUEST
+        )
+
+    try:
+        user_login = await db.userlogins.find_first(
+            where={
+                "user": {
+                    "is": {
+                        "id": user.id
+                    }
+                }
+            }
+        )
+    except RecordNotFoundError:
+        return make_error_response(
+            ResponseError.RecordNotFoundError, "",
+            HTTPStatus.BAD_REQUEST
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
+    if user_login is None:
+        return make_error_response(
+            ResponseError.RecordNotFoundError, "",
+            HTTPStatus.BAD_REQUEST
+        )
+
+    if user_login.password != data["password"]:
+        return make_error_response(
+            ResponseError.WrongPassword, "",
+            HTTPStatus.UNAUTHORIZED
+        )
+
+    cookie: str = ""
+    while cookie == "":
+        try:
+            cookie = await create_cookie_for_user(db, user.id)
+        except UniqueViolationError:
+            pass
+
+    return make_response("", HTTPStatus.OK)
+
+
+@user_bp.post("/logout/")
 async def logout_user() -> Response:
     prisma = await get_db()
 
