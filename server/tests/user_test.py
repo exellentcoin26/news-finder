@@ -17,7 +17,7 @@ def test_unique_username(client: Flask.testing) -> None:
     response: Flask.response_class = client.post("/user/", json={"username": "abcd", "password": "dcba"})
     response: Flask.response_class = client.post("/user/", json={"username": "abcd", "password": "dcba1"})
     assert response.status_code == 409
-
+    
 
 def test_login(client: Flask.testing) -> None:
     response_create_user: Flask.response_class = client.post("/user/", json={"username": "jan", "password": "qwerty"})
