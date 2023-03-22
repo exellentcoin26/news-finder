@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, request, make_response
+from flask import Blueprint, Response, request, make_response, jsonify
 from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
@@ -10,6 +10,49 @@ from news_finder.utils.error_response import make_error_response, ResponseError
 import sys
 
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
+
+
+@rss_bp.get("/")
+async def get_rss_feeds() -> Response:
+    """
+    Get a json with all the rss feeds and their news source
+
+    # Feeds json structure:
+    {
+        "feeds": [
+            {
+                "source": "vrt",
+                "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml"
+            }.
+            ...
+        ]
+    }
+    """
+
+    db = await get_db()
+
+    try:
+        feeds = await db.rssentries.find_many()
+    except RecordNotFoundError:
+        return make_response(jsonify({"feeds": []}), HTTPStatus.OK)
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
+    response = {"feeds": []}
+    for feed in feeds:
+        # Extract news source and news source url from rss feed url
+        url_components: ParseResult = urlparse(feed.feed)
+        news_source = url_components.netloc
+
+        response["feeds"].append({
+            "source": news_source,
+            "feed": feed.feed
+        })
+
+    return make_response(jsonify(response), HTTPStatus.OK)
 
 
 @rss_bp.post("/")
