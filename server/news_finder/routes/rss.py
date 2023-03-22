@@ -12,19 +12,6 @@ import sys
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
 
 
-schema = {
-    "type": "object",
-    "properties": {
-        "feeds": {
-            "description": "list off rss feeds to be added",
-            "type": "array",
-            "items": {"type": "string"},
-        },
-    },
-    "required": ["feeds"],
-}
-
-
 @rss_bp.post("/")
 async def add_rss_feed() -> Response:
     """
@@ -39,6 +26,18 @@ async def add_rss_feed() -> Response:
         ]
     }
     """
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "feeds": {
+                "description": "list off rss feeds to be added",
+                "type": "array",
+                "items": {"type": "string"},
+            },
+        },
+        "required": ["feeds"],
+    }
 
     data = request.get_json(silent=True)
     if not data:
@@ -57,11 +56,10 @@ async def add_rss_feed() -> Response:
         raise e
 
     db = await get_db()
-
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
-        # extract news source and news source url from rss feed url
+        # Extract news source and news source url from rss feed url
         url_components: ParseResult = urlparse(rss_feed)
 
         news_source = url_components.netloc
@@ -105,8 +103,33 @@ async def add_rss_feed() -> Response:
 
     return make_response("", HTTPStatus.OK)
 
+
 @rss_bp.delete("/")
 async def delete_rss() -> Response:
+    """
+    Delete rss feeds from the database
+
+    # Feed json structure: (checked using schema validation)
+    {
+        "feeds": [
+            "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+            ...
+        ]
+    }
+    """
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "feeds": {
+                "description": "list off rss feeds to be deleted",
+                "type": "array",
+                "items": {"type": "string"},
+            },
+        },
+        "required": ["feeds"],
+    }
+
     data = request.get_json(silent=True)
     if not data:
         return make_error_response(
@@ -125,13 +148,19 @@ async def delete_rss() -> Response:
         raise e
 
     db = await get_db()
-
     b = db.batch_()
+    news_sources: set[str] = set()
 
     for rss_feed in data["feeds"]:
+        # extract news source and news source url from rss feed url
+        url_components: ParseResult = urlparse(rss_feed)
+
+        news_source = url_components.netloc
+        news_sources.add(news_source)
+
         b.rssentries.delete(
             where={
-                "feed": rss_feed #TODO: remove news source if it has no rss entries
+                "feed": rss_feed
             }
         )
 
@@ -149,5 +178,30 @@ async def delete_rss() -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    return make_response("", HTTPStatus.OK)
+    # Delete news source if all feeds are deleted
+    for news_source_name in news_sources:
+        try:
+            news_source = await db.newssources.find_first(
+                where={
+                    "name": news_source_name
+                }
+            )
+        except RecordNotFoundError as e:
+            return make_error_response(
+                ResponseError.ServerError, "",
+                HTTPStatus.INTERNAL_SERVER_ERROR
+            )
 
+        if news_source is None:
+            return make_error_response(
+                ResponseError.ServerError, "",
+                HTTPStatus.INTERNAL_SERVER_ERROR
+            )
+        if news_source.rss is None:
+            await db.newssources.delete(
+                where={
+                    "name": news_source_name
+                }
+            )
+
+    return make_response("", HTTPStatus.OK)
