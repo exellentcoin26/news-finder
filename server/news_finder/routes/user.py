@@ -19,7 +19,7 @@ def hello_user() -> Response:
     return Response("Hello, User!")
 
 
-async def create_cookie_for_user(prisma: Prisma, user_id: int):
+async def create_cookie_for_user(prisma: Prisma, user_id: int) -> str:
     cookie = str(uuid4())
 
     await prisma.usercookies.create(data={"cookie": cookie, "user_id": user_id})
@@ -77,7 +77,6 @@ async def login_user() -> Response:
     {
         "username",
         "password",
-        "cookie"
     }
     """
 
@@ -92,12 +91,8 @@ async def login_user() -> Response:
                 "description": "password of the user to be logged in",
                 "type": "string"
             },
-            "cookie": {
-                "description": "session cookie",
-                "type": "string"
-            }
         },
-        "required": ["username", "password", "cookie"],
+        "required": ["username", "password"],
     }
 
     data = request.get_json(silent=True)
@@ -174,18 +169,12 @@ async def login_user() -> Response:
             HTTPStatus.UNAUTHORIZED
         )
 
-    await db.users.update(
-        where={
-            "username": data["username"]
-        },
-        data={
-            "cookies": {
-                "create": [{
-                    "cookie": data["cookie"]
-                }]
-            }
-        }
-    )
+    cookie: str = ""
+    while cookie == "":
+        try:
+            cookie = await create_cookie_for_user(db, user.id)
+        except UniqueViolationError:
+            pass
 
     return make_response("", HTTPStatus.OK)
 
