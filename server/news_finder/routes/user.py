@@ -137,7 +137,7 @@ async def login_user() -> Response:
         )
 
     try:
-        password = await db.userlogins.find_first(
+        user_login = await db.userlogins.find_first(
             where={
                 "user": {
                     "is": {
@@ -157,13 +157,13 @@ async def login_user() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    if password is None:
+    if user_login is None:
         return make_error_response(
             ResponseError.RecordNotFoundError, "",
             HTTPStatus.BAD_REQUEST
         )
 
-    if password.password != data["password"]:
+    if user_login.password != data["password"]:
         return make_error_response(
             ResponseError.WrongPassword, "",
             HTTPStatus.UNAUTHORIZED
