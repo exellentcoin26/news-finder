@@ -20,7 +20,7 @@ async fn main() -> ! {
 
     let mut schedule = JobScheduler::new();
 
-    schedule.add(Job::new(
+    let mut job = Job::new(
         // run every 10 minutes
         "* 1/10 * * * * *"
             .parse()
@@ -28,7 +28,11 @@ async fn main() -> ! {
         || {
             tokio::spawn(run_scraper());
         },
-    ));
+    );
+
+    job.limit_missed_runs(0);
+
+    schedule.add(job);
 
     loop {
         schedule.tick();
@@ -141,7 +145,7 @@ async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 .map(|category| category.term.clone())
                 .collect();
 
-            println!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
+            // println!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
 
             /* insert scraped data into db */
 
