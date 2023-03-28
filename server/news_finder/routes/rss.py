@@ -41,7 +41,7 @@ async def get_rss_feeds() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    response = {"feeds": []}
+    response: dict[str, list[dict[str, str]]] = {"feeds": []}
     for feed in feeds:
         # Extract news source and news source url from rss feed url
         url_components: ParseResult = urlparse(feed.feed)
@@ -231,7 +231,7 @@ async def delete_rss() -> Response:
             )
         except RecordNotFoundError as e:
             return make_error_response(
-                ResponseError.ServerError, "",
+                ResponseError.ServerError, str(e.with_traceback(None)),
                 HTTPStatus.INTERNAL_SERVER_ERROR
             )
 
@@ -240,11 +240,18 @@ async def delete_rss() -> Response:
                 ResponseError.ServerError, "",
                 HTTPStatus.INTERNAL_SERVER_ERROR
             )
-        if news_source.rss is None:
-            await db.newssources.delete(
-                where={
-                    "name": news_source_name
-                }
-            )
+        if news_source.rss:
+            try:
+                await db.newssources.delete(
+                    where={
+                        "name": news_source_name
+                    }
+                )
+            except RecordNotFoundError as e:
+                return make_error_response(
+                    ResponseError.ServerError, str(e.with_traceback(None)),
+                    HTTPStatus.INTERNAL_SERVER_ERROR
+                )
+
 
     return make_response("", HTTPStatus.OK)
