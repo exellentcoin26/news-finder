@@ -25,6 +25,15 @@ async def create_cookie_for_user(user_id: int) -> str:
 
 @user_bp.post("/")
 async def register_user() -> Response:
+    """
+    Create a user.
+
+    # Json structure: (checked using schema validation)
+    {
+        "username": "user1"
+        "password": "qwerty"
+    }
+    """
 
     data = request.get_json(silent=True)
     if not data:
@@ -84,8 +93,8 @@ async def login_user() -> Response:
 
     # Json structure: (checked using schema validation)
     {
-        "username",
-        "password",
+        "username": "user1"
+        "password": "qwerty"
     }
     """
 
@@ -190,7 +199,9 @@ async def login_user() -> Response:
 
 @user_bp.post("/logout/")
 async def logout_user() -> Response:
-    prisma = await get_db()
+    """
+    Log a user out.
+    """
 
     cookie = request.cookies.get("session")
     if cookie is None:
@@ -200,8 +211,10 @@ async def logout_user() -> Response:
             HTTPStatus.BAD_REQUEST,
         )
 
+    db = await get_db()
+
     try:
-        await prisma.usercookies.delete(where={"cookie": cookie})
+        await db.usercookies.delete(where={"cookie": cookie})
     except RecordNotFoundError:
         return make_error_response(
             ResponseError.CookieNotFound,
@@ -213,4 +226,4 @@ async def logout_user() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    return make_response(HTTPStatus.OK)
+    return make_response("", HTTPStatus.OK)
