@@ -25,7 +25,6 @@ async def create_cookie_for_user(user_id: int) -> str:
 
 @user_bp.post("/")
 async def register_user() -> Response:
-    prisma: Prisma = await get_db()
 
     data = request.get_json(silent=True)
     if not data:
@@ -33,23 +32,37 @@ async def register_user() -> Response:
             ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
         )
 
-    # TODO: add schema validation
+    schema = {
+        "type": "object",
+        "properties": {
+            "username": {
+                "description": "The username of the user to be created",
+                "type": "string"
+            },
+            "password": {
+                "description": "The password of the user to be created",
+                "type": "string"
+            }
+        },
+        "required": ["username", "password"],
+    }
 
     username = data["username"]
     password = data["password"]
 
-    user = await prisma.users.find_first(where={"username": username})
+    db = await get_db()
 
-    if user is not None:
+    existing_user = await db.users.find_first(where={"username": username})
+
+    if existing_user is not None:
         return make_error_response(
             ResponseError.UserAlreadyPresent,
             "User already present in database",
             HTTPStatus.CONFLICT,
         )
 
-    user = await prisma.users.create(data={"username": username})
-
-    await prisma.userlogins.create(data={"password": password, "id": user.id})
+    user = await db.users.create(data={"username": username})
+    await db.userlogins.create(data={"password": password, "id": user.id})
 
     cookie: str = ""
     while cookie == "":
