@@ -1,5 +1,4 @@
 from flask import Blueprint, Response, request, make_response
-from prisma import Prisma
 from prisma.errors import UniqueViolationError, RecordNotFoundError
 from jsonschema import validate, SchemaError, ValidationError
 
@@ -55,6 +54,17 @@ async def register_user() -> Response:
         },
         "required": ["username", "password"],
     }
+
+    try:
+        validate(instance=data, schema=schema)
+    except ValidationError as e:
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message,
+            HTTPStatus.BAD_REQUEST
+        )
+    except SchemaError as e:
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+        raise e
 
     username = data["username"]
     password = data["password"]
