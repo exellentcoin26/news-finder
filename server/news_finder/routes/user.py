@@ -14,15 +14,11 @@ from news_finder.utils.error_response import make_error_response, ResponseError
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
 
-@user_bp.get("/")
-def hello_user() -> Response:
-    return Response("Hello, User!")
-
-
-async def create_cookie_for_user(prisma: Prisma, user_id: int) -> str:
+async def create_cookie_for_user(user_id: int) -> str:
     cookie = str(uuid4())
 
-    await prisma.usercookies.create(data={"cookie": cookie, "user_id": user_id})
+    db = await get_db()
+    await db.usercookies.create(data={"cookie": cookie, "user_id": user_id})
 
     return cookie
 
@@ -58,7 +54,7 @@ async def register_user() -> Response:
     cookie: str = ""
     while cookie == "":
         try:
-            cookie = await create_cookie_for_user(prisma, user.id)
+            cookie = await create_cookie_for_user(user.id)
         except UniqueViolationError:
             pass
 
@@ -172,7 +168,7 @@ async def login_user() -> Response:
     cookie: str = ""
     while cookie == "":
         try:
-            cookie = await create_cookie_for_user(db, user.id)
+            cookie = await create_cookie_for_user(user.id)
         except UniqueViolationError:
             pass
 
