@@ -24,7 +24,6 @@ dependencies = [
     "iniconfig==2.0.0",
     "itsdangerous==2.1.2",
     "Jinja2==3.1.2",
-    "jsoncomparison==1.1.0",
     "jsonschema==4.17.3",
     "MarkupSafe==2.1.2",
     "nodeenv==1.7.0",
