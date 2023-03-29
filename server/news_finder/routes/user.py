@@ -66,7 +66,7 @@ async def register_user() -> Response:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
         raise e
 
-    username = data["username"]
+    username = data["username"].lower()
     password = data["password"]
 
     db = await get_db()
@@ -144,7 +144,7 @@ async def login_user() -> Response:
     try:
         user = await db.users.find_first(
             where={
-                "username": data["username"]
+                "username": data["username"].lower()
             }
         )
     except RecordNotFoundError:
