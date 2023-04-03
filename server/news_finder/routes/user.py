@@ -108,6 +108,12 @@ async def login_user() -> Response:
     }
     """
 
+    data = request.get_json(silent=True)
+    if not data:
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
+
     schema = {
         "type": "object",
         "properties": {
@@ -122,12 +128,6 @@ async def login_user() -> Response:
         },
         "required": ["username", "password"],
     }
-
-    data = request.get_json(silent=True)
-    if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
-        )
 
     try:
         validate(instance=data, schema=schema)
@@ -176,8 +176,8 @@ async def login_user() -> Response:
         )
     except RecordNotFoundError:
         return make_error_response(
-            ResponseError.RecordNotFoundError, "",
-            HTTPStatus.BAD_REQUEST
+            ResponseError.ServerError, "",
+            HTTPStatus.INTERNAL_SERVER_ERROR
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
@@ -187,8 +187,8 @@ async def login_user() -> Response:
 
     if user_login is None:
         return make_error_response(
-            ResponseError.RecordNotFoundError, "",
-            HTTPStatus.BAD_REQUEST
+            ResponseError.ServerError, "",
+            HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
     if user_login.password != data["password"]:
@@ -204,7 +204,9 @@ async def login_user() -> Response:
         except UniqueViolationError:
             pass
 
-    return make_response("", HTTPStatus.OK)
+    resp = make_response("", HTTPStatus.OK)
+    resp.set_cookie("session", cookie)
+    return resp
 
 
 @user_bp.post("/logout/")
