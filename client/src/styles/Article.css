@@ -1,12 +1,13 @@
-.article-body {
-    height: 100% !important;
-}
-
 @media (max-width: 768px) {
     .article-card {
         height: 10rem !important;
     }
 
+    .article-body {
+        order: 1 !important;
+        height: 100% !important;
+        max-width: 100% !important;
+    }
 
     .article-image {
         order: 2 !important;
@@ -20,7 +21,10 @@
         height: 35rem !important;
     }
 
-
+    .article-body {
+        height: 25% !important;
+        max-width: 100% !important;
+    }
 
     .article-image {
         height: 75% !important;

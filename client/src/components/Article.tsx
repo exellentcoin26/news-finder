@@ -11,7 +11,7 @@ const Article = ({
     description: string;
 }) => {
     return (
-        <Card style={{ overflow: 'hidden' }} className={'article-card'}>
+        <Card className={'article-card'}>
             <Row md={1} className={'h-100'}>
                 <Col className={'article-image'}>
                     <Card.Img
@@ -21,7 +21,12 @@ const Article = ({
                     />
                 </Col>
                 <Col className={'h-100 '}>
-                    <Card.Body>
+                    <Card.Body
+                        className={'article-body'}
+                        style={{
+                            overflow: 'hidden',
+                        }}
+                    >
                         <Card.Title>{title}</Card.Title>
                         <Card.Text>{description}</Card.Text>
                     </Card.Body>
