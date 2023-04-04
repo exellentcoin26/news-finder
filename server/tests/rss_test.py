@@ -1,4 +1,4 @@
-from tests import (
+from . import (
     client,
     database_configure,
     database_clear,
