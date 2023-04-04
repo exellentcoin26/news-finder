@@ -21,7 +21,7 @@ async def get_rss_feeds() -> Response:
     {
         "feeds": [
             {
-                "source": "vrt",
+                "source": "www.vrt.be",
                 "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml"
             }.
             ...
