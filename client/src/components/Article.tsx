@@ -1,14 +1,14 @@
-import { Card, Row, Col, Container } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import '../styles/Article.css';
 
-const Article = ({
+export const Article = ({
     title,
     img_src,
     description,
 }: {
     title: string;
-    img_src: string;
-    description: string;
+    img_src?: string;
+    description?: string;
 }) => {
     return (
         <Card className={'article-card'}>
@@ -36,4 +36,6 @@ const Article = ({
     );
 };
 
-export default Article;
+export const ArticlePlaceholder = () => {
+    return <h1>No articles loaded yet!</h1>;
+};
