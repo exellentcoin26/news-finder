@@ -1,9 +1,9 @@
 from . import (
-    client,
-    database_configure,
-    database_clear,
+    client,  # pyright: ignore
+    database_configure,  # pyright: ignore
+    database_clear,  # pyright: ignore
     compare_json,
-)  # pyright: ignore
+)
 from flask import Flask
 from http import HTTPStatus
 
