@@ -85,7 +85,7 @@ async def add_admin() -> Response:
     return make_response("", HTTPStatus.OK)
 
 
-@admin_bp.post("/is-admin/")
+@admin_bp.post("/status/")
 async def is_admin() -> Response:
     """
     Check if a user is an admin
