@@ -47,7 +47,7 @@ async def get_rss_feeds() -> Response:
             feed.source is not None
         ), "feed should always have a source associated with it"
 
-        news_source = feed.source.url
+        news_source = feed.source.name
 
         response["feeds"].append({"source": news_source, "feed": feed.feed})
 
@@ -193,11 +193,18 @@ async def delete_rss() -> Response:
     news_sources: set[str] = set()
 
     for rss_feed in data["feeds"]:
-        # extract news source and news source url from rss feed url
-        url_components: ParseResult = urlparse(rss_feed)
+        entry = await db.rssentries.find_first(
+            where={"feed": rss_feed}, include={"source": True}
+        )
 
-        news_source = url_components.netloc
-        news_sources.add(news_source)
+        if entry is not None:
+            # Skip asserting or returning an error when no entry is found because the
+            # record will not be found later on and an error will be raised then.
+            assert (
+                entry.source is not None
+            ), "feed should always have a source associated with it"
+
+            news_sources.add(entry.source.name)
 
         b.rssentries.delete(where={"feed": rss_feed})
 
