@@ -43,14 +43,13 @@ async def get_rss_feeds() -> Response:
 
     response: dict[str, list[dict[str, str]]] = {"feeds": []}
     for feed in feeds:
-        # Extract news source and news source url from rss feed url
-        url_components: ParseResult = urlparse(feed.feed)
-        news_source = url_components.netloc
+        assert (
+            feed.source is not None
+        ), "feed should always have a source associated with it"
 
-        response["feeds"].append({
-            "source": news_source,
-            "feed": feed.feed
-        })
+        news_source = feed.source.url
+
+        response["feeds"].append({"source": news_source, "feed": feed.feed})
 
     return make_response(jsonify(response), HTTPStatus.OK)
 
@@ -183,8 +182,7 @@ async def delete_rss() -> Response:
         validate(instance=data, schema=schema)
     except ValidationError as e:
         return make_error_response(
-            ResponseError.JsonValidationError, e.message,
-            HTTPStatus.BAD_REQUEST
+            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -201,57 +199,47 @@ async def delete_rss() -> Response:
         news_source = url_components.netloc
         news_sources.add(news_source)
 
-        b.rssentries.delete(
-            where={
-                "feed": rss_feed
-            }
-        )
+        b.rssentries.delete(where={"feed": rss_feed})
 
     try:
         await b.commit()
     except RecordNotFoundError as e:
         return make_error_response(
             ResponseError.RecordNotFoundError,
-            str(e.with_traceback(None)), HTTPStatus.BAD_REQUEST
+            str(e.with_traceback(None)),
+            HTTPStatus.BAD_REQUEST,
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_error_response(
-            ResponseError.ServerError, "",
-            HTTPStatus.INTERNAL_SERVER_ERROR
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
     # Delete news source if all feeds are deleted
     for news_source_name in news_sources:
         try:
             news_source = await db.newssources.find_first(
-                where={
-                    "name": news_source_name
-                }
+                where={"name": news_source_name}
             )
         except RecordNotFoundError as e:
             return make_error_response(
-                ResponseError.ServerError, str(e.with_traceback(None)),
-                HTTPStatus.INTERNAL_SERVER_ERROR
+                ResponseError.ServerError,
+                str(e.with_traceback(None)),
+                HTTPStatus.INTERNAL_SERVER_ERROR,
             )
 
         if news_source is None:
             return make_error_response(
-                ResponseError.ServerError, "",
-                HTTPStatus.INTERNAL_SERVER_ERROR
+                ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
             )
         if news_source.rss:
             try:
-                await db.newssources.delete(
-                    where={
-                        "name": news_source_name
-                    }
-                )
+                await db.newssources.delete(where={"name": news_source_name})
             except RecordNotFoundError as e:
                 return make_error_response(
-                    ResponseError.ServerError, str(e.with_traceback(None)),
-                    HTTPStatus.INTERNAL_SERVER_ERROR
+                    ResponseError.ServerError,
+                    str(e.with_traceback(None)),
+                    HTTPStatus.INTERNAL_SERVER_ERROR,
                 )
-
 
     return make_response("", HTTPStatus.OK)
