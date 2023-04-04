@@ -45,22 +45,21 @@ async def register_user() -> Response:
         "properties": {
             "username": {
                 "description": "The username of the user to be created",
-                "type": "string"
+                "type": "string",
             },
             "password": {
                 "description": "The password of the user to be created",
-                "type": "string"
-            }
+                "type": "string",
+            },
         },
-        "required": ["username", "password"]
+        "required": ["username", "password"],
     }
 
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
         return make_error_response(
-            ResponseError.JsonValidationError, e.message,
-            HTTPStatus.BAD_REQUEST
+            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -123,10 +122,10 @@ async def login_user() -> Response:
             },
             "password": {
                 "description": "password of the user to be logged in",
-                "type": "string"
+                "type": "string",
             },
         },
-        "required": ["username", "password"]
+        "required": ["username", "password"],
     }
 
     try:
@@ -142,15 +141,10 @@ async def login_user() -> Response:
     db = await get_db()
 
     try:
-        user = await db.users.find_first(
-            where={
-                "username": data["username"].lower()
-            }
-        )
+        user = await db.users.find_first(where={"username": data["username"].lower()})
     except RecordNotFoundError:
         return make_error_response(
-            ResponseError.RecordNotFoundError, "",
-            HTTPStatus.BAD_REQUEST
+            ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
@@ -160,24 +154,16 @@ async def login_user() -> Response:
 
     if user is None:
         return make_error_response(
-            ResponseError.RecordNotFoundError, "",
-            HTTPStatus.BAD_REQUEST
+            ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
         )
 
     try:
         user_login = await db.userlogins.find_first(
-            where={
-                "user": {
-                    "is": {
-                        "id": user.id
-                    }
-                }
-            }
+            where={"user": {"is": {"id": user.id}}}
         )
     except RecordNotFoundError:
         return make_error_response(
-            ResponseError.ServerError, "",
-            HTTPStatus.INTERNAL_SERVER_ERROR
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
@@ -187,14 +173,12 @@ async def login_user() -> Response:
 
     if user_login is None:
         return make_error_response(
-            ResponseError.ServerError, "",
-            HTTPStatus.INTERNAL_SERVER_ERROR
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
     if user_login.password != data["password"]:
         return make_error_response(
-            ResponseError.WrongPassword, "",
-            HTTPStatus.UNAUTHORIZED
+            ResponseError.WrongPassword, "", HTTPStatus.UNAUTHORIZED
         )
 
     cookie: str = ""
@@ -250,7 +234,7 @@ async def login_status() -> Response:
     cookie = request.cookies.get("session")
     if cookie is None:
         return make_response(jsonify({"logged_in": False}), HTTPStatus.OK)
-    
+
     db = await get_db()
 
     try:
@@ -261,5 +245,5 @@ async def login_status() -> Response:
         return make_error_response(
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
-    
+
     return make_response(jsonify({"logged_in": True}), HTTPStatus.OK)

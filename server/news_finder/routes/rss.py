@@ -32,9 +32,9 @@ async def get_rss_feeds() -> Response:
     db = await get_db()
 
     try:
-        feeds = await db.rssentries.find_many()
-    except RecordNotFoundError:
-        return make_response(jsonify({"feeds": []}), HTTPStatus.OK)
+        feeds = await db.rssentries.find_many(include={"source": True})
+    # except RecordNotFoundError:
+    #     return make_response(jsonify({"feeds": []}), HTTPStatus.OK)
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_error_response(
