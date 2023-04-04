@@ -1,20 +1,18 @@
 from tests import client, database_configure, database_clear, compare_json  # pyright: ignore
-from flask import Flask, testing
+from flask import Flask
 from http import HTTPStatus
 
 
-# Test register route
-def test_register_user(client: Flask.testing) -> None:
+# Register
+def test_register_user(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
     response = client.post("/user/", json={"username": "jane_doe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
-    # TODO: Check logged in status once route is implemented
 
-
-def test_register_no_json(client: Flask.testing) -> None:
+def test_register_no_json(client: Flask.testing):
     response = client.post("/user/")
     expected = """{
         "error": "InvalidJson",
@@ -24,7 +22,7 @@ def test_register_no_json(client: Flask.testing) -> None:
     assert compare_json(expected, response.get_json())
 
 
-def test_register_user_schema(client: Flask.testing) -> None:
+def test_register_schema(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe"})
     expected = """{
         "error": "JsonValidationError",
@@ -42,7 +40,7 @@ def test_register_user_schema(client: Flask.testing) -> None:
     assert compare_json(expected, response.get_json())
 
 
-def test_register_existing_username(client: Flask.testing) -> None:
+def test_register_existing_username(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty1"})
     expected = """{
@@ -52,21 +50,17 @@ def test_register_existing_username(client: Flask.testing) -> None:
     assert response.status_code == HTTPStatus.CONFLICT
     assert compare_json(expected, response.get_json())
 
-    # TODO: Check logged in status once route is implemented
 
-
-# Test login route
-def test_login(client: Flask.testing) -> None:
+# Login
+def test_login(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
     response = client.post("/user/login/", json={"username": "john_doe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
-    # TODO: Check logged in status once route is implemented
 
-
-def test_login_casing(client: Flask.testing) -> None:
+def test_login_casing(client: Flask.testing):
     response = client.post("/user/", json={"username": "JoHn_dOe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
@@ -74,7 +68,7 @@ def test_login_casing(client: Flask.testing) -> None:
     assert response.status_code == HTTPStatus.OK
 
 
-def test_login_no_json(client: Flask.testing) -> None:
+def test_login_no_json(client: Flask.testing):
     response = client.post("/user/login/")
     expected = """{
         "error": "InvalidJson",
@@ -84,7 +78,7 @@ def test_login_no_json(client: Flask.testing) -> None:
     assert compare_json(expected, response.get_json())
 
 
-def test_login_user_schema(client: Flask.testing) -> None:
+def test_login_user_schema(client: Flask.testing):
     response: Flask.response_class = client.post("/user/login/", json={"username": "abcd"})
     expected = """{
         "error": "JsonValidationError",
@@ -102,7 +96,7 @@ def test_login_user_schema(client: Flask.testing) -> None:
     assert compare_json(expected, response.get_json())
 
 
-def test_login_non_existing_user(client: Flask.testing) -> None:
+def test_login_non_existing_user(client: Flask.testing):
     response = client.post("/user/login/", json={"username": "jan", "password": "qwerty"})
     expected = """{
         "error": "RecordNotFoundError",
@@ -111,10 +105,8 @@ def test_login_non_existing_user(client: Flask.testing) -> None:
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
 
-    # TODO: Check logged in status once route is implemented
 
-
-def test_login_wrong_password(client: Flask.testing) -> None:
+def test_login_wrong_password(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
@@ -128,7 +120,7 @@ def test_login_wrong_password(client: Flask.testing) -> None:
 
 
 # Logout
-def test_logout(client: Flask.testing) -> None:
+def test_logout(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
 
@@ -136,7 +128,7 @@ def test_logout(client: Flask.testing) -> None:
     assert response.status_code == HTTPStatus.OK
 
 
-def test_logout_not_logged_in(client: Flask.testing) -> None:
+def test_logout_not_logged_in(client: Flask.testing):
     response = client.post("/user/logout/")
     expected = """{
         "error": "CookieNotSet",
@@ -144,3 +136,19 @@ def test_logout_not_logged_in(client: Flask.testing) -> None:
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
+
+
+# Status
+def test_status(client: Flask.testing):
+    response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
+    assert response.status_code == HTTPStatus.OK
+
+    response = client.post("/user/status/")
+    assert response.status_code == HTTPStatus.OK
+    assert response.get_json()["logged_in"]
+
+
+def test_status_no_cookie(client: Flask.testing):
+    response = client.post("/user/status/")
+    assert response.status_code == HTTPStatus.OK
+    assert not response.get_json()["logged_in"]

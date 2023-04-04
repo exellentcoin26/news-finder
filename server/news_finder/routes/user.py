@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, request, make_response
+from flask import Blueprint, Response, request, make_response, jsonify
 from prisma.errors import UniqueViolationError, RecordNotFoundError
 from jsonschema import validate, SchemaError, ValidationError
 
@@ -52,7 +52,7 @@ async def register_user() -> Response:
                 "type": "string"
             }
         },
-        "required": ["username", "password"],
+        "required": ["username", "password"]
     }
 
     try:
@@ -126,7 +126,7 @@ async def login_user() -> Response:
                 "type": "string"
             },
         },
-        "required": ["username", "password"],
+        "required": ["username", "password"]
     }
 
     try:
@@ -239,3 +239,27 @@ async def logout_user() -> Response:
         )
 
     return make_response("", HTTPStatus.OK)
+
+
+@user_bp.post("/status/")
+async def login_status() -> Response:
+    """
+    Check whether a user is logged in based on their cookie.
+    """
+
+    cookie = request.cookies.get("session")
+    if cookie is None:
+        return make_response(jsonify({"logged_in": False}), HTTPStatus.OK)
+    
+    db = await get_db()
+
+    try:
+        await db.usercookies.find_unique(where={"cookie": cookie})
+    except RecordNotFoundError:
+        return make_response(jsonify({"logged_in": False}), HTTPStatus.OK)
+    except Exception:
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+    
+    return make_response(jsonify({"logged_in": True}), HTTPStatus.OK)
