@@ -59,6 +59,11 @@ async fn main() -> Result<()> {
     // load environment variables from `.env` file if present
     dotenv().ok();
 
+    env_logger::builder()
+        .format_timestamp(None)
+        .format_indent(Some(4))
+        .init();
+
     match cli.command {
         Commands::Check { input, output } => {
             if !input.exists() {
