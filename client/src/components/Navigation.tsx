@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import '../styles/Navigation.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import DropdownItem from 'react-bootstrap/DropdownItem';
+import '../styles/Navigation.css';
 
 const Navigation = () => {
     return (
@@ -31,15 +31,21 @@ const Navigation = () => {
                         >
                             <DropdownItem>
                                 <Nav.Link className="dropdown-nav-link">
-                                    <Link to="/admin" className="dropdown-text">
+                                    <Link
+                                        to="/admin/users"
+                                        className="dropdown-text"
+                                    >
                                         users
                                     </Link>
                                 </Nav.Link>
                             </DropdownItem>
                             <DropdownItem>
                                 <Nav.Link className="dropdown-nav-link">
-                                    <Link to="/admin" className="dropdown-text">
-                                        users
+                                    <Link
+                                        to="/admin/feeds"
+                                        className="dropdown-text"
+                                    >
+                                        feeds
                                     </Link>
                                 </Nav.Link>
                             </DropdownItem>
