@@ -7,6 +7,5 @@ root_bp = Blueprint("root", __name__, url_prefix="/")
 @root_bp.get("/healthcheck")
 def healthcheck() -> Response:
     return make_response(
-        jsonify({"message": "the server is up and running", "status": 200}),
-        200
+        jsonify({"message": "the server is up and running", "status": 200}), 200
     )

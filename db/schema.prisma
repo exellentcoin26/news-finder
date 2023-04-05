@@ -26,19 +26,21 @@ model Users {
     cookies    UserCookies[]
 }
 
+// User login information (user_id, password).
 model UserLogins {
     user     Users  @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     id       Int    @id
     password String
 }
 
+// Cookie belonging to a logged in user.
 model UserCookies {
-    user      Users   @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    id        Int
+    user      Users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    user_id   Int
     cookie    String  @id
-    logged_in Boolean
 }
 
+// News source information.
 model NewsSources {
     id       Int            @id @default(autoincrement())
     name     String         @unique
@@ -47,12 +49,14 @@ model NewsSources {
     articles NewsArticles[]
 }
 
+// An rss feed url with corresponding news source.
 model RssEntries {
     source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     source_id Int
     feed      String      @id
 }
 
+// News article entry scraped from an rss feed.
 model NewsArticles {
     id               Int                 @id @default(autoincrement())
     source           NewsSources         @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -67,25 +71,26 @@ model NewsArticles {
     similar_articles SimilarArticles[]   @relation("similar")
 }
 
+// Many to many articles relation denoting what articles are similar to eachother.
 model SimilarArticles {
     article NewsArticles @relation("similar_relation", fields: [id1], references: [id], onUpdate: Cascade, onDelete: Cascade)
     id1     Int
     similar NewsArticles @relation("similar", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
     id2     Int
-
     @@id([id1, id2])
 }
 
+// List of labels scraped from rss feeds (useful for filtering by label).
 model Labels {
     name     String              @id
     articles NewsArticleLabels[]
 }
 
+// One to many relation of articles to labels.
 model NewsArticleLabels {
     article      NewsArticles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     id           Int
     label_object Labels       @relation(fields: [label], references: [name], onDelete: Cascade, onUpdate: Cascade)
     label        String
-
     @@id([id, label])
 }

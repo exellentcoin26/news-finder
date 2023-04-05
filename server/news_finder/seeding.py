@@ -13,67 +13,48 @@ async def main() -> None:
     async with db.batch_() as batcher:
         batcher.users.create(
             data={
-                'id': 1,
-                'username': 'laurens',
-                'admin': True,
-                'login': {
-                    'create': {
-                        'password': 'admin'
-                    }
-                }
+                "id": 1,
+                "username": "laurens",
+                "admin": True,
+                "login": {"create": {"password": "admin"}},
             }
         )
         batcher.users.create(
             data={
-                'id': 2,
-                'username': 'jonas',
-                'admin': True,
-                'login': {
-                    'create': {
-                        'password': 'admin'
-                    }
-                }
+                "id": 2,
+                "username": "jonas",
+                "admin": True,
+                "login": {"create": {"password": "admin"}},
             }
         )
         batcher.users.create(
             data={
-                'id': 3,
-                'username': 'david',
-                'admin': True,
-                'login': {
-                    'create': {
-                        'password': 'admin'
-                    }
-                }
+                "id": 3,
+                "username": "david",
+                "admin": True,
+                "login": {"create": {"password": "admin"}},
             }
         )
         batcher.users.create(
             data={
-                'id': 4,
-                'username': 'chloë',
-                'admin': True,
-                'login': {
-                    'create': {
-                        'password': 'admin'
-                    }
-                }
+                "id": 4,
+                "username": "chloë",
+                "admin": True,
+                "login": {"create": {"password": "admin"}},
             }
         )
         batcher.users.create(
             data={
-                'id': 5,
-                'username': 'ayoub',
-                'admin': True,
-                'login': {
-                    'create': {
-                        'password': 'admin'
-                    }
-                }
+                "id": 5,
+                "username": "ayoub",
+                "admin": True,
+                "login": {"create": {"password": "admin"}},
             }
         )
 
     await batcher.commit()
     await db.disconnect()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     asyncio.run(main())

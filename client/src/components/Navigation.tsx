@@ -1,6 +1,6 @@
-import { Nav, Navbar, Container } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
+import {Nav, Navbar, Container} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
+import {Link} from 'react-router-dom';
 
 import '../styles/Navigation.css';
 
@@ -13,7 +13,7 @@ const Navigation = () => {
                         newsfinder
                     </Link>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <LinkContainer to="/about">
@@ -21,6 +21,11 @@ const Navigation = () => {
                         </LinkContainer>
                     </Nav>
                     <Nav>
+                        <LinkContainer to="/admin">
+                            <Nav.Link className="nav_text">
+                                admin
+                            </Nav.Link>
+                        </LinkContainer>
                         <LinkContainer to="/login">
                             <Nav.Link className="nav_text">login</Nav.Link>
                         </LinkContainer>
