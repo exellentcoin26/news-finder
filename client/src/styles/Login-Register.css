@@ -1,0 +1,70 @@
+.form-container {
+    width: 500px !important;
+    position: relative;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.title {
+    font-family: Outfit, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    color: black;
+    text-align: center;
+}
+
+.default-button {
+    font-family: Outfit, sans-serif;
+    border: none;
+    padding: 4px 9px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.login-button{
+    background-color: #0a1f44;
+    font-weight: bold;
+    color: aliceblue;
+    float: right;
+}
+
+.link-button {
+    display: inline;
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
+}
+
+.sign-up-button {
+    background-color: forestgreen;
+    color: white;
+    font-weight: bold;
+    float: right;
+}
+
+.input-text {
+    font-family: Outfit, sans-serif;
+}
+
+.normal-text {
+    font-family: Outfit, sans-serif;
+    color: black;
+    display: inline;
+}
+
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }
