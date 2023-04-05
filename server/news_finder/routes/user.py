@@ -11,7 +11,7 @@ from http import HTTPStatus
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
 
-user_bp = Blueprint("user", __name__, url_prefix="/user")
+user_bp = Blueprint("user", name, url_prefix="/user")
 
 
 @user_bp.get("/")
