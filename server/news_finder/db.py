@@ -8,7 +8,7 @@ async def get_db() -> Prisma:
     Note: This automatically disconnects and closes the database connection.
     """
 
-    if 'db' not in g:
+    if "db" not in g:
         db = Prisma()
 
         await db.connect()
