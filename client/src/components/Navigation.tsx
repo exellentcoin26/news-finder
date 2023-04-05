@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import '../styles/Navigation.css';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import DropdownItem from 'react-bootstrap/DropdownItem';
 
 const Navigation = () => {
     return (
@@ -23,11 +25,25 @@ const Navigation = () => {
                         </Nav.Link>
                     </Nav>
                     <Nav>
-                        <Nav.Link>
-                            <Link to="/admin" className="nav_text">
-                                admin
-                            </Link>
-                        </Nav.Link>
+                        <NavDropdown
+                            title={<span className="nav_text">admin</span>}
+                            className="nav_text"
+                        >
+                            <DropdownItem>
+                                <Nav.Link className="dropdown-nav-link">
+                                    <Link to="/admin" className="dropdown-text">
+                                        users
+                                    </Link>
+                                </Nav.Link>
+                            </DropdownItem>
+                            <DropdownItem>
+                                <Nav.Link className="dropdown-nav-link">
+                                    <Link to="/admin" className="dropdown-text">
+                                        users
+                                    </Link>
+                                </Nav.Link>
+                            </DropdownItem>
+                        </NavDropdown>
                         <Nav.Link>
                             <Link to="/login" className="nav_text">
                                 login
