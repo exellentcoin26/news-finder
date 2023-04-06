@@ -54,10 +54,10 @@ const Home = () => {
                             <Col>
                                 <Article
                                     title={title}
-                                    {...(description !== undefined
+                                    {...(description != null
                                         ? { description: description }
                                         : {})}
-                                    {...(photo !== undefined
+                                    {...(photo != null
                                         ? { img_src: photo }
                                         : {})}
                                 />
