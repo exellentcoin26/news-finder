@@ -14,7 +14,7 @@ const Admin_Users = () => {
                         <Form.Control placeholder="usernames"></Form.Control>
                     </Form.Group>
                     <Button type="submit" variant="custom">
-                        Submit
+                        Remove
                     </Button>
                 </Form>
                 <Container className="mb-5"></Container>

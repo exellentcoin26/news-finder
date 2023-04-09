@@ -11,9 +11,14 @@
     font-family: Outfit, sans-serif;
     background-color: #0a1f44;
     border-radius: 0.25rem;
+    width: 7rem;
 }
 
 .btn-custom:hover {
     color: white;
     background-color: #406fc2;
+}
+
+br {
+
 }

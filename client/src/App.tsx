@@ -18,7 +18,7 @@ const App = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/admin/users" element={<Admin_Users />} />
-                <Route path="/admin/users" element={<Admin_Feeds />} />
+                <Route path="/admin/feeds" element={<Admin_Feeds />} />
             </Routes>
         </BrowserRouter>
     );
