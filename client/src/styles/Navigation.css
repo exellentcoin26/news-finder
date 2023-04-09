@@ -44,4 +44,10 @@
 .dropdown-item {
     --bs-dropdown-link-active-bg: #819bc9;
     --bs-dropdown-link-hover-bg: #819bc9;
+    --bs-dropdown-item-padding-x: 0;
+    --bs-dropdown-item-padding-y: 0.5rem;
+}
+
+.dropdown-link {
+    padding: 0.5rem 100% 0.5rem 1rem;
 }

@@ -30,24 +30,20 @@ const Navigation = () => {
                             className="nav_text"
                         >
                             <DropdownItem>
-                                <Nav.Link className="dropdown-nav-link">
-                                    <Link
-                                        to="/admin/users"
-                                        className="dropdown-text"
-                                    >
-                                        users
-                                    </Link>
-                                </Nav.Link>
+                                <Link
+                                    to="/admin/users"
+                                    className="dropdown-text dropdown-link"
+                                >
+                                    users
+                                </Link>
                             </DropdownItem>
                             <DropdownItem>
-                                <Nav.Link className="dropdown-nav-link">
-                                    <Link
-                                        to="/admin/feeds"
-                                        className="dropdown-text"
-                                    >
-                                        feeds
-                                    </Link>
-                                </Nav.Link>
+                                <Link
+                                    to="/admin/feeds"
+                                    className="dropdown-text dropdown-link"
+                                >
+                                    feeds
+                                </Link>
                             </DropdownItem>
                         </NavDropdown>
                         <Nav.Link>
