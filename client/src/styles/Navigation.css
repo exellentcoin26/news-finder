@@ -42,17 +42,6 @@
 }
 
 .dropdown-item {
-    background-color: #406fc2;
-}
-
-.dropdown-item {
-    --bs-dropdown-link-active-bg: transparant;
-}
-
-.dropdown-nav-link {
-    border-radius: 0.375rem;
-}
-
-.dropdown-nav-link:hover {
-    background-color: #819bc9;
+    --bs-dropdown-link-active-bg: #819bc9;
+    --bs-dropdown-link-hover-bg: #819bc9;
 }
