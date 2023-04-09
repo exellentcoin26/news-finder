@@ -1,7 +1,7 @@
-import '../styles/Admin.css';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import '../styles/Admin.css';
 
 const Admin_Users = () => {
     return (
@@ -13,7 +13,9 @@ const Admin_Users = () => {
                         <Form.Label>Remove Users</Form.Label>
                         <Form.Control placeholder="usernames"></Form.Control>
                     </Form.Group>
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit" variant="custom">
+                        Submit
+                    </Button>
                 </Form>
                 <Container className="mb-5"></Container>
                 <Form>
@@ -21,7 +23,9 @@ const Admin_Users = () => {
                         <Form.Label>Make Admin</Form.Label>
                         <Form.Control placeholder="usernames"></Form.Control>
                     </Form.Group>
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit" variant="custom">
+                        Submit
+                    </Button>
                 </Form>
             </Container>
         </Container>
