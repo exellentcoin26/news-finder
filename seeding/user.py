@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 
+"""
+This script seeds the database with some example user data.
+Note: When the records are already present in the database this script just exits.
+"""
+
 import asyncio
 from prisma import Prisma
-
-# This file seeds an empty database for testing purposes
+from prisma.errors import UniqueViolationError
 
 
 async def main() -> None:
     db = Prisma()
     await db.connect()
 
-    async with db.batch_() as batcher:
-        batcher.users.create(
+    async with db.batch_() as b:
+        b.users.create(
             data={
                 "id": 1,
                 "username": "laurens",
@@ -19,7 +23,7 @@ async def main() -> None:
                 "login": {"create": {"password": "admin"}},
             }
         )
-        batcher.users.create(
+        b.users.create(
             data={
                 "id": 2,
                 "username": "jonas",
@@ -27,7 +31,7 @@ async def main() -> None:
                 "login": {"create": {"password": "admin"}},
             }
         )
-        batcher.users.create(
+        b.users.create(
             data={
                 "id": 3,
                 "username": "david",
@@ -35,7 +39,7 @@ async def main() -> None:
                 "login": {"create": {"password": "admin"}},
             }
         )
-        batcher.users.create(
+        b.users.create(
             data={
                 "id": 4,
                 "username": "chloë",
@@ -43,7 +47,7 @@ async def main() -> None:
                 "login": {"create": {"password": "admin"}},
             }
         )
-        batcher.users.create(
+        b.users.create(
             data={
                 "id": 5,
                 "username": "ayoub",
@@ -52,7 +56,11 @@ async def main() -> None:
             }
         )
 
-    await batcher.commit()
+        try:
+            await b.commit()
+        except UniqueViolationError:
+            pass
+
     await db.disconnect()
 
 

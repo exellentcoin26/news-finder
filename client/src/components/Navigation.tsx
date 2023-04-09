@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import {Nav, Navbar, Container} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
+import {Link} from 'react-router-dom';
+
 import '../styles/Navigation.css';
 
 const Navigation = () => {
@@ -13,26 +13,22 @@ const Navigation = () => {
                         newsfinder
                     </Link>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link>
-                            <Link to="/about" className="nav_text">
-                                about
-                            </Link>
-                        </Nav.Link>
+                        <LinkContainer to="/about">
+                            <Nav.Link className="nav_text">about</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                     <Nav>
-                        <Nav.Link>
-                            <Link to="/admin" className="nav_text">
+                        <LinkContainer to="/admin">
+                            <Nav.Link className="nav_text">
                                 admin
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link>
-                            <Link to="/login" className="nav_text">
-                                login
-                            </Link>
-                        </Nav.Link>
+                            </Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to="/login">
+                            <Nav.Link className="nav_text">login</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
