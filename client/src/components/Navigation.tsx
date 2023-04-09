@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import DropdownItem from 'react-bootstrap/DropdownItem';
+
 import '../styles/Navigation.css';
 
 const Navigation = () => {
@@ -15,14 +16,12 @@ const Navigation = () => {
                         newsfinder
                     </Link>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link>
-                            <Link to="/about" className="nav_text">
-                                about
-                            </Link>
-                        </Nav.Link>
+                        <LinkContainer to="/about">
+                            <Nav.Link className="nav_text">about</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                     <Nav>
                         <NavDropdown
@@ -46,11 +45,9 @@ const Navigation = () => {
                                 </Link>
                             </DropdownItem>
                         </NavDropdown>
-                        <Nav.Link>
-                            <Link to="/login" className="nav_text">
-                                login
-                            </Link>
-                        </Nav.Link>
+                        <LinkContainer to="/login">
+                            <Nav.Link className="nav_text">login</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
