@@ -24,7 +24,7 @@ class similar:
         self.remove_nesting()
         self.term_frequency()
         self.idf_counter()
-        self.tfidf1()
+        self.tfidf()
 
     def seperate_everything(self):
         for article in self.articles:
@@ -62,6 +62,7 @@ class similar:
                     self.corpus_divided[counter])
             counter += 1
 
+
     def idf_counter(self):
         for freq in self.frequencies:
             for item in freq.keys():
@@ -70,11 +71,12 @@ class similar:
                 else:
                     self.idf[item] = 1
         for item in self.idf:
-            self.idf[item] = math.log(len(self.articles) / self.idf[item], 10)
+            self.idf[item] = math.log(len(self.articles) / self.idf[item], 10) # idf = log_10(#nrofdoc in corpus/#nrofdoc where t appears)
 
-    # {all_words| tfidf1, tfidf2, tfidf}
 
-    def tfidf1(self):
+    # {all_words| tfidf0, tfidf1, tfidf2}
+
+    def tfidf(self):
         self.tfidftable = {}
         tfidfvalue = []
         for i in range(len(self.articles)):
@@ -93,13 +95,13 @@ class similar:
             for i in range(len(self.articles)):
                 tfidfvalue.append(0.0)
 
+
     def remove_nesting(self):
         self.corpus = []
         for article in self.corpus_divided:
             for term in article:
                 if term not in self.corpus:
                     self.corpus.append(term)
-        print(self.corpus)
         return self.corpus
 
     def compute_cosine_similiraty(self, articleA: int, articleB: int):
