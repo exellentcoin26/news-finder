@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import DropdownItem from 'react-bootstrap/DropdownItem';
+import { Container, Navbar, Nav, NavDropdown, Dropdown } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import '../styles/Navigation.css';
 
@@ -16,7 +13,7 @@ const Navigation = () => {
                         newsfinder
                     </Link>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <LinkContainer to="/about">
@@ -28,22 +25,22 @@ const Navigation = () => {
                             title={<span className="nav_text">admin</span>}
                             className="nav_text"
                         >
-                            <DropdownItem>
+                            <Dropdown.Item>
                                 <Link
                                     to="/admin/users"
                                     className="dropdown-text dropdown-link"
                                 >
                                     users
                                 </Link>
-                            </DropdownItem>
-                            <DropdownItem>
+                            </Dropdown.Item>
+                            <Dropdown.Item>
                                 <Link
                                     to="/admin/feeds"
                                     className="dropdown-text dropdown-link"
                                 >
                                     feeds
                                 </Link>
-                            </DropdownItem>
+                            </Dropdown.Item>
                         </NavDropdown>
                         <LinkContainer to="/login">
                             <Nav.Link className="nav_text">login</Nav.Link>
