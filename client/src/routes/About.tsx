@@ -3,14 +3,13 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 const About = () => {
     return (
-        <div className="about-us-container">
             <Container>
                 <Row>
                     <Col>
                         <h1>Our Mission</h1>
                         <p>
                             Our news aggregator collects and displays news articles from a variety of news sources, providing users with a centralized website to stay up-to-date with
-                            current events.
+                            current events. To improve our users experience, we have intergrated an algorithm to recommend articles based on their previous activity.
                         </p>
                     </Col>
                 </Row>
@@ -41,8 +40,6 @@ const About = () => {
                     </Col>
                 </Row>
             </Container>
-            </div>
-
     )
 };
 
