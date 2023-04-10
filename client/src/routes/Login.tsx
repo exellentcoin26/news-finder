@@ -1,6 +1,8 @@
-import { Container, Card, Form } from 'react-bootstrap';
-import '../styles/Login-Register.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Container, Card, Form } from 'react-bootstrap';
+
+import '../styles/Login-Register.css';
 
 const Login = () => {
     const server_url =
@@ -8,7 +10,7 @@ const Login = () => {
     const target_url = server_url + '/user/login/';
 
     const handleLogin = async (username: string, password: string) => {
-        const response = await fetch(target_url, {
+        await fetch(target_url, {
             method: 'POST',
             credentials: 'include',
             headers: { 'content-type': 'application/json' },
@@ -51,12 +53,12 @@ const Login = () => {
                                 </Form>
                             </div>
                             <div>
-                                <a href="/register">
+                                <Link to="/register">
                                     <button className="default-button link-button mb-3">
                                         {' '}
                                         Create an account{' '}
                                     </button>
-                                </a>
+                                </Link>
                                 <button
                                     className="default-button login-button mb-3"
                                     onClick={() =>
