@@ -18,4 +18,12 @@ https://sporza.be/nl/categorie/wielrennen.rss.xml
 http://rss.cnn.com/rss/edition_world.rss
 http://rss.cnn.com/rss/edition_europe.rss
 http://rss.cnn.com/rss/edition_motorsport.rss
-https://www.huffpost.com/section/front-page/feed?x=1
+https://www.cbsnews.com/latest/rss/science
+https://www.cbsnews.com/latest/rss/technology
+https://www.cbsnews.com/latest/rss/world
+https://www.washingtontimes.com/rss/headlines/news/politics/
+https://www.washingtontimes.com/atom/headlines/sports/tennis/
+https://telegraph.co.uk/rss.xml
+https://moxie.foxnews.com/google-publisher/world.xml
+https://www.nasa.gov/rss/dyn/breaking_news.rss
+https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pIUWlnQVAB?hl=en-US&gl=US&ceid=US%3Aen

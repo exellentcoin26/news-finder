@@ -1,30 +1,41 @@
-import Container from 'react-bootstrap/Container';
-import Image from 'react-bootstrap/Image';
-import React from 'react';
+import { Card, Row, Col } from 'react-bootstrap';
 import '../styles/Article.css';
-import { Link } from 'react-router-dom';
 
-const Article: React.FC<{ title: string; img_src: string; alt: string }> = ({
+export const Article = ({
     title,
     img_src,
-    alt,
+    description,
+}: {
+    title: string;
+    img_src?: string;
+    description?: string;
 }) => {
     return (
-        <Container className="article-container p-0">
-            <Link to="/" className="article-link">
-                <Container className="image-container p-0">
-                    <Image
+        <Card className={'article-card'}>
+            <Row md={1} className={'h-100'}>
+                <Col className={'article-image'}>
+                    <Card.Img
                         src={img_src}
-                        alt={alt}
-                        className="article-img img-fluid justify-content-center"
+                        className={'h-100'}
+                        style={{ objectFit: 'cover' }}
                     />
-                </Container>
-                <Container className="text-container py-1 px-2">
-                    {title}
-                </Container>
-            </Link>
-        </Container>
+                </Col>
+                <Col className={'h-100 '}>
+                    <Card.Body
+                        className={'article-body'}
+                        style={{
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <Card.Title>{title}</Card.Title>
+                        <Card.Text>{description}</Card.Text>
+                    </Card.Body>
+                </Col>
+            </Row>
+        </Card>
     );
 };
 
-export default Article;
+export const ArticlePlaceholder = () => {
+    return <h1>No articles loaded yet!</h1>;
+};
