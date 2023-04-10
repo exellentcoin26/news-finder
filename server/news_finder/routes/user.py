@@ -7,9 +7,10 @@ import sys
 from uuid import uuid4
 from http import HTTPStatus
 
-from news_finder.db import get_db
-from news_finder.utils.error_response import make_error_response, ResponseError
+from server.news_finder.db import get_db
+from server.news_finder.utils.error_response import make_error_response, ResponseError
 
+from password_hash.password_hash import *
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
 
@@ -65,10 +66,19 @@ async def register_user() -> Response:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
         raise e
 
+
+
+
+    Ph = PasswordHasher()
+    Ph.setPassword(data["password"])
+    Ph.hash()
+
     username = data["username"].lower()
-    password = data["password"]
+    HashedPassword = Ph.getHash()
 
     db = await get_db()
+
+
 
     existing_user = await db.users.find_first(where={"username": username})
 
@@ -80,7 +90,8 @@ async def register_user() -> Response:
         )
 
     user = await db.users.create(data={"username": username})
-    await db.userlogins.create(data={"password": password, "id": user.id})
+    await db.userlogins.create(data={"password": HashedPassword, "id": user.id})
+
 
     cookie: str = ""
     while cookie == "":
