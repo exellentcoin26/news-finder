@@ -4,8 +4,13 @@ import {useState} from "react";
 
 const Register = () => {
 
-    const handleRegister = (username: string,password: string) => {
-        fetch("/user/", {method: "POST", headers: {"content-type": "application.json"}, body: JSON.stringify({username: username, password: password})})
+    const server_url =  import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
+    const target_url = server_url + "/user/"
+
+    const handleRegister = async (username: string,password: string) => {
+        console.log({method: "POST", headers: {"content-type": "application/json"}, body: {username: username, password: password}})
+        const response = await fetch(target_url, {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({username: username, password: password})})
+        console.log(response)
     }
 
     const [username, setUsername] = useState("")
@@ -25,7 +30,7 @@ const Register = () => {
                                 <Form>
                                     <Form.Control required className="input-text mb-3" type="text" placeholder="Username" value={username} onChange={(event) => setUsername(event.target.value)}/>
                                     <Form.Control required className="input-text mb-3" type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)}/>
-                                    <Form.Control required className="input-text mb-3" type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(event) => setPassword(event.target.value)}/>
+                                    <Form.Control required className="input-text mb-3" type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}/>
                                 </Form>
                             </div>
                             <div>

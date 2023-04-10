@@ -1,10 +1,15 @@
 import {Container, Card, Form} from "react-bootstrap";
 import '../styles/Login-Register.css'
 import {useState} from "react";
+
 const Login = () => {
 
-    const handleLogin = (username: string,password: string) => {
-        fetch("/user/login/", {method: "POST", headers: {"content-type": "application.json"}, body: JSON.stringify({username: username, password: password})})
+    const server_url =  import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
+    const target_url = server_url + "/user/login/"
+
+    const handleLogin = async (username: string,password: string) => {
+        const response = await fetch(target_url, {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({username: username, password: password})})
+        console.log(response.body)
     }
 
     const [username, setUsername] = useState("")
