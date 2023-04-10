@@ -1,20 +1,23 @@
-import {Container, Card, Form} from "react-bootstrap";
-import '../styles/Login-Register.css'
-import {useState} from "react";
+import { Container, Card, Form } from 'react-bootstrap';
+import '../styles/Login-Register.css';
+import { useState } from 'react';
 
 const Login = () => {
+    const server_url =
+        import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
+    const target_url = server_url + '/user/login/';
 
-    const server_url =  import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-    const target_url = server_url + "/user/login/"
+    const handleLogin = async (username: string, password: string) => {
+        const response = await fetch(target_url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password }),
+        });
+    };
 
-    const handleLogin = async (username: string,password: string) => {
-        const response = await fetch(target_url, {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({username: username, password: password})})
-        console.log(response.body)
-    }
-
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     return (
         <>
@@ -27,15 +30,42 @@ const Login = () => {
                             </div>
                             <div>
                                 <Form>
-                                    <Form.Control className="input-text mb-3" type="text" placeholder="Username" value={username} onChange={(event) => setUsername(event.target.value)}/>
-                                    <Form.Control className="input-text mb-3" type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                                    <Form.Control
+                                        className="input-text mb-3"
+                                        type="text"
+                                        placeholder="Username"
+                                        value={username}
+                                        onChange={(event) =>
+                                            setUsername(event.target.value)
+                                        }
+                                    />
+                                    <Form.Control
+                                        className="input-text mb-3"
+                                        type="password"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(event) =>
+                                            setPassword(event.target.value)
+                                        }
+                                    />
                                 </Form>
                             </div>
                             <div>
                                 <a href="/register">
-                                    <button className="default-button link-button mb-3"> Create an account </button>
+                                    <button className="default-button link-button mb-3">
+                                        {' '}
+                                        Create an account{' '}
+                                    </button>
                                 </a>
-                                <button className="default-button login-button mb-3" onClick={() => handleLogin(username,password)}> Login </button>
+                                <button
+                                    className="default-button login-button mb-3"
+                                    onClick={() =>
+                                        handleLogin(username, password)
+                                    }
+                                >
+                                    {' '}
+                                    Login{' '}
+                                </button>
                             </div>
                         </Card.Body>
                     </Card>
