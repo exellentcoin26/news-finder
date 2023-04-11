@@ -4,15 +4,15 @@ from jsonschema import validate, SchemaError, ValidationError
 
 import sys
 
+
 from uuid import uuid4
 from http import HTTPStatus
 
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
 
-from password_hash.password_hash import *
 user_bp = Blueprint("user", __name__, url_prefix="/user")
-
+from news_finder.password_hash.password_hash import *
 
 async def create_cookie_for_user(user_id: int) -> str:
     cookie = str(uuid4())
@@ -69,7 +69,7 @@ async def register_user() -> Response:
 
 
 
-    Ph = PasswordHasher()
+    Ph= PasswordHasher()
     Ph.setPassword(data["password"])
     Ph.hash()
 
