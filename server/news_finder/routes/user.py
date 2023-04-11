@@ -7,8 +7,8 @@ import sys
 from uuid import uuid4
 from http import HTTPStatus
 
-from server.news_finder.db import get_db
-from server.news_finder.utils.error_response import make_error_response, ResponseError
+from news_finder.db import get_db
+from news_finder.utils.error_response import make_error_response, ResponseError
 
 from password_hash.password_hash import *
 user_bp = Blueprint("user", __name__, url_prefix="/user")
