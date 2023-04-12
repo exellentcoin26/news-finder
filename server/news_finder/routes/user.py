@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, request, make_response, jsonify
+from flask_cors import CORS
 from prisma.errors import UniqueViolationError, RecordNotFoundError
 from jsonschema import validate, SchemaError, ValidationError
 
@@ -11,6 +12,8 @@ from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
 
 user_bp = Blueprint("user", __name__, url_prefix="/user")
+
+CORS(user_bp, supports_credentials=True)
 
 
 async def create_cookie_for_user(user_id: int) -> str:
@@ -90,7 +93,7 @@ async def register_user() -> Response:
             pass
 
     resp = make_response("", HTTPStatus.OK)
-    resp.set_cookie("session", cookie)
+    resp.set_cookie("session", cookie, samesite="strict")
 
     return resp
 
@@ -189,7 +192,8 @@ async def login_user() -> Response:
             pass
 
     resp = make_response("", HTTPStatus.OK)
-    resp.set_cookie("session", cookie)
+    resp.set_cookie("session", cookie, samesite="strict")
+
     return resp
 
 
