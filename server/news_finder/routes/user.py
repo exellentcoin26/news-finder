@@ -98,6 +98,75 @@ async def register_user() -> Response:
     return resp
 
 
+@user_bp.delete("/")
+async def delete_user():
+    """
+    Delete a user.
+
+    # Json structure: (checked using schema validation)
+    {
+        "username": "user1"
+    }
+    """
+    data = request.get_json(silent=True)
+    if not data:
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "username": {
+                "description": "The username of the user to be deleted",
+                "type": "string",
+            },
+        },
+        "required": ["username"],
+    }
+
+    try:
+        validate(instance=data, schema=schema)
+    except ValidationError as e:
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        )
+    except SchemaError as e:
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+        raise e
+
+    username = data["username"].lower()
+
+    db = await get_db()
+
+    try:
+        user = await db.users.find_unique(
+            where={"username": username}
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
+    if user is None:
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
+        )
+
+    try:
+        await db.users.delete(
+            where={"username": username}
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
+    return make_response("", HTTPStatus.OK)
+
+
 @user_bp.post("/login/")
 async def login_user() -> Response:
     """

@@ -51,6 +51,42 @@ def test_register_existing_username(client: Flask.testing):
     assert compare_json(expected, response.get_json())
 
 
+def test_delete(client: Flask.testing):
+    response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
+    assert response.status_code == HTTPStatus.OK
+
+    response = client.delete("/user/", json={"username": "john_doe"})
+    assert response.status_code == HTTPStatus.OK
+
+    response = client.post("/user/login/", json={"username": "john_doe", "password": "qwerty"})
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+
+def test_delete_no_json(client: Flask.testing):
+    response = client.delete("/user/")
+    expected = """{
+        "error": "InvalidJson",
+        "message": ""
+    }"""
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert compare_json(expected, response.get_json())
+
+
+def test_delete_schema(client: Flask.testing):
+    response = client.delete("/user/", json={"test": "test"})
+    expected = """{
+        "error": "JsonValidationError",
+        "message": "'username' is a required property"
+    }"""
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert compare_json(expected, response.get_json())
+
+
+def test_delete_non_existing_user(client: Flask.testing):
+    response = client.delete("/user/", json={"username": "john_doe"})
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+
 # Login
 def test_login(client: Flask.testing):
     response = client.post("/user/", json={"username": "john_doe", "password": "qwerty"})
