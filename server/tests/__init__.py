@@ -4,6 +4,8 @@ from os import environ
 from prisma import Prisma
 from flask import Flask
 from news_finder.app import get_app
+from typing import Any
+from json import dumps, loads
 
 
 @pytest.fixture
@@ -35,3 +37,8 @@ async def database_clear():
     await b.commit()
 
     await db.disconnect()
+
+
+def compare_json(expected: Any, actual: Any) -> bool:
+    actual = dumps(actual)
+    return loads(expected) == loads(actual)

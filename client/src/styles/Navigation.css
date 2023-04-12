@@ -19,7 +19,35 @@
     color: #26d38e;
 }
 
+.dropdown-text {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Outfit, sans-serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+}
+
+.dropdown-text:hover {
+    color: white
+}
+
 .home_text {
     font-size: 30px;
     font-weight: 1000;
+}
+
+.dropdown-menu.show {
+    background-color: #406fc2;
+}
+
+.dropdown-item {
+    --bs-dropdown-link-active-bg: #819bc9;
+    --bs-dropdown-link-hover-bg: #819bc9;
+    --bs-dropdown-item-padding-x: 0;
+    --bs-dropdown-item-padding-y: 0.5rem;
+}
+
+.dropdown-link {
+    padding: 0.5rem 100% 0.5rem 1rem;
 }

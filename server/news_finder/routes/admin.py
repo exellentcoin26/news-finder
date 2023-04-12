@@ -31,12 +31,10 @@ async def add_admin() -> Response:
             "usernames": {
                 "description": "List of users to be made admin",
                 "type": "array",
-                "items": {
-                    "type": "string"
-                }
+                "items": {"type": "string"},
             }
         },
-        "required": ["usernames"]
+        "required": ["usernames"],
     }
 
     data = request.get_json(silent=True)
@@ -59,33 +57,26 @@ async def add_admin() -> Response:
     b = db.batch_()
 
     for user in data["usernames"]:
-        b.users.update(
-            where={
-                "username": user.lower()
-            },
-            data={
-                "admin": True
-            }
-        )
+        b.users.update(where={"username": user.lower()}, data={"admin": True})
 
     try:
         await b.commit()
     except RecordNotFoundError as e:
         return make_error_response(
             ResponseError.RecordNotFoundError,
-            str(e.with_traceback(None)), HTTPStatus.BAD_REQUEST
+            str(e.with_traceback(None)),
+            HTTPStatus.BAD_REQUEST,
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_error_response(
-            ResponseError.ServerError, "",
-            HTTPStatus.INTERNAL_SERVER_ERROR
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
     return make_response("", HTTPStatus.OK)
 
 
-@admin_bp.post("/is-admin/")
+@admin_bp.post("/status/")
 async def is_admin() -> Response:
     """
     Check if a user is an admin
@@ -104,7 +95,7 @@ async def is_admin() -> Response:
                 "type": "string",
             }
         },
-        "required": ["username"]
+        "required": ["username"],
     }
 
     data = request.get_json(silent=True)
@@ -134,18 +125,17 @@ async def is_admin() -> Response:
     except RecordNotFoundError as e:
         return make_error_response(
             ResponseError.RecordNotFoundError,
-            str(e.with_traceback(None)), HTTPStatus.BAD_REQUEST
+            str(e.with_traceback(None)),
+            HTTPStatus.BAD_REQUEST,
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_error_response(
-            ResponseError.ServerError, "",
-            HTTPStatus.INTERNAL_SERVER_ERROR
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
     if user is None:
         return make_error_response(
-            ResponseError.RecordNotFoundError,
-            "", HTTPStatus.BAD_REQUEST
+            ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
         )
     return make_response(jsonify({"admin": user.admin}), HTTPStatus.OK)
