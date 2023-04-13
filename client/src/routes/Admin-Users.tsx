@@ -7,13 +7,22 @@ import '../styles/Admin.css';
 const Admin_Users = () => {
     const server_url =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-    const target_url = server_url + '/user/';
 
     const handleUserDeletion = async (username: string): Promise<boolean> => {
-        const response = await fetch(target_url, {
+        const response = await fetch(server_url + '/user/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ username: username }),
+        });
+
+        return response.status == 200;
+    };
+
+    const handleMakeAdmin = async (username: string): Promise<boolean> => {
+        const response = await fetch(server_url + '/admin/', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ usernames: [username] }),
         });
 
         return response.status == 200;
@@ -52,14 +61,18 @@ const Admin_Users = () => {
                         <Form.Label>Make Admin</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="usernames"
+                            placeholder="username"
                             value={usernameMakeAdmin}
                             onChange={(event) =>
                                 setUsernameMakeAdmin(event.target.value)
                             }
                         ></Form.Control>
                     </Form.Group>
-                    <Button type="submit" variant="custom">
+                    <Button
+                        type="submit"
+                        variant="custom"
+                        onClick={() => handleMakeAdmin(usernameMakeAdmin)}
+                    >
                         Submit
                     </Button>
                 </Form>
