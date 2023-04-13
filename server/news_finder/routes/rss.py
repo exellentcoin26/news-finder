@@ -99,6 +99,8 @@ async def add_rss_feed() -> Response:
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
+        rss_feed = rss_feed.strip()
+
         # Extract news source and news source url from rss feed url
         url_components: ParseResult = urlparse(rss_feed)
 
