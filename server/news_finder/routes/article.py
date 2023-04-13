@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, make_response, jsonify
+from flask import Blueprint, Response, make_response, jsonify, request
 from http import HTTPStatus
 import sys
 
@@ -11,7 +11,9 @@ article_bp = Blueprint("article", __name__, url_prefix="/article")
 @article_bp.get("/")
 async def get_articles() -> Response:
     """
-    Get a json with all the articles and their news source
+    Get a json with all the articles and their news source. set the `amount` and
+    `offset` parameters to specify a range of articles to retrieve.
+
     # Articles json structure:
     {
         "articles": [
@@ -35,10 +37,27 @@ async def get_articles() -> Response:
     }
     """
 
+    try:
+        amount = int(request.args.get("amount") or 50)
+        offset = int(request.args.get("offset") or 0)
+    except ValueError:
+        return make_error_response(
+            ResponseError.IncorrectParameters,
+            "Parameters to get request are not integer values",
+            HTTPStatus.BAD_REQUEST,
+        )
+
     db = await get_db()
 
     try:
-        articles = await db.newsarticles.find_many(include={"source": True})
+        articles = await db.newsarticles.find_many(
+            take=amount,
+            skip=offset,
+            include={"source": True},
+            # hardcode order for now
+            # TODO: Remove this hardcode
+            order={"publication_date": "desc"},
+        )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_error_response(
