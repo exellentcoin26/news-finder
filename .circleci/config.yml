@@ -193,8 +193,6 @@ workflows:
             branches:
               only: main
           requires:
-            - prisma
-            - pyright
-            - tsc
+            - pytest
             - eslint
             - cargo
