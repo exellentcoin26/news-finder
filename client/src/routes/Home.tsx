@@ -1,4 +1,4 @@
-import { Col, Row, Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
 import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
@@ -40,7 +40,7 @@ const Home = () => {
     }, []);
 
     return (
-        <Container className="home-container">
+        <Container className={'home-container'}>
             {isLoading ? (
                 <ArticlePlaceholder />
             ) : (
