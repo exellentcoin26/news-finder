@@ -22,7 +22,8 @@ async def get_articles() -> Response:
                 "article": {
                     "title": "Is the cat still there?",
                     "description": "The most interesting article about a cat in a tree."
-                    "photo": "https://www.test-photo.io"
+                    "photo": "https://www.test-photo.io",
+                    "link": "https:foo.article/article1.html"
                 }
             },
             {
@@ -31,6 +32,7 @@ async def get_articles() -> Response:
                     "title": "Is the cat already there?",
                     "description": "The most interesting article about a cat on its way home."
                     "photo": null
+                    "link": "https:foo.article/article2.html"
             },
             ...
         ]
@@ -79,6 +81,7 @@ async def get_articles() -> Response:
                     "title": article.title,
                     "description": article.description,
                     "photo": article.photo,
+                    "link": article.url,
                 },
             }
         )
