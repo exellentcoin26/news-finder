@@ -12,7 +12,7 @@ from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
 
 user_bp = Blueprint("user", __name__, url_prefix="/user")
-from news_finder.password_hash.password_hash import *
+from argon2 import PasswordHasher
 
 async def create_cookie_for_user(user_id: int) -> str:
     cookie = str(uuid4())
@@ -70,11 +70,9 @@ async def register_user() -> Response:
 
 
     Ph= PasswordHasher()
-    Ph.setPassword(data["password"])
-    Ph.hash()
 
     username = data["username"].lower()
-    HashedPassword = Ph.getHash()
+    HashedPassword = Ph.hash()
 
     db = await get_db()
 
@@ -187,7 +185,10 @@ async def login_user() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    if user_login.password != data["password"]:
+    Ph = PasswordHasher()
+
+
+    if Ph.verify(user_login.password,data["password"]):
         return make_error_response(
             ResponseError.WrongPassword, "", HTTPStatus.UNAUTHORIZED
         )
