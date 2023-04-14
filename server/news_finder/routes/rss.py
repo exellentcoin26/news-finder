@@ -52,6 +52,83 @@ async def get_rss_feeds() -> Response:
     return make_response(jsonify(response), HTTPStatus.OK)
 
 
+@rss_bp.post("/by-source/")
+async def get_rss_feeds_by_source() -> Response:
+    """
+    Get a json with all the rss feeds belonging to a certain news source
+
+    # Source json structure:
+    {
+        "source": "www.vrt.be"
+    }
+
+    # Feeds json structure:
+    {
+        "feeds": [
+            "https://www.vrt.be/vrtnieuws/nl.rss.articles.xml",
+            "https://www.vrt.be/vrtnieuws/en.rss.articles.xml".
+            ...
+        ]
+    }
+    """
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "source": {
+                "description": "source of the rss feeds",
+                "type": "string",
+            },
+        },
+        "required": ["source"],
+    }
+
+    data = request.get_json(silent=True)
+    if not data:
+        return make_error_response(
+            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        )
+
+    try:
+        validate(instance=data, schema=schema)
+    except ValidationError as e:
+        return make_error_response(
+            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        )
+    except SchemaError as e:
+        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+        raise e
+
+    db = await get_db()
+
+    try:
+        source = await db.newssources.find_unique(
+            where={
+                "name": data["source"]
+            },
+            include={
+                "rss": True
+            }
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+    if source is None or source.rss is None:
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
+        )
+    
+    urls: list[str] = []
+    for rss_entry in source.rss:
+        urls.append(rss_entry.feed)
+
+    response: dict[str, list[str]] = {"feeds": urls}
+
+    return make_response(jsonify(response), HTTPStatus.OK)
+
+
 @rss_bp.post("/")
 async def add_rss_feed() -> Response:
     """

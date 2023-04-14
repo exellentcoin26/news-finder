@@ -1,7 +1,7 @@
 import { Col, Row, Container } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
-import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
+import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/Article';
 import { Article, ArticlePlaceholder } from '../components/Article';
 
 import '../styles/Home.css';
@@ -27,7 +27,6 @@ const Home = () => {
         const fetchArticles = async () => {
             try {
                 const articles = await getArticlesFromServer();
-                // console.log(articles);
                 setArticles(articles);
             } catch (error) {
                 console.error(error);
