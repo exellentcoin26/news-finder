@@ -1,4 +1,4 @@
-localhost:80 {
+:80 {
 	handle_path /api/* {
 		rewrite /api/* /{path}
 
