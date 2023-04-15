@@ -2,7 +2,8 @@ import Container from 'react-bootstrap/Container';
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { FeedsApiResponse, SourcesApiResponse } from '../interfaces/api/Rss';
+import { FeedsApiResponse } from '../interfaces/api/Rss';
+import { SourcesApiResponse } from '../interfaces/api/Sources';
 import '../styles/Admin.css';
 
 const server_url =
