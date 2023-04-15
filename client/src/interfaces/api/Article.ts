@@ -2,6 +2,7 @@ export interface ArticleEntry {
     title: string;
     description?: string;
     photo?: string;
+    link: string;
 }
 
 export interface ArticleSourceEntry {
