@@ -23,11 +23,13 @@ const getSourcesFromServer = async () => {
 };
 
 const getFeedsFromServer = async (source: string) => {
-    const response = await fetch(server_url + '/rss/by-source/', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ source: source }),
-    });
+    const response = await fetch(
+        server_url + '/rss/?' + new URLSearchParams({ source: source }),
+        {
+            method: 'GET',
+            headers: { 'content-type': 'application/json' },
+        },
+    );
 
     if (response.ok) {
         const feeds: FeedsApiResponse = await response.json();
