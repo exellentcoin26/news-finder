@@ -103,12 +103,7 @@ async def get_rss_feeds_by_source() -> Response:
 
     try:
         source = await db.newssources.find_unique(
-            where={
-                "name": data["source"]
-            },
-            include={
-                "rss": True
-            }
+            where={"name": data["source"]}, include={"rss": True}
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
@@ -119,7 +114,7 @@ async def get_rss_feeds_by_source() -> Response:
         return make_error_response(
             ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
         )
-    
+
     urls: list[str] = []
     for rss_entry in source.rss:
         urls.append(rss_entry.feed)
@@ -176,6 +171,9 @@ async def add_rss_feed() -> Response:
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
+        if rss_feed == "":
+            continue
+
         rss_feed = rss_feed.strip()
 
         # Extract news source and news source url from rss feed url
@@ -226,27 +224,23 @@ async def add_rss_feed() -> Response:
 @rss_bp.delete("/")
 async def delete_rss() -> Response:
     """
-    Delete rss feeds from the database
+    Delete rss feed from the database
 
     # Feed json structure: (checked using schema validation)
     {
-        "feeds": [
-            "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
-            ...
-        ]
+        "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
     }
     """
 
     schema = {
         "type": "object",
         "properties": {
-            "feeds": {
-                "description": "list off rss feeds to be deleted",
-                "type": "array",
-                "items": {"type": "string"},
+            "feed": {
+                "description": "rss feed to be deleted",
+                "type": "string",
             },
         },
-        "required": ["feeds"],
+        "required": ["feed"],
     }
 
     data = request.get_json(silent=True)
@@ -266,27 +260,12 @@ async def delete_rss() -> Response:
         raise e
 
     db = await get_db()
-    b = db.batch_()
-    news_sources: set[str] = set()
-
-    for rss_feed in data["feeds"]:
-        entry = await db.rssentries.find_first(
-            where={"feed": rss_feed}, include={"source": True}
-        )
-
-        if entry is not None:
-            # Skip asserting or returning an error when no entry is found because the
-            # record will not be found later on and an error will be raised then.
-            assert (
-                entry.source is not None
-            ), "feed should always have a source associated with it"
-
-            news_sources.add(entry.source.name)
-
-        b.rssentries.delete(where={"feed": rss_feed})
+    feed = data["feed"]
 
     try:
-        await b.commit()
+        feed_entry = await db.rssentries.delete(
+            where={"feed": feed}, include={"source": True}
+        )
     except RecordNotFoundError as e:
         return make_error_response(
             ResponseError.RecordNotFoundError,
@@ -299,31 +278,56 @@ async def delete_rss() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
+    if feed_entry is None:
+        return make_error_response(
+            ResponseError.RecordNotFoundError,
+            str(""),
+            HTTPStatus.BAD_REQUEST,
+        )
+    
+    if feed_entry.source is None:
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
     # Delete news source if all feeds are deleted
-    for news_source_name in news_sources:
+    try:
+        news_source_entry = await db.newssources.find_first(
+            where={"id": feed_entry.source.id},
+            include={"rss": True}
+        )
+    except RecordNotFoundError as e:
+        return make_error_response(
+            ResponseError.ServerError,
+            str(e.with_traceback(None)),
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_error_response(
+            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        )
+
+    if news_source_entry is None:
+        return make_error_response(
+            ResponseError.ServerError,
+            str(""),
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+        )
+
+    if not news_source_entry.rss:
         try:
-            news_source = await db.newssources.find_first(
-                where={"name": news_source_name}
-            )
+            await db.newssources.delete(where={"id": news_source_entry.id})
         except RecordNotFoundError as e:
             return make_error_response(
                 ResponseError.ServerError,
                 str(e.with_traceback(None)),
                 HTTPStatus.INTERNAL_SERVER_ERROR,
             )
-
-        if news_source is None:
+        except Exception as e:
+            print(e.with_traceback(None), file=sys.stderr)
             return make_error_response(
                 ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
             )
-        if news_source.rss:
-            try:
-                await db.newssources.delete(where={"name": news_source_name})
-            except RecordNotFoundError as e:
-                return make_error_response(
-                    ResponseError.ServerError,
-                    str(e.with_traceback(None)),
-                    HTTPStatus.INTERNAL_SERVER_ERROR,
-                )
 
     return make_response("", HTTPStatus.OK)

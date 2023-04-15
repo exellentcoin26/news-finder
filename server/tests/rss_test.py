@@ -110,7 +110,7 @@ def test_delete_rss(client: Flask.testing):
 
     response = client.delete(
         "/rss/",
-        json={"feeds": ["https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"]},
+        json={"feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"},
     )
     assert response.status_code == HTTPStatus.OK
 
@@ -136,7 +136,7 @@ def test_delete_rss_schema(client: Flask.testing):
     response = client.delete("/rss/", json={"test": "test"})
     expected = """{
         "error": "JsonValidationError",
-        "message": "'feeds' is a required property"
+        "message": "'feed' is a required property"
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
@@ -145,11 +145,11 @@ def test_delete_rss_schema(client: Flask.testing):
 def test_delete_rss_not_found(client: Flask.testing):
     response = client.delete(
         "/rss/",
-        json={"feeds": ["https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"]},
+        json={"feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"},
     )
     expected = """{
         "error": "RecordNotFoundError",
-        "message": "An operation failed because it depends on one or more records that were required but not found. Record to delete does not exist."
+        "message": ""
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())

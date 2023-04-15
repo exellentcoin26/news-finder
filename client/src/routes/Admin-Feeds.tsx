@@ -1,5 +1,5 @@
 import Container from 'react-bootstrap/Container';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { FeedsApiResponse, SourcesApiResponse } from '../interfaces/api/Rss';
@@ -63,16 +63,11 @@ const Admin_Feeds = () => {
     const [feeds, setFeeds] = useState<string[]>([]);
     const [selectedSource, setSelectedSource] = useState<string | null>(null);
     const [selectedFeed, setSelectedFeed] = useState<string | null>(null);
+    const [feedIsSelectable, setFeedIsSelectable] = useState<boolean>(true);
 
     useEffect(() => {
         getSourcesFromServer()
-            .then((sources) => {
-                setSources(sources);
-                setSelectedSource(sources[0]!);
-            })
-            .then(() => getFeedsFromServer(sources[0]!))
-            .then((feeds) => setFeeds(feeds))
-            .then(() => setSelectedFeed(feeds[0]!))
+            .then((sources) => setSources(sources))
             .catch((error) => {
                 console.error(error);
                 setSources([]);
@@ -83,12 +78,23 @@ const Admin_Feeds = () => {
         if (selectedSource) {
             getFeedsFromServer(selectedSource)
                 .then((feeds) => setFeeds(feeds))
-                .then(() => setSelectedFeed(feeds[0]!))
+                .then(() => setFeedIsSelectable(false))
                 .catch((error) => console.error(error));
         } else {
             setFeeds([]);
+            setFeedIsSelectable(true);
         }
     }, [selectedSource]);
+
+    const handleSourceChange = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+        setSelectedSource(event.target.value);
+    };
+
+    const handleFeedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedFeed(event.target.value);
+    };
 
     const handleAddFeed = async (feeds: string): Promise<boolean> => {
         const array = feeds.split(';');
@@ -103,13 +109,14 @@ const Admin_Feeds = () => {
     };
 
     const handleRemoveFeed = async (feed: string | null): Promise<boolean> => {
+        console.log(feed);
         if (feed == null) {
             return false;
         }
         const response = await fetch(server_url + '/rss/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ feeds: [feed] }),
+            body: JSON.stringify({ feed: feed }),
         });
 
         return response.status == 200;
@@ -143,24 +150,25 @@ const Admin_Feeds = () => {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Remove Feed</Form.Label>
-                        <Form.Select
-                            onChange={(event) => {
-                                setSelectedSource(event.target.value);
-                            }}
-                        >
+                        <Form.Select onChange={handleSourceChange}>
+                            <option value="">Choose a source</option>
                             {sources.map((option) => (
-                                <option key={option}> {option} </option>
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
                             ))}
                         </Form.Select>
                     </Form.Group>
                     <Form.Group>
                         <Form.Select
-                            onChange={(event) =>
-                                setSelectedFeed(event.target.value)
-                            }
+                            onChange={handleFeedChange}
+                            disabled={feedIsSelectable}
                         >
+                            <option value="">Choose a feed</option>
                             {feeds.map((option) => (
-                                <option key={option}> {option} </option>
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
                             ))}
                         </Form.Select>
                     </Form.Group>
