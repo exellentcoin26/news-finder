@@ -72,7 +72,7 @@ async def register_user() -> Response:
     Ph= PasswordHasher()
 
     username = data["username"].lower()
-    HashedPassword = Ph.hash()
+    HashedPassword = Ph.hash(data["password"])
 
     db = await get_db()
 
