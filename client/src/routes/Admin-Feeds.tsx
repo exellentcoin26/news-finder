@@ -113,7 +113,7 @@ const Admin_Feeds = () => {
         const response = await fetch(server_url + '/rss/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ feed: feed }),
+            body: JSON.stringify({ feeds: [feed] }),
         });
 
         return response.status == 200;
