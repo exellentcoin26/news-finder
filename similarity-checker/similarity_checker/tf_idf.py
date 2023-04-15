@@ -58,10 +58,8 @@ class similar:
         self.termfrequency = copy.deepcopy(self.frequencies)
         for freq in self.frequencies:
             for item in freq:
-                self.termfrequency[counter][item] = self.termfrequency[counter][item] / len(
-                    self.corpus_divided[counter])
+                self.termfrequency[counter][item] /= len(self.corpus_divided[counter])
             counter += 1
-
 
     def idf_counter(self):
         for freq in self.frequencies:
@@ -71,8 +69,9 @@ class similar:
                 else:
                     self.idf[item] = 1
         for item in self.idf:
-            self.idf[item] = math.log(len(self.articles) / self.idf[item], 10) # idf = log_10(#nrofdoc in corpus/#nrofdoc where t appears)
-
+            self.idf[item] = math.log(
+                len(self.articles) / self.idf[item], 10
+            )  # idf = log_10(#nrofdoc in corpus/#nrofdoc where t appears)
 
     # {all_words| tfidf0, tfidf1, tfidf2}
 
@@ -88,13 +87,15 @@ class similar:
                     for idfvalue in self.idf.keys():
                         if word == freq:
                             if freq == idfvalue:
-                                tfidfvalue[counter] = self.termfrequency[counter][freq] * self.idf[idfvalue]
+                                tfidfvalue[counter] = (
+                                    self.termfrequency[counter][freq]
+                                    * self.idf[idfvalue]
+                                )
                 counter += 1
             self.tfidftable[word] = tfidfvalue
             tfidfvalue = []
             for i in range(len(self.articles)):
                 tfidfvalue.append(0.0)
-
 
     def remove_nesting(self):
         self.corpus = []
@@ -107,7 +108,7 @@ class similar:
     def compute_cosine_similiraty(self, articleA: int, articleB: int):
         sum = 0
         for term in self.tfidftable:
-            sum += (self.tfidftable[term][articleA] * self.tfidftable[term][articleB])
+            sum += self.tfidftable[term][articleA] * self.tfidftable[term][articleB]
         magnitude_vectorA = 0
         magnitude_vectorB = 0
         for term in self.tfidftable:
@@ -117,7 +118,7 @@ class similar:
         return sum / (math.sqrt(magnitude_vectorA) * math.sqrt(magnitude_vectorB))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     s = similar()
     s.check()
-    s.compute_cosine_similiraty(1, 2)
+    s.compute_cosine_similiraty(0, 1)
