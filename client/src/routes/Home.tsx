@@ -10,9 +10,16 @@ const getArticlesFromServer = async (_amount = 0): Promise<ArticleEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
     const response = await fetch(serverUrl + '/article');
+    const body = await response.text();
 
-    // TODO: Make this more type safe. Here it is assumed to be correct and parsed as such.
-    const articles: ArticleApiResponse = await response.json();
+    const articles = ((): ArticleApiResponse => {
+        try {
+            return JSON.parse(body);
+        } catch (e) {
+            console.debug(body);
+            throw e;
+        }
+    })();
 
     return articles.articles.map((articleSource) => {
         return articleSource.article;
