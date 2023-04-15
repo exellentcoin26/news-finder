@@ -91,7 +91,10 @@ const Admin_Feeds = () => {
     };
 
     const handleAddFeed = async (feeds: string): Promise<boolean> => {
-        const array = feeds.split(';');
+        const array = feeds
+            .split(';' || ' ')
+            .map((feed) => feed.trim())
+            .filter((str) => str.length !== 0);
 
         const response = await fetch(server_url + '/rss/', {
             method: 'POST',
