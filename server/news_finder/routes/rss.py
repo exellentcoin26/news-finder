@@ -177,7 +177,10 @@ async def add_rss_feed() -> Response:
         rss_feed = rss_feed.strip()
 
         # Extract news source and news source url from rss feed url
-        url_components: ParseResult = urlparse(rss_feed)
+        # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
+        # TODO: Fixme
+        url_components: ParseResult = urlparse(rss_feed)  # pyright: ignore
+        assert isinstance(url_components, ParseResult)
 
         news_source = url_components.netloc
         news_source_url = url_components.scheme + "://" + url_components.netloc
