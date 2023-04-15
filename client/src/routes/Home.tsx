@@ -51,7 +51,7 @@ const Home = () => {
             {isLoading ? (
                 <ArticlePlaceholder />
             ) : (
-                articles.map(({ title, description, photo }, index) => {
+                articles.map(({ title, description, photo, link }, index) => {
                     return (
                         <Row
                             // TODO: Use something better than index as key
@@ -67,6 +67,7 @@ const Home = () => {
                                     {...(photo != null
                                         ? { img_src: photo }
                                         : {})}
+                                    article_link={link}
                                 />
                             </Col>
                         </Row>

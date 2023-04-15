@@ -19,6 +19,7 @@ class ResponseError(Enum):
     CookieNotFound = 6
     UserAlreadyPresent = 7
     WrongPassword = 8
+    IncorrectParameters = 9
 
     ServerError = 500
 
