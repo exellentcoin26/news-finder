@@ -2,7 +2,7 @@ from flask import Blueprint, Response, request, make_response, jsonify
 from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
-from prisma.errors import UniqueViolationError, RecordNotFoundError
+from prisma.errors import UniqueViolationError
 
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
@@ -212,7 +212,7 @@ async def delete_rss() -> Response:
         raise e
 
     db = await get_db()
-    sources = set()
+    sources: set[int] = set()
 
     for feed in data["feeds"]:
         feed_entry = await db.rssentries.find_unique(
