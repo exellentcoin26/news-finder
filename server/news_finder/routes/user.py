@@ -5,6 +5,7 @@ from jsonschema import validate, SchemaError, ValidationError
 from uuid import uuid4
 from http import HTTPStatus
 from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 
 import sys
 
@@ -72,7 +73,7 @@ async def register_user() -> Response:
     ph = PasswordHasher()
 
     username = data["username"].lower()
-    HashedPassword = ph.hash(data["password"])
+    hashed_password = ph.hash(data["password"])
 
     db = await get_db()
 
@@ -86,7 +87,7 @@ async def register_user() -> Response:
         )
 
     user = await db.users.create(data={"username": username})
-    await db.userlogins.create(data={"password": HashedPassword, "id": user.id})
+    await db.userlogins.create(data={"password": hashed_password, "id": user.id})
 
     cookie: str = ""
     while cookie == "":
@@ -184,7 +185,9 @@ async def login_user() -> Response:
 
     ph = PasswordHasher()
 
-    if ph.verify(user_login.password, data["password"]):
+    try:
+        ph.verify(user_login.password, data["password"])
+    except VerifyMismatchError:
         return make_error_response(
             ResponseError.WrongPassword, "", HTTPStatus.UNAUTHORIZED
         )
