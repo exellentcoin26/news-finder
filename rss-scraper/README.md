@@ -27,7 +27,7 @@ To generate the prisma definitions run the following command.
 prisma generate --schema ../db/schema.prisma --generator rss-scraper
 ```
 
-~~Note: This might take quite some time depending on your hardware.~~
+Note: This might take quite some time depending on your hardware.
 
 ### Running the scraper
 
