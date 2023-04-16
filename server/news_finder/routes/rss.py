@@ -2,7 +2,7 @@ from flask import Blueprint, Response, request, make_response, jsonify
 from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
-from prisma.errors import UniqueViolationError, RecordNotFoundError
+from prisma.errors import UniqueViolationError
 
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
@@ -29,7 +29,32 @@ async def get_rss_feeds() -> Response:
     }
     """
 
+    source = request.args.get("source") or None
+
     db = await get_db()
+
+    if source is not None:
+        try:
+            source = await db.newssources.find_unique(
+                where={"name": source}, include={"rss": True}
+            )
+        except Exception as e:
+            print(e.with_traceback(None), file=sys.stderr)
+            return make_error_response(
+                ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+            )
+        if source is None or source.rss is None:
+            return make_error_response(
+                ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
+            )
+
+        urls: list[str] = []
+        for rss_entry in source.rss:
+            urls.append(rss_entry.feed)
+
+        response_source: dict[str, list[str]] = {"feeds": urls}
+
+        return make_response(jsonify(response_source), HTTPStatus.OK)
 
     try:
         feeds = await db.rssentries.find_many(include={"source": True})
@@ -48,78 +73,6 @@ async def get_rss_feeds() -> Response:
         news_source = feed.source.name
 
         response["feeds"].append({"source": news_source, "feed": feed.feed})
-
-    return make_response(jsonify(response), HTTPStatus.OK)
-
-
-@rss_bp.post("/by-source/")
-async def get_rss_feeds_by_source() -> Response:
-    """
-    Get a json with all the rss feeds belonging to a certain news source
-
-    # Source json structure:
-    {
-        "source": "www.vrt.be"
-    }
-
-    # Feeds json structure:
-    {
-        "feeds": [
-            "https://www.vrt.be/vrtnieuws/nl.rss.articles.xml",
-            "https://www.vrt.be/vrtnieuws/en.rss.articles.xml".
-            ...
-        ]
-    }
-    """
-
-    schema = {
-        "type": "object",
-        "properties": {
-            "source": {
-                "description": "source of the rss feeds",
-                "type": "string",
-            },
-        },
-        "required": ["source"],
-    }
-
-    data = request.get_json(silent=True)
-    if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
-        )
-
-    try:
-        validate(instance=data, schema=schema)
-    except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
-        )
-    except SchemaError as e:
-        print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
-        raise e
-
-    db = await get_db()
-
-    try:
-        source = await db.newssources.find_unique(
-            where={"name": data["source"]}, include={"rss": True}
-        )
-    except Exception as e:
-        print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
-        )
-    if source is None or source.rss is None:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
-        )
-
-    urls: list[str] = []
-    for rss_entry in source.rss:
-        urls.append(rss_entry.feed)
-
-    response: dict[str, list[str]] = {"feeds": urls}
 
     return make_response(jsonify(response), HTTPStatus.OK)
 
@@ -146,7 +99,7 @@ async def add_rss_feed() -> Response:
                 "description": "list off rss feeds to be added",
                 "type": "array",
                 "items": {"type": "string"},
-            },
+            }
         },
         "required": ["feeds"],
     }
@@ -171,12 +124,6 @@ async def add_rss_feed() -> Response:
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
-        if rss_feed == "":
-            continue
-
-        rss_feed = rss_feed.strip()
-
-        # Extract news source and news source url from rss feed url
         # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
         # TODO: Fixme
         url_components: ParseResult = urlparse(rss_feed)  # pyright: ignore
@@ -195,15 +142,7 @@ async def add_rss_feed() -> Response:
                     "url": news_source_url,
                     "rss": {"create": {"feed": rss_feed}},
                 },
-                "update": {
-                    "rss": {
-                        "create": [
-                            {
-                                "feed": rss_feed,
-                            }
-                        ]
-                    }
-                },
+                "update": {"rss": {"create": [{"feed": rss_feed}]}},
             },
         )
 
@@ -227,23 +166,27 @@ async def add_rss_feed() -> Response:
 @rss_bp.delete("/")
 async def delete_rss() -> Response:
     """
-    Delete rss feed from the database
+    Delete rss feeds from the database
 
     # Feed json structure: (checked using schema validation)
     {
-        "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+        "feeds": [
+            "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+            ...
+        ]
     }
     """
 
     schema = {
         "type": "object",
         "properties": {
-            "feed": {
-                "description": "rss feed to be deleted",
-                "type": "string",
-            },
+            "feeds": {
+                "description": "list off rss feeds to be deleted",
+                "type": "array",
+                "items": {"type": "string"},
+            }
         },
-        "required": ["feed"],
+        "required": ["feeds"],
     }
 
     data = request.get_json(silent=True)
@@ -263,74 +206,44 @@ async def delete_rss() -> Response:
         raise e
 
     db = await get_db()
-    feed = data["feed"]
+    sources: set[int] = set()
 
-    try:
-        feed_entry = await db.rssentries.delete(
+    for feed in data["feeds"]:
+        feed_entry = await db.rssentries.find_unique(
             where={"feed": feed}, include={"source": True}
         )
-    except RecordNotFoundError as e:
-        return make_error_response(
-            ResponseError.RecordNotFoundError,
-            str(e.with_traceback(None)),
-            HTTPStatus.BAD_REQUEST,
-        )
-    except Exception as e:
-        print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
-        )
+        if feed_entry is None:
+            return make_error_response(
+                ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
+            )
+        if feed_entry.source is None:
+            return make_error_response(
+                ResponseError.RecordNotFoundError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+            )
 
-    if feed_entry is None:
-        return make_error_response(
-            ResponseError.RecordNotFoundError,
-            str(""),
-            HTTPStatus.BAD_REQUEST,
-        )
-    
-    if feed_entry.source is None:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
-        )
+        sources.add(feed_entry.source.id)
 
-    # Delete news source if all feeds are deleted
+    b = db.batch_()
+    for feed in data["feeds"]:
+        print()
+        b.rssentries.delete(where={"feed": feed})
     try:
-        news_source_entry = await db.newssources.find_first(
-            where={"id": feed_entry.source.id},
-            include={"rss": True}
-        )
-    except RecordNotFoundError as e:
-        return make_error_response(
-            ResponseError.ServerError,
-            str(e.with_traceback(None)),
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-        )
+        await b.commit()
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_error_response(
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    if news_source_entry is None:
-        return make_error_response(
-            ResponseError.ServerError,
-            str(""),
-            HTTPStatus.INTERNAL_SERVER_ERROR,
+    for source in sources:
+        source_entry = await db.newssources.find_unique(
+            where={"id": source}, include={"rss": True}
         )
-
-    if not news_source_entry.rss:
-        try:
-            await db.newssources.delete(where={"id": news_source_entry.id})
-        except RecordNotFoundError as e:
+        if source_entry is None:
             return make_error_response(
-                ResponseError.ServerError,
-                str(e.with_traceback(None)),
-                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ResponseError.RecordNotFoundError, "", HTTPStatus.INTERNAL_SERVER_ERROR
             )
-        except Exception as e:
-            print(e.with_traceback(None), file=sys.stderr)
-            return make_error_response(
-                ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
-            )
+        if not source_entry.rss:
+            await db.newssources.delete(where={"id": source})
 
     return make_response("", HTTPStatus.OK)
