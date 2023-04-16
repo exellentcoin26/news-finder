@@ -31,10 +31,13 @@ async def register_user() -> Response:
     Create a user.
 
     # Json structure: (checked using schema validation)
-    {
-        "username": "user1"
-        "password": "qwerty"
-    }
+
+    .. code-block:: json
+
+        {
+            "username": "user1"
+            "password": "qwerty"
+        }
     """
 
     data = request.get_json(silent=True)
@@ -104,10 +107,13 @@ async def login_user() -> Response:
     Log a user in.
 
     # Json structure: (checked using schema validation)
-    {
-        "username": "user1"
-        "password": "qwerty"
-    }
+
+    .. code-block:: json
+
+        {
+            "username": "user1"
+            "password": "qwerty"
+        }
     """
 
     data = request.get_json(silent=True)

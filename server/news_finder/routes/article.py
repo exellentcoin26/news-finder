@@ -16,28 +16,31 @@ async def get_articles() -> Response:
     `offset` parameters to specify a range of articles to retrieve.
 
     # Articles json structure:
-    {
-        "articles": [
-            {
-                "source": "www.vrt.be",
-                "article": {
-                    "title": "Is the cat still there?",
-                    "description": "The most interesting article about a cat in a tree."
-                    "photo": "https://www.test-photo.io",
-                    "link": "https:foo.article/article1.html"
-                }
-            },
-            {
-                "source": "www.vrt.be",
-                "article": {
-                    "title": "Is the cat already there?",
-                    "description": "The most interesting article about a cat on its way home."
-                    "photo": null
-                    "link": "https:foo.article/article2.html"
-            },
-            ...
-        ]
-    }
+
+    .. code-block:: json
+
+        {
+            "articles": [
+                {
+                    "source": "www.vrt.be",
+                    "article": {
+                        "title": "Is the cat still there?",
+                        "description": "The most interesting article about a cat in a tree."
+                        "photo": "https://www.test-photo.io",
+                        "link": "https:foo.article/article1.html"
+                    }
+                },
+                {
+                    "source": "www.vrt.be",
+                    "article": {
+                        "title": "Is the cat already there?",
+                        "description": "The most interesting article about a cat on its way home."
+                        "photo": null
+                        "link": "https:foo.article/article2.html"
+                },
+                ...
+            ]
+        }
     """
 
     try:

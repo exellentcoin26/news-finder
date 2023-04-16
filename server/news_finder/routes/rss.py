@@ -18,15 +18,18 @@ async def get_rss_feeds() -> Response:
     Get a json with all the rss feeds and their news source
 
     # Feeds json structure:
-    {
-        "feeds": [
-            {
-                "source": "www.vrt.be",
-                "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml"
-            }.
-            ...
-        ]
-    }
+
+    .. code-block:: json
+
+        {
+            "feeds": [
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml"
+                }.
+                ...
+            ]
+        }
     """
 
     db = await get_db()
@@ -59,12 +62,15 @@ async def add_rss_feed() -> Response:
     extracted from the hostname of the url.
 
     # Feed json structure: (checked using schema validation)
-    {
-        "feeds": [
-            "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
-            ...
-        ]
-    }
+
+    .. code-block:: json
+
+        {
+            "feeds": [
+                "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+                ...
+            ]
+        }
     """
 
     schema = {
@@ -153,12 +159,15 @@ async def delete_rss() -> Response:
     Delete rss feeds from the database
 
     # Feed json structure: (checked using schema validation)
-    {
-        "feeds": [
-            "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
-            ...
-        ]
-    }
+
+    .. code-block:: json
+
+        {
+            "feeds": [
+                "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+                ...
+            ]
+        }
     """
 
     schema = {
