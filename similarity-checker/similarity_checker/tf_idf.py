@@ -1,3 +1,7 @@
+"""
+Legacy similarity checker used for research, authored by David Scalais (@sclatch1)
+"""
+
 import copy
 from os import listdir
 import string

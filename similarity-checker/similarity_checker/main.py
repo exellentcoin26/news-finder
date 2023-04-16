@@ -9,6 +9,7 @@ import string
 
 from typing import List, Dict, Tuple
 from natsort import natsorted
+import snowballstemmer
 
 from utils import Language, filter_stop_words, filter_numerics
 
@@ -43,6 +44,10 @@ async def main():
     articles = [filter_numerics(article) for article in articles]
     # TODO: Get language from database.
     articles = [filter_stop_words(article, Language.English) for article in articles]
+    # Stem words
+    # TODO: Get language from database.
+    stemmer = snowballstemmer.stemmer(Language.English)
+    articles = [stemmer.stemWords(article) for article in articles]
 
     tf_idf_table = calc_tf_idf(articles)
 
