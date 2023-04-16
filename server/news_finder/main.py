@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
+import news_finder.path_setup  # pyright: ignore # noqa
 import asyncio
 from news_finder.app import get_app
-import news_finder.path_setup  # pyright: ignore # noqa
 
 
 async def main():
