@@ -11,6 +11,7 @@ dependencies = [
     "asyncio==3.4.3",
     "Flask==2.2.3",
     "Flask-Cors==3.0.10",
+    "flask[async]==2.2.3",
     "jsonschema==4.17.3",
     "prisma==0.8.2",
     "pyright==1.1.303",
