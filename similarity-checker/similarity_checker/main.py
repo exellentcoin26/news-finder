@@ -14,7 +14,6 @@ from utils import Language, filter_stop_words, filter_numerics
 
 
 # TODO: check language of the article
-# TODO: Remove stop words from language if dataset is present
 
 
 async def main():
@@ -41,8 +40,8 @@ async def main():
 
     # Split articles by whitespace and remove stopwords
     articles: List[List[str]] = [article.split(" ") for article in raw_articles]
-    # TODO: Get language from database.
     articles = [filter_numerics(article) for article in articles]
+    # TODO: Get language from database.
     articles = [filter_stop_words(article, Language.English) for article in articles]
 
     tf_idf_table = calc_tf_idf(articles)
