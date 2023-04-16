@@ -93,7 +93,7 @@ async def register_user() -> Response:
             pass
 
     resp = make_response("", HTTPStatus.OK)
-    resp.set_cookie("session", cookie, samesite="strict")
+    resp.set_cookie("session", cookie, samesite="lax")
 
     return resp
 
@@ -261,7 +261,7 @@ async def login_user() -> Response:
             pass
 
     resp = make_response("", HTTPStatus.OK)
-    resp.set_cookie("session", cookie, samesite="strict")
+    resp.set_cookie("session", cookie, samesite="lax")
 
     return resp
 
