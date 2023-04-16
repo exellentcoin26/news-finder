@@ -190,7 +190,7 @@ async def delete_rss() -> Response:
         "type": "object",
         "properties": {
             "feeds": {
-                "description": "rss feed to be deleted",
+                "description": "list of rss feeds to be deleted",
                 "type": "array",
                 "items": {"type": "string"},
             },
@@ -252,7 +252,7 @@ async def delete_rss() -> Response:
             return make_error_response(
                 ResponseError.RecordNotFoundError, "", HTTPStatus.INTERNAL_SERVER_ERROR
             )
-        if (not source_entry.rss):
+        if not source_entry.rss:
             await db.newssources.delete(where={"id": source})
 
     return make_response("", HTTPStatus.OK)
