@@ -11,6 +11,7 @@ const Register = () => {
     const handleRegister = async (username: string, password: string) => {
         await fetch(target_url, {
             method: 'POST',
+            credentials: 'include',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ username: username, password: password }),
         });

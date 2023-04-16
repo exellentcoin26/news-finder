@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, make_response, jsonify, request
 from http import HTTPStatus
+from typing import List, Dict
 import sys
 
 from news_finder.db import get_db
@@ -66,7 +67,7 @@ async def get_articles() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    response: dict[str, list[dict[str, str | dict[str, str | None]]]] = {"articles": []}
+    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
     for article in articles:
         assert (
             article.source is not None
