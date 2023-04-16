@@ -38,6 +38,9 @@ build system (the latter will be used in this explanation). Every command
 provided can also be run with the `--release` flag for better runtime
 performance.
 
+First make sure that an environment variable `DATABASE_URL` is set. This can be
+an env file in the root, a global environment variable or specified inline.
+
 ```shell
 cargo run -- run --help
 ```
