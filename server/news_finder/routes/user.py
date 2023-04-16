@@ -2,12 +2,12 @@ from flask import Blueprint, Response, request, make_response, jsonify
 from flask_cors import CORS
 from prisma.errors import UniqueViolationError, RecordNotFoundError
 from jsonschema import validate, SchemaError, ValidationError
+from uuid import uuid4
+from http import HTTPStatus
+from argon2 import PasswordHasher
 
 import sys
 
-
-from uuid import uuid4
-from http import HTTPStatus
 
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
@@ -69,10 +69,10 @@ async def register_user() -> Response:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
         raise e
 
-    Ph = PasswordHasher()
+    ph = PasswordHasher()
 
     username = data["username"].lower()
-    HashedPassword = Ph.hash(data["password"])
+    HashedPassword = ph.hash(data["password"])
 
     db = await get_db()
 
@@ -182,9 +182,9 @@ async def login_user() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    Ph = PasswordHasher()
+    ph = PasswordHasher()
 
-    if Ph.verify(user_login.password, data["password"]):
+    if ph.verify(user_login.password, data["password"]):
         return make_error_response(
             ResponseError.WrongPassword, "", HTTPStatus.UNAUTHORIZED
         )
