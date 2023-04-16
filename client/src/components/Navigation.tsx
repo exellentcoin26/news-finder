@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Container, Navbar, Nav, NavDropdown, Dropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useEffect, useState } from 'react';
-import { AdminStatusApiResponse } from '../interfaces/api/Admin';
+import { AdminStatusApiResponse } from '../interfaces/api/admin';
 import '../styles/Navigation.css';
 
 const Navigation = () => {
