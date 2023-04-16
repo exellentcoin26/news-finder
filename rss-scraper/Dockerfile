@@ -13,4 +13,4 @@ RUN pip3 install prisma
 
 RUN prisma generate --generator rss-scraper --schema ../db/schema.prisma
 
-CMD cargo run --release
+CMD cargo run --release -- run
