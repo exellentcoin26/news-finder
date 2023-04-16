@@ -17,3 +17,6 @@ __pycache__
 
 # apply files
 .DS_store
+
+# tmp files
+/tmp.txt
