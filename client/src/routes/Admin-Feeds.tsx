@@ -2,8 +2,9 @@ import Container from 'react-bootstrap/Container';
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { FeedsApiResponse } from '../interfaces/api/Rss';
-import { SourcesApiResponse } from '../interfaces/api/Sources';
+import { FeedsApiResponse } from '../interfaces/api/rss';
+import { SourcesApiResponse } from '../interfaces/api/newsSource';
+
 import '../styles/Admin.css';
 
 const server_url =
@@ -55,7 +56,7 @@ const AdminFeeds = () => {
         const fetchSources = async () => {
             try {
                 const sources = await getSourcesFromServer();
-                await setSources(sources);
+                setSources(sources);
             } catch (error) {
                 console.log(error);
             }
@@ -69,13 +70,13 @@ const AdminFeeds = () => {
             if (selectedSource) {
                 try {
                     const feeds = await getFeedsFromServer(selectedSource);
-                    await setFeeds(feeds);
-                    await setFeedIsDisabled(false);
+                    setFeeds(feeds);
+                    setFeedIsDisabled(false);
                 } catch (error) {
                     console.error(error);
                 }
             } else {
-                await setFeeds([]);
+                setFeeds([]);
                 setFeedIsDisabled(true);
             }
         };

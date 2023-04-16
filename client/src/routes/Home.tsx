@@ -1,7 +1,7 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
-import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/Article';
+import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
 import { Article, ArticlePlaceholder } from '../components/Article';
 
 import '../styles/Home.css';
