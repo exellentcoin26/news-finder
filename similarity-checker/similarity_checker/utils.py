@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import Dict, List
 
+import os
+
 
 class Language(str, Enum):
     English = "english"
@@ -8,12 +10,12 @@ class Language(str, Enum):
 
 
 def load_stop_words(language: str) -> List[str]:
-    with open(f"res/stopwords/{language}.txt", "r") as stop_words:
+    with open(os.path.abspath(f"./res/stopwords/{language}.txt"), "r") as stop_words:
         return stop_words.read().splitlines()
 
 
 stop_words: Dict[Language, List[str]] = {
-    language: load_stop_words(language) for language in Language
+    language: load_stop_words(language.value) for language in Language
 }
 
 

@@ -27,7 +27,7 @@ is_running = False
 
 
 async def main():
-    schedule.every(1).seconds.do(run)  # pyright: ignore
+    schedule.every(30).minutes.do(run)  # pyright: ignore
 
     while True:
         schedule.run_pending()
@@ -37,7 +37,10 @@ async def main():
 
         delta = next_run - datetime.now()
 
-        print(f"Time until next run: {int(delta.total_seconds())} seconds")
+        print(
+            f"Time until next run: {int(delta.total_seconds())} seconds",
+            file=sys.stderr,
+        )
         await asyncio.sleep(3)
 
 
@@ -49,7 +52,7 @@ async def run_similarity_checker():
     global is_running
 
     if is_running:
-        print("foo")
+        print("Not running checker because last run has not finished", file=sys.stderr)
         return
 
     is_running = True
@@ -57,7 +60,7 @@ async def run_similarity_checker():
     db = Prisma()
     await db.connect()
 
-    raw_articles = await db.newsarticles.find_many()
+    raw_articles = await db.newsarticles.find_many(include={"source": True})
 
     await calc_article_similarity(raw_articles, db)
 
@@ -99,9 +102,18 @@ async def calc_article_similarity(
     similar: Dict[int, Set[int]] = {}
 
     # Check every article against every other article
-    print("Checking cosine similarities...")
+    print("Checking cosine similarities...", file=sys.stderr)
     for lhs_article_idx in range(len(articles)):
         for rhs_article_idx in range(lhs_article_idx + 1, len(articles)):
+            # Only compare articles from different sources
+            article1, article2 = (
+                databse_articles[lhs_article_idx],
+                databse_articles[rhs_article_idx],
+            )
+            assert article1.source is not None and article2.source is not None
+            if article1.source.id == article2.source.id:
+                continue
+
             similarity = cos_similarity(
                 extract_tf_idf_values(tf_idf_table, lhs_article_idx),
                 extract_tf_idf_values(tf_idf_table, rhs_article_idx),
@@ -116,7 +128,14 @@ async def calc_article_similarity(
             if similarity > THRESHOLD:
                 print(
                     "\033[K"
-                    + f"Found:\n\t`{' '.join(articles[lhs_article_idx])}`\n\t==\n\t`{' '.join(articles[rhs_article_idx])}`"
+                    + f"Found:\n\t`{' '.join(articles[lhs_article_idx])}`\n"
+                    + "\t"
+                    + article1.source.name
+                    + "\n\t=="
+                    + f"\n\t`{' '.join(articles[rhs_article_idx])}\n"
+                    + "\t"
+                    + article2.source.name
+                    + f"\nsimilarity: {similarity}`"
                 )
 
                 similar[lhs_article_idx] = set(
@@ -128,8 +147,8 @@ async def calc_article_similarity(
 
                 # Insert into database
                 await insert_similar_article_pair_into_db(
-                    databse_articles[lhs_article_idx],
-                    databse_articles[rhs_article_idx],
+                    article1,
+                    article2,
                     client,
                 )
 
