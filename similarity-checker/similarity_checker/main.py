@@ -2,60 +2,104 @@
 
 
 import asyncio
-import os
+
+# import os
+import sys
 import re
 import math
 import string
 
-from typing import List, Dict, Tuple
-from natsort import natsorted
+from typing import List, Dict, Tuple, Set
+
+# from natsort import natsorted
+from prisma import Prisma
 
 from utils import Language, filter_stop_words, filter_numerics
 
 
 # TODO: check language of the article
 
+THRESHOLD = 0.50
+
 
 async def main():
-    raw_articles: List[str] = []
+    # raw_articles: List[str] = []
+    #
+    # for [idx, article_file] in enumerate(natsorted(os.listdir("articles"))):
+    #     print(f"Article{idx}: {article_file}")
+    #     with open(f"articles/{article_file}", "r") as article:
+    #         # Remove unnecessary white space, punctuation and convert to lowercase
+    #         raw_articles.append(article.read())
+    #
+    # # Remove empty articles
+    # raw_articles = [article for article in raw_articles if len(article) != 0]
+    #
+    # print("============================")
+    # print("Article list:")
+    # for article in raw_articles:
+    #     print(article)
+    # print("============================")
 
-    for [idx, article_file] in enumerate(natsorted(os.listdir("articles"))):
-        print(f"Article{idx}: {article_file}")
-        with open(f"articles/{article_file}", "r") as article:
-            # Remove unnecessary whitespace, punctuation and convert to lowercase
-            raw_articles.append(
-                re.sub(r"\s+", " ", article.read())
-                .translate(str.maketrans("", "", string.punctuation))
-                .lower()
-            )
+    db = Prisma()
+    await db.connect()
 
-    # Remove empty articles
-    raw_articles = [article for article in raw_articles if len(article) != 0]
+    raw_articles = [
+        article.title + (article.description or "")
+        for article in await db.newsarticles.find_many()
+    ]
 
-    print("============================")
-    print("Article list:")
-    for article in raw_articles:
-        print(article)
-    print("============================")
+    print(calc_article_similarity(raw_articles))
 
+    await db.disconnect()
+
+
+def calc_article_similarity(raw_articles: List[str]) -> Dict[int, Set[int]]:
+    # Remove whitespace, punctuation and convert to lowercase
+    cleaned_articles: List[str] = [
+        re.sub(r"\s+", " ", article)
+        .translate(str.maketrans("", "", string.punctuation))
+        .lower()
+        for article in raw_articles
+    ]
     # Split articles by whitespace and remove stopwords
-    articles: List[List[str]] = [article.split(" ") for article in raw_articles]
+    articles = [article.split() for article in cleaned_articles]
     articles = [filter_numerics(article) for article in articles]
     # TODO: Get language from database.
     articles = [filter_stop_words(article, Language.English) for article in articles]
 
     tf_idf_table = calc_tf_idf(articles)
 
+    similar: Dict[int, Set[int]] = {}
+
     # Check every article against every other article
     print("Checking cosine similarities...")
-    for lhs_article_idx in range(0, len(articles), 2):
-        similarity = cos_similarity(
-            extract_tf_idf_values(tf_idf_table, lhs_article_idx),
-            extract_tf_idf_values(tf_idf_table, lhs_article_idx + 1),
-        )
-        print(
-            f"Article `{lhs_article_idx}` == Article `{lhs_article_idx + 1}`: {similarity}"
-        )
+    for lhs_article_idx in range(len(articles)):
+        for rhs_article_idx in range(lhs_article_idx + 1, len(articles)):
+            similarity = cos_similarity(
+                extract_tf_idf_values(tf_idf_table, lhs_article_idx),
+                extract_tf_idf_values(tf_idf_table, rhs_article_idx),
+            )
+            sys.stdout.write(
+                "\033[K"
+                + f"Article `{lhs_article_idx}` == Article `{rhs_article_idx}`: {similarity}".expandtabs(
+                    2
+                )
+                + "\r"
+            )
+            if similarity > THRESHOLD:
+                print(
+                    "\033[K"
+                    + f"Found:\n\t`{' '.join(articles[lhs_article_idx])}`\n\t==\n\t`{' '.join(articles[rhs_article_idx])}`"
+                )
+
+                similar[lhs_article_idx] = set(
+                    [*similar.get(lhs_article_idx, []), rhs_article_idx]
+                )
+                similar[rhs_article_idx] = set(
+                    [*similar.get(rhs_article_idx, []), lhs_article_idx]
+                )
+
+    return similar
 
 
 def calc_tf_idf(documents: List[List[str]]) -> Dict[str, Tuple[List[float], float]]:
@@ -65,7 +109,8 @@ def calc_tf_idf(documents: List[List[str]]) -> Dict[str, Tuple[List[float], floa
         tf = calc_norm_term_freq(document)
 
         for [term, freq] in tf.items():
-            # Insert if term already in table. Create new list with empty entries up until current idx if not
+            # Insert if term already in table. Create new list with empty entries up
+            # until current idx.
             if term not in tf_table:
                 # Insert 0 entries
                 tf_table[term] = [0 for _ in range(doc_idx)]
@@ -82,8 +127,8 @@ def calc_tf_idf(documents: List[List[str]]) -> Dict[str, Tuple[List[float], floa
         term: (freq, idf_table.get(term, 0)) for [term, freq] in tf_table.items()
     }
 
-    for entry in tf_idf_table.items():
-        print(entry)
+    # for entry in tf_idf_table.items():
+    #     print(entry)
 
     return tf_idf_table
 
