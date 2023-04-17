@@ -7,9 +7,10 @@ import sys
 import re
 import math
 import string
-
+from datetime import datetime
 from typing import List, Dict, Tuple, Set
 
+import schedule
 from prisma import Prisma
 from prisma.models import NewsArticles
 
@@ -17,10 +18,42 @@ from utils import Language, filter_stop_words, filter_numerics
 
 THRESHOLD = 0.50
 
+# failsafe for running async call with non async scheduler.
+# Note: this fails if the schedule timestep is lower than the starting of the thread
+# (which _should_ never happen).
+is_running = False
+
 # TODO: check language of the article
 
 
 async def main():
+    schedule.every(1).seconds.do(run)  # pyright: ignore
+
+    while True:
+        schedule.run_pending()
+        next_run = schedule.next_run()
+        if next_run is None:
+            exit(0)
+
+        delta = next_run - datetime.now()
+
+        print(f"Time until next run: {int(delta.total_seconds())} seconds")
+        await asyncio.sleep(3)
+
+
+def run():
+    asyncio.get_event_loop().create_task(run_similarity_checker())
+
+
+async def run_similarity_checker():
+    global is_running
+
+    if is_running:
+        print("foo")
+        return
+
+    is_running = True
+
     db = Prisma()
     await db.connect()
 
@@ -29,6 +62,8 @@ async def main():
     await calc_article_similarity(raw_articles, db)
 
     await db.disconnect()
+
+    is_running = False
 
 
 async def calc_article_similarity(
