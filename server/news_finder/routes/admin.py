@@ -17,12 +17,15 @@ async def add_admin() -> Response:
     Change the "admin" field of one or more user(s) to true
 
     # Json structure: (checked using schema validation)
-    {
-        "names": [
-            "username",
-            ...
-        ]
-    }
+
+    .. code-block:: json
+
+        {
+            "names": [
+                "username",
+                ...
+            ]
+        }
     """
 
     schema = {
@@ -79,12 +82,15 @@ async def add_admin() -> Response:
 @admin_bp.post("/status/")
 async def is_admin() -> Response:
     """
-    Check if a user is an admin
+    Check if a user is an admin.
 
     # Json structure: (checked using schema validation)
-    {
-        "name": "username"
-    }
+
+    .. code-block:: json
+
+        {
+            "name": "username"
+        }
     """
 
     schema = {
