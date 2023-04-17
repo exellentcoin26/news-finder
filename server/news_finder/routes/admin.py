@@ -18,12 +18,15 @@ async def add_admin() -> Response:
     Change the "admin" field of one or more user(s) to true
 
     # Json structure: (checked using schema validation)
-    {
-        "names": [
-            "username",
-            ...
-        ]
-    }
+
+    .. code-block:: json
+
+        {
+            "names": [
+                "username",
+                ...
+            ]
+        }
     """
 
     schema = {
@@ -80,7 +83,7 @@ async def add_admin() -> Response:
 @admin_bp.get("/")
 async def is_admin() -> Response:
     """
-    Check if a user is an admin
+    Check if a user is an admin based on the cookie.
     """
 
     cookie = request.cookies.get("session")

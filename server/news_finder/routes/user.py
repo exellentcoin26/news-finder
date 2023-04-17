@@ -2,11 +2,13 @@ from flask import Blueprint, Response, request, make_response, jsonify
 from flask_cors import CORS
 from prisma.errors import UniqueViolationError, RecordNotFoundError
 from jsonschema import validate, SchemaError, ValidationError
+from uuid import uuid4
+from http import HTTPStatus
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 
 import sys
 
-from uuid import uuid4
-from http import HTTPStatus
 
 from news_finder.db import get_db
 from news_finder.utils.error_response import make_error_response, ResponseError
@@ -31,10 +33,13 @@ async def register_user() -> Response:
     Create a user.
 
     # Json structure: (checked using schema validation)
-    {
-        "username": "user1"
-        "password": "qwerty"
-    }
+
+    .. code-block:: json
+
+        {
+            "username": "user1"
+            "password": "qwerty"
+        }
     """
 
     data = request.get_json(silent=True)
@@ -68,8 +73,10 @@ async def register_user() -> Response:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
         raise e
 
+    ph = PasswordHasher()
+
     username = data["username"].lower()
-    password = data["password"]
+    hashed_password = ph.hash(data["password"])
 
     db = await get_db()
 
@@ -83,7 +90,7 @@ async def register_user() -> Response:
         )
 
     user = await db.users.create(data={"username": username})
-    await db.userlogins.create(data={"password": password, "id": user.id})
+    await db.userlogins.create(data={"password": hashed_password, "id": user.id})
 
     cookie: str = ""
     while cookie == "":
@@ -173,10 +180,13 @@ async def login_user() -> Response:
     Log a user in.
 
     # Json structure: (checked using schema validation)
-    {
-        "username": "user1"
-        "password": "qwerty"
-    }
+
+    .. code-block:: json
+
+        {
+            "username": "user1"
+            "password": "qwerty"
+        }
     """
 
     data = request.get_json(silent=True)
@@ -248,7 +258,11 @@ async def login_user() -> Response:
             ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
         )
 
-    if user_login.password != data["password"]:
+    ph = PasswordHasher()
+
+    try:
+        ph.verify(user_login.password, data["password"])
+    except VerifyMismatchError:
         return make_error_response(
             ResponseError.WrongPassword, "", HTTPStatus.UNAUTHORIZED
         )
