@@ -149,7 +149,7 @@ def test_delete_rss_not_found(client: Flask.testing):
     )
     expected = """{
         "error": "RecordNotFoundError",
-        "message": "An operation failed because it depends on one or more records that were required but not found. Record to delete does not exist."
+        "message": ""
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())

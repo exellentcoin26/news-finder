@@ -34,7 +34,6 @@ const Home = () => {
         const fetchArticles = async () => {
             try {
                 const articles = await getArticlesFromServer();
-                // console.log(articles);
                 setArticles(articles);
             } catch (error) {
                 console.error(error);
