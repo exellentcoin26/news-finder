@@ -13,13 +13,13 @@ from typing import List, Dict, Tuple, Set
 
 # from natsort import natsorted
 from prisma import Prisma
+from prisma.models import NewsArticles
 
 from utils import Language, filter_stop_words, filter_numerics
 
+THRESHOLD = 0.50
 
 # TODO: check language of the article
-
-THRESHOLD = 0.50
 
 
 async def main():
@@ -43,17 +43,28 @@ async def main():
     db = Prisma()
     await db.connect()
 
-    raw_articles = [
-        article.title + (article.description or "")
-        for article in await db.newsarticles.find_many()
-    ]
+    raw_articles = await db.newsarticles.find_many()
 
-    print(calc_article_similarity(raw_articles))
+    await calc_article_similarity(raw_articles, db)
 
     await db.disconnect()
 
 
-def calc_article_similarity(raw_articles: List[str]) -> Dict[int, Set[int]]:
+async def calc_article_similarity(
+    databse_articles: List[NewsArticles], client: Prisma
+) -> Dict[int, Set[int]]:
+    """
+    Calculates the similarity between articles using tf-idf to vectorize text and uses
+    cosine similarity.
+
+    Due to performance reasons (for 1000 articles it takes about 15 minutes) it inserts
+    the similar markers immediately into the database.
+    """
+
+    raw_articles: List[str] = [
+        article.title + (article.description or "") for article in databse_articles
+    ]
+
     # Remove whitespace, punctuation and convert to lowercase
     cleaned_articles: List[str] = [
         re.sub(r"\s+", " ", article)
@@ -99,7 +110,50 @@ def calc_article_similarity(raw_articles: List[str]) -> Dict[int, Set[int]]:
                     [*similar.get(rhs_article_idx, []), lhs_article_idx]
                 )
 
+                # Insert into database
+                await insert_similar_article_pair_into_db(
+                    databse_articles[lhs_article_idx],
+                    databse_articles[rhs_article_idx],
+                    client,
+                )
+
     return similar
+
+
+async def insert_similar_article_pair_into_db(
+    article1: NewsArticles, article2: NewsArticles, client: Prisma
+):
+    await client.similararticles.upsert(
+        where={
+            "id1_id2": {
+                "id1": article1.id,
+                "id2": article2.id,
+            }
+        },
+        data={
+            "create": {
+                "id1": article1.id,
+                "id2": article2.id,
+            },
+            "update": {},
+        },
+    )
+
+    await client.similararticles.upsert(
+        where={
+            "id1_id2": {
+                "id1": article2.id,
+                "id2": article1.id,
+            }
+        },
+        data={
+            "create": {
+                "id1": article2.id,
+                "id2": article1.id,
+            },
+            "update": {},
+        },
+    )
 
 
 def calc_tf_idf(documents: List[List[str]]) -> Dict[str, Tuple[List[float], float]]:
@@ -190,4 +244,4 @@ def cos_similarity(lhs: Dict[str, float], rhs: Dict[str, float]):
 
 
 if __name__ == "__main__":
-    asyncio.run(main(), debug=True)
+    asyncio.run(main())
