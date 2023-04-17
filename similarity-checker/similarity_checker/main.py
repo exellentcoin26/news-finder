@@ -3,7 +3,6 @@
 
 import asyncio
 
-# import os
 import sys
 import re
 import math
@@ -11,7 +10,6 @@ import string
 
 from typing import List, Dict, Tuple, Set
 
-# from natsort import natsorted
 from prisma import Prisma
 from prisma.models import NewsArticles
 
@@ -23,23 +21,6 @@ THRESHOLD = 0.50
 
 
 async def main():
-    # raw_articles: List[str] = []
-    #
-    # for [idx, article_file] in enumerate(natsorted(os.listdir("articles"))):
-    #     print(f"Article{idx}: {article_file}")
-    #     with open(f"articles/{article_file}", "r") as article:
-    #         # Remove unnecessary white space, punctuation and convert to lowercase
-    #         raw_articles.append(article.read())
-    #
-    # # Remove empty articles
-    # raw_articles = [article for article in raw_articles if len(article) != 0]
-    #
-    # print("============================")
-    # print("Article list:")
-    # for article in raw_articles:
-    #     print(article)
-    # print("============================")
-
     db = Prisma()
     await db.connect()
 
@@ -180,9 +161,6 @@ def calc_tf_idf(documents: List[List[str]]) -> Dict[str, Tuple[List[float], floa
     tf_idf_table = {
         term: (freq, idf_table.get(term, 0)) for [term, freq] in tf_table.items()
     }
-
-    # for entry in tf_idf_table.items():
-    #     print(entry)
 
     return tf_idf_table
 

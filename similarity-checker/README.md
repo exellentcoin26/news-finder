@@ -15,3 +15,9 @@ massaging of the dataset
 Stemming of words has been tried, but is ultimately removed for missing python
 stub files. In our limited tests, stemming did not improve the result by a
 significant amount. If later on an different library is found, it will be used.
+
+## Leftover files
+
+The [`articles`](./articles) folder is a leftover folder from testing the
+similarity checker. It is not removed as a reference to the type texts that are
+successfully matched.
