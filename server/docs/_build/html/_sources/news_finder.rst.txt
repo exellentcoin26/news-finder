@@ -29,14 +29,6 @@ news\_finder.db module
    :undoc-members:
    :show-inheritance:
 
-news\_finder.main module
-------------------------
-
-.. automodule:: news_finder.main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 news\_finder.path\_setup module
 -------------------------------
 
