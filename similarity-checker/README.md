@@ -10,6 +10,14 @@ Group a large set of articles based on their topic.
 - Latent Dirichlet Allocation - No fiddling or supervising of parameters, only
 massaging of the dataset
 
+### Performance
+
+Because a rather naive algorithm is used, that can only check pairs of articles
+and because all articles in the database are checked against eachother, the
+matcher is quite slow. In our tests, checking a thousand articles against
+eachother took nearly 15 minutes. Matched articles are therefor immediately
+inserted into the database and not waited untill the algorithm completes.
+
 ## Stemming
 
 Stemming of words has been tried, but is ultimately removed for missing python
