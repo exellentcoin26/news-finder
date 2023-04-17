@@ -15,7 +15,7 @@ massaging of the dataset
 Because a rather naive algorithm is used, that can only check pairs of articles
 and because all articles in the database are checked against eachother, the
 matcher is quite slow. In our tests, checking a thousand articles against
-eachother took nearly 15 minutes. Matched articles are therefor immediately
+each other took nearly 15 minutes. Matched articles are therefor immediately
 inserted into the database and not waited untill the algorithm completes.
 
 ## Stemming
