@@ -13,7 +13,7 @@ import ErrorPlaceholder from '../components/Error';
 import '../styles/Home.css';
 
 const getArticlesFromServer = async (
-    amount = 0,
+    amount = 50,
     offset = 0,
     errorHandler: () => void,
 ): Promise<ArticleEntry[]> => {
