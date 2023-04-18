@@ -98,10 +98,10 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [registerStatusInfo, setRegisterStatusInfo] = useState<
         RegisterStatusInfo[] | null
     >(null);
-    const [passwordsMatch, setPasswordsMatch] = useState(true);
 
     const handleRegisterStatus = (info: RegisterStatusInfo[]) => {
         setRegisterStatusInfo(info);
