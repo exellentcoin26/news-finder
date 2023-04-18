@@ -26,7 +26,7 @@ const About = () => {
                     <p>David Scalais (2nd Bachelor Computer Science)</p>
                     <p>Laurens De Wachter (2nd Bachelor Computer Science)</p>
                     <p>Chloe Mansibang (2nd Bachelor Computer Science)</p>
-                    <p>Ayoub El Marchouchi (2nd Bachelor Computer Science)</p>
+                    <p>Ayoub El Marchouhi (2nd Bachelor Computer Science)</p>
                 </Col>
             </Row>
             <Row>
