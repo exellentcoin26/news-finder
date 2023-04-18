@@ -97,3 +97,14 @@ services:
         condition: service_healthy
       db-migration:
         condition: service_completed_successfully
+
+  similarity-checker:
+    build:
+      context: ../
+      dockerfile: ./similarity-checker/Dockerfile
+    env_file: ./database-url.env
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully

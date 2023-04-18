@@ -1,0 +1,22 @@
+# python virtualenv directory
+/env
+/venv
+
+# mypy type checker
+/.mypy_cache
+
+# python cache
+__pycache__
+
+# build tool artifacts
+*.egg-info
+/build
+
+# pytest cache
+*.pytest_cache
+
+# apply files
+.DS_store
+
+# tmp files
+/tmp.txt
