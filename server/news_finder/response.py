@@ -50,7 +50,7 @@ class ResponseBody:
         self,
     ) -> Dict[str, HTTPStatus | List[Dict[str, str]] | Dict[str, Any]]:
         """
-        Serialize response body into json serializeable object.
+        Serialize response body into json serializable object.
         """
 
         return {
