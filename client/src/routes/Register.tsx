@@ -3,6 +3,7 @@ import { Container, Card, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import '../styles/Login-Register.css';
+
 const Register = () => {
     const server_url =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
