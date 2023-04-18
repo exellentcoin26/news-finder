@@ -1,11 +1,16 @@
-from flask import Blueprint, Response, request, make_response, jsonify
+from flask import Blueprint, Response, request
 from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 from prisma.errors import UniqueViolationError
+from typing import Dict, List
 
 from news_finder.db import get_db
-from news_finder.utils.error_response import make_error_response, ResponseError
+from news_finder.response import (
+    make_response_from_error,
+    ErrorKind,
+    make_success_response,
+)
 
 import sys
 
@@ -31,7 +36,7 @@ async def get_rss_feeds() -> Response:
             ]
         }
     """
-
+    # pyright: ignore
     source = request.args.get("source") or None
 
     db = await get_db()
@@ -43,28 +48,31 @@ async def get_rss_feeds() -> Response:
             )
         except Exception as e:
             print(e.with_traceback(None), file=sys.stderr)
-            return make_error_response(
-                ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
-            )
-        if source is None or source.rss is None:
-            return make_error_response(
-                ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.ServerError,
             )
 
-        urls: list[str] = []
+        if source is None or source.rss is None:
+            return make_response_from_error(
+                HTTPStatus.BAD_REQUEST, ErrorKind.NewsSourceNotFound
+            )
+
+        urls: List[str] = []
         for rss_entry in source.rss:
             urls.append(rss_entry.feed)
 
-        response_source: dict[str, list[str]] = {"feeds": urls}
+        response_source: Dict[str, List[str]] = {"feeds": urls}
 
-        return make_response(jsonify(response_source), HTTPStatus.OK)
+        return make_success_response(HTTPStatus.OK, response_source)
 
     try:
         feeds = await db.rssentries.find_many(include={"source": True})
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     response: dict[str, list[dict[str, str]]] = {"feeds": []}
@@ -77,7 +85,7 @@ async def get_rss_feeds() -> Response:
 
         response["feeds"].append({"source": news_source, "feed": feed.feed})
 
-    return make_response(jsonify(response), HTTPStatus.OK)
+    return make_success_response(HTTPStatus.OK, response)
 
 
 @rss_bp.post("/")
@@ -112,15 +120,16 @@ async def add_rss_feed() -> Response:
 
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.InvalidJson,
         )
 
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST, ErrorKind.JsonValidationError, e.message
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -155,23 +164,24 @@ async def add_rss_feed() -> Response:
     try:
         await b.commit()
     except UniqueViolationError as e:
-        return make_error_response(
-            ResponseError.UniqueViolationError,
-            str(e.with_traceback(None)),
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.UniqueViolationError,
+            str(e.with_traceback(None)),
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
-    return make_response("", HTTPStatus.OK)
+    return make_success_response()
 
 
 @rss_bp.delete("/")
 async def delete_rss() -> Response:
-    """
+    """data": {},
     Delete rss feeds from the database
 
     # Feed json structure: (checked using schema validation)
@@ -200,15 +210,18 @@ async def delete_rss() -> Response:
 
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.InvalidJson,
         )
 
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.JsonValidationError,
+            e.message,
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -222,26 +235,28 @@ async def delete_rss() -> Response:
             where={"feed": feed}, include={"source": True}
         )
         if feed_entry is None:
-            return make_error_response(
-                ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
+            return make_response_from_error(
+                HTTPStatus.BAD_REQUEST,
+                ErrorKind.RecordNotFoundError,
             )
         if feed_entry.source is None:
-            return make_error_response(
-                ResponseError.RecordNotFoundError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.RecordNotFoundError,
             )
 
         sources.add(feed_entry.source.id)
 
     b = db.batch_()
     for feed in data["feeds"]:
-        print()
         b.rssentries.delete(where={"feed": feed})
     try:
         await b.commit()
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     for source in sources:
@@ -249,10 +264,12 @@ async def delete_rss() -> Response:
             where={"id": source}, include={"rss": True}
         )
         if source_entry is None:
-            return make_error_response(
-                ResponseError.RecordNotFoundError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.RecordNotFoundError,
+                "",
             )
         if not source_entry.rss:
             await db.newssources.delete(where={"id": source})
 
-    return make_response("", HTTPStatus.OK)
+    return make_success_response()

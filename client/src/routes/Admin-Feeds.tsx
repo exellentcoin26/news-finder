@@ -15,9 +15,17 @@ const getSourcesFromServer = async () => {
         method: 'GET',
     });
 
+    // TODO: Handle errors better
+
     if (response.ok) {
         const sources: SourcesApiResponse = await response.json();
-        return sources.sources;
+
+        if (sources.data == null) {
+            // should always be caught with the error handler. This check is only needed for the type system.
+            throw new Error('data property on `SourceApiResponse` is not set');
+        }
+
+        return sources.data.sources;
         // TODO: Check json
     } else {
         throw new Error();
@@ -34,7 +42,13 @@ const getFeedsFromServer = async (source: string) => {
 
     if (response.ok) {
         const feeds: FeedsApiResponse = await response.json();
-        return feeds.feeds;
+
+        if (feeds.data == null) {
+            // should always be caught with the error handler. This check is only needed for the type system.
+            throw new Error('data property on `FeedsApiResponse` is not set');
+        }
+
+        return feeds.data.feeds;
         // TODO: Check json
     } else {
         throw new Error();
@@ -104,7 +118,7 @@ const AdminFeeds = () => {
             body: JSON.stringify({ feeds: array }),
         });
 
-        return response.status == 200;
+        return response.ok;
     };
 
     const handleRemoveFeed = async (feed: string | null): Promise<boolean> => {
@@ -117,7 +131,7 @@ const AdminFeeds = () => {
             body: JSON.stringify({ feeds: [feed] }),
         });
 
-        return response.status == 200;
+        return response.ok;
     };
 
     return (

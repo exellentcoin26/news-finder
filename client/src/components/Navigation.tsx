@@ -17,8 +17,17 @@ const Navigation = () => {
                 method: 'GET',
                 credentials: 'include',
             });
-            const data: AdminStatusApiResponse = await response.json();
-            setAdminStatus(data.admin);
+
+            const adminStatusApiResponse: AdminStatusApiResponse =
+                await response.json();
+
+            if (adminStatusApiResponse.data == null) {
+                throw new Error(
+                    'data property on `AdminStatusApiResponse` object',
+                );
+            }
+
+            setAdminStatus(adminStatusApiResponse.data.admin);
         };
 
         fetchAdminStatus();

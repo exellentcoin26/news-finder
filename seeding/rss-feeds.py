@@ -42,9 +42,7 @@ async def main() -> None:
         "https://www.washingtontimes.com/rss/headlines/news/politics/",
         "https://www.washingtontimes.com/atom/headlines/sports/tennis/",
         "https://telegraph.co.uk/rss.xml",
-        "https://moxie.foxnews.com/google-publisher/world.xml",
         "https://www.nasa.gov/rss/dyn/breaking_news.rss",
-        "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pIUWlnQVAB?hl=en-US&gl=US&ceid=US%3Aen",
     ]
 
     async with db.batch_() as b:

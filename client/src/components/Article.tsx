@@ -44,5 +44,9 @@ export const Article = ({
 };
 
 export const ArticlePlaceholder = () => {
-    return <h1>No articles loaded yet!</h1>;
+    return <h1>No articles loaded yet... Loading!</h1>;
+};
+
+export const NoArticlesToShow = () => {
+    return <h1>No articles in database.</h1>;
 };

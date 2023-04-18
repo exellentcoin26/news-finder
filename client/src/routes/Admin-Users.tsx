@@ -15,7 +15,7 @@ const Admin_Users = () => {
             body: JSON.stringify({ username: username }),
         });
 
-        return response.status == 200;
+        return response.ok;
     };
 
     const handleMakeAdmin = async (username: string): Promise<boolean> => {
@@ -25,7 +25,7 @@ const Admin_Users = () => {
             body: JSON.stringify({ usernames: [username] }),
         });
 
-        return response.status == 200;
+        return response.ok;
     };
 
     const [usernameDelete, setUsernameDelete] = useState('');

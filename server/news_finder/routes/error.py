@@ -3,6 +3,8 @@ from werkzeug.exceptions import BadRequest, HTTPException
 
 error_bp = Blueprint("error", __name__)
 
+# TODO: Rework to use new response interface
+
 
 @error_bp.app_errorhandler(404)
 def page_not_found(_: Exception) -> Response:

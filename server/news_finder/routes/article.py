@@ -1,10 +1,14 @@
-from flask import Blueprint, Response, make_response, jsonify, request
+from flask import Blueprint, Response, request
 from http import HTTPStatus
 from typing import List, Dict
 import sys
 
 from news_finder.db import get_db
-from news_finder.utils.error_response import make_error_response, ResponseError
+from news_finder.response import (
+    make_response_from_error,
+    ErrorKind,
+    make_success_response,
+)
 
 article_bp = Blueprint("article", __name__, url_prefix="/article")
 
@@ -47,10 +51,10 @@ async def get_articles() -> Response:
         amount = int(request.args.get("amount") or 50)
         offset = int(request.args.get("offset") or 0)
     except ValueError:
-        return make_error_response(
-            ResponseError.IncorrectParameters,
-            "Parameters to get request are not integer values",
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.IncorrectParameters,
+            "Parameters to get request are not integer values",
         )
 
     db = await get_db()
@@ -66,8 +70,9 @@ async def get_articles() -> Response:
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
@@ -90,4 +95,4 @@ async def get_articles() -> Response:
             }
         )
 
-    return make_response(jsonify(response), HTTPStatus.OK)
+    return make_success_response(HTTPStatus.OK, response)
