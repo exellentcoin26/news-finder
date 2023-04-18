@@ -5,7 +5,7 @@ from jsonschema import validate, SchemaError, ValidationError
 from uuid import uuid4
 from http import HTTPStatus
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
+from argon2.exceptions import VerificationError, VerifyMismatchError, InvalidHash
 
 import sys
 
@@ -282,6 +282,17 @@ async def login_user() -> Response:
         return make_response_from_error(
             HTTPStatus.UNAUTHORIZED,
             ErrorKind.WrongPassword,
+        )
+    except InvalidHash as e:
+        print(f"invalid hash: {user_login.password}", file=sys.stderr)
+        raise e
+    except VerificationError as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        raise e
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR, ErrorKind.ServerError
         )
 
     cookie: str = ""
