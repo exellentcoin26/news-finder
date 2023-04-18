@@ -1,10 +1,10 @@
 export interface ApiResponse<Payload> {
     data?: Payload;
-    errors: Error[];
+    errors: ApiError[];
     status: number;
 }
 
-export interface Error {
+export interface ApiError {
     kind: ErrorKind;
     message: string;
 }

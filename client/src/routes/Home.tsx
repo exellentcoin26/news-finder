@@ -39,7 +39,7 @@ const getArticlesFromServer = async (
 
     const body = await response.text();
 
-    const articles = ((): ArticleApiResponse => {
+    const articleApiResponse = ((): ArticleApiResponse => {
         try {
             return JSON.parse(body);
         } catch (e) {
@@ -52,12 +52,12 @@ const getArticlesFromServer = async (
         errorHandler();
     }
 
-    if (articles.data == null) {
+    if (articleApiResponse.data == null) {
         // should always be caught with the error handler. This check is only needed for the type system.
         throw new Error('data property on `ArticleApiResponse` is not set');
     }
 
-    return articles.data.articles.map((articleSource) => {
+    return articleApiResponse.data.articles.map((articleSource) => {
         return articleSource.article;
     });
 };

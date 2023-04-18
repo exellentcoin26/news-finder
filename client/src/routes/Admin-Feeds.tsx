@@ -16,8 +16,16 @@ const getSourcesFromServer = async () => {
         headers: { 'content-type': 'application/json' },
     });
 
+    // TODO: Handle errors better
+
     if (response.ok) {
         const sources: SourcesApiResponse = await response.json();
+
+        if (sources.data == null) {
+            // should always be caught with the error handler. This check is only needed for the type system.
+            throw new Error('data property on `SourceApiResponse` is not set');
+        }
+
         return sources.data.sources;
         // TODO: Check json
     } else {
@@ -36,6 +44,12 @@ const getFeedsFromServer = async (source: string) => {
 
     if (response.ok) {
         const feeds: FeedsApiResponse = await response.json();
+
+        if (feeds.data == null) {
+            // should always be caught with the error handler. This check is only needed for the type system.
+            throw new Error('data property on `FeedsApiResponse` is not set');
+        }
+
         return feeds.data.feeds;
         // TODO: Check json
     } else {

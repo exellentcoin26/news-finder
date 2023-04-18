@@ -1,30 +1,117 @@
 import { useState } from 'react';
-import { Container, Card, Form } from 'react-bootstrap';
+import { Container, Card, Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import { UserApiResponse } from '../interfaces/api/user';
+
 import '../styles/Login-Register.css';
+
+interface RegisterStatusInfo {
+    kind: RegisterStatusKind;
+    message: string;
+}
+
+enum RegisterStatusKind {
+    Success,
+    Error,
+}
+
+const RegisterStatusBanner = ({ info }: { info: RegisterStatusInfo[] }) => {
+    return (
+        <>
+            {info.map(({ kind, message }, index) => (
+                <Alert
+                    variant={
+                        kind == RegisterStatusKind.Success
+                            ? 'success'
+                            : 'danger'
+                    }
+                    key={index}
+                >
+                    {message}
+                </Alert>
+            ))}
+        </>
+    );
+};
 
 const Register = () => {
     const server_url =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
     const target_url = server_url + '/user/';
 
-    const handleRegister = async (username: string, password: string) => {
-        await fetch(target_url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ username: username, password: password }),
-        });
+    const handleRegister = async (
+        username: string,
+        password: string,
+        handleStatus: (status: RegisterStatusInfo[]) => void,
+    ) => {
+        const response = await (async (): Promise<Response> => {
+            try {
+                return await fetch(target_url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                    }),
+                });
+            } catch (e) {
+                console.error(e);
+                handleStatus([
+                    {
+                        kind: RegisterStatusKind.Error,
+                        message: 'Login request failed',
+                    },
+                ]);
+                throw e;
+            }
+        })();
+
+        const body = await response.text();
+
+        const userApiResponse = ((): UserApiResponse => {
+            try {
+                return JSON.parse(body);
+            } catch (e) {
+                console.debug(body);
+                throw e;
+            }
+        })();
+
+        if (!response.ok) {
+            handleStatus(
+                userApiResponse.errors.map(({ message }) => {
+                    return { kind: RegisterStatusKind.Error, message };
+                }),
+            );
+        } else {
+            handleStatus([
+                {
+                    kind: RegisterStatusKind.Success,
+                    message: 'Register succeeded',
+                },
+            ]);
+        }
     };
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [registerStatusInfo, setRegisterStatusInfo] = useState<
+        RegisterStatusInfo[] | null
+    >(null);
+
+    const handleRegisterStatus = (info: RegisterStatusInfo[]) => {
+        setRegisterStatusInfo(info);
+    };
 
     return (
         <>
             <Container className="form-container center">
+                {registerStatusInfo ? (
+                    <RegisterStatusBanner info={registerStatusInfo} />
+                ) : null}
                 <div>
                     <Card>
                         <Card.Body>
@@ -71,7 +158,11 @@ const Register = () => {
                                 <button
                                     className="default-button sign-up-button mb-3"
                                     onClick={() =>
-                                        handleRegister(username, password)
+                                        handleRegister(
+                                            username,
+                                            password,
+                                            handleRegisterStatus,
+                                        )
                                     }
                                 >
                                     {' '}
