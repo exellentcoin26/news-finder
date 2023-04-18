@@ -84,10 +84,6 @@
 <li class="toctree-l3"><a class="reference internal" href="news_finder.html#news_finder.db.get_db"><code class="docutils literal notranslate"><span class="pre">get_db()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="news_finder.html#module-news_finder.main">news_finder.main module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="news_finder.html#news_finder.main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="news_finder.html#module-news_finder.path_setup">news_finder.path_setup module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="news_finder.html#news_finder.path_setup.add_module_to_python_path"><code class="docutils literal notranslate"><span class="pre">add_module_to_python_path()</span></code></a></li>
 </ul>
@@ -272,7 +268,20 @@ extracted from the hostname of the url.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="news_finder.routes.user.create_cookie_for_user">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.user.</span></span><span class="sig-name descname"><span class="pre">create_cookie_for_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/news_finder/routes/user.html#create_cookie_for_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.user.create_cookie_for_user" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Tries to generate cookie for user and inserts into database.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="news_finder.routes.user.delete_user">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.user.</span></span><span class="sig-name descname"><span class="pre">delete_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/news_finder/routes/user.html#delete_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.user.delete_user" title="Permalink to this definition"><span>#</span></a></dt>
+<dd><p>Delete a user.</p>
+<p># Json structure: (checked using schema validation)</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="news_finder.routes.user.login_status">

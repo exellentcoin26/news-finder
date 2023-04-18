@@ -19,6 +19,10 @@ CORS(user_bp, supports_credentials=True)
 
 
 async def create_cookie_for_user(user_id: int) -> str:
+    """
+    Tries to generate cookie for user and inserts into database.
+    """
+
     cookie = str(uuid4())
 
     db = await get_db()
@@ -111,9 +115,12 @@ async def delete_user():
     Delete a user.
 
     # Json structure: (checked using schema validation)
-    {
-        "username": "user1"
-    }
+
+    .. code-block:: json
+
+        {
+            "username": "user1"
+        }
     """
     data = request.get_json(silent=True)
     if not data:
