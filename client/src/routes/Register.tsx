@@ -176,12 +176,13 @@ const Register = () => {
                             <div>
                                 <button
                                     className="default-button sign-up-button mb-3"
-                                    onClick={() =>
+                                    onClick={() => {
+                                        if (!passwordsMatch) return
                                         handleRegister(
                                             username,
                                             password,
                                             handleRegisterStatus,
-                                        )
+                                        )}
                                     }
                                 >
                                     {' '}
