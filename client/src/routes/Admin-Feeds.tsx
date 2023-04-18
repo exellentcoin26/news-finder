@@ -18,7 +18,7 @@ const getSourcesFromServer = async () => {
 
     if (response.ok) {
         const sources: SourcesApiResponse = await response.json();
-        return sources.sources;
+        return sources.data.sources;
         // TODO: Check json
     } else {
         throw new Error();
@@ -36,7 +36,7 @@ const getFeedsFromServer = async (source: string) => {
 
     if (response.ok) {
         const feeds: FeedsApiResponse = await response.json();
-        return feeds.feeds;
+        return feeds.data.feeds;
         // TODO: Check json
     } else {
         throw new Error();
@@ -106,7 +106,7 @@ const AdminFeeds = () => {
             body: JSON.stringify({ feeds: array }),
         });
 
-        return response.status == 200;
+        return response.ok;
     };
 
     const handleRemoveFeed = async (feed: string | null): Promise<boolean> => {
@@ -119,7 +119,7 @@ const AdminFeeds = () => {
             body: JSON.stringify({ feeds: [feed] }),
         });
 
-        return response.status == 200;
+        return response.ok;
     };
 
     return (

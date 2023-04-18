@@ -21,7 +21,7 @@ const getArticlesFromServer = async (_amount = 0): Promise<ArticleEntry[]> => {
         }
     })();
 
-    return articles.articles.map((articleSource) => {
+    return articles.data.articles.map((articleSource) => {
         return articleSource.article;
     });
 };
