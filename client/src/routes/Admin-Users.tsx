@@ -42,7 +42,7 @@ const Admin_Users = () => {
                             type="text"
                             placeholder="username"
                             value={usernameDelete}
-                            onChange={(event) =>
+                            onChange={async (event) =>
                                 setUsernameDelete(event.target.value)
                             }
                         ></Form.Control>
@@ -50,7 +50,10 @@ const Admin_Users = () => {
                     <Button
                         type="submit"
                         variant="custom"
-                        onClick={() => handleUserDeletion(usernameDelete)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleUserDeletion(usernameDelete);
+                        }}
                     >
                         Remove
                     </Button>
@@ -71,7 +74,10 @@ const Admin_Users = () => {
                     <Button
                         type="submit"
                         variant="custom"
-                        onClick={() => handleMakeAdmin(usernameMakeAdmin)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleMakeAdmin(usernameMakeAdmin);
+                        }}
                     >
                         Submit
                     </Button>
