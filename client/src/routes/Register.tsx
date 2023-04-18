@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -101,10 +101,22 @@ const Register = () => {
     const [registerStatusInfo, setRegisterStatusInfo] = useState<
         RegisterStatusInfo[] | null
     >(null);
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
 
     const handleRegisterStatus = (info: RegisterStatusInfo[]) => {
         setRegisterStatusInfo(info);
     };
+
+    useEffect(() => {
+        validatePasswords();},
+        [password, confirmPassword]
+    );
+
+    const validatePasswords = () => {
+        password === confirmPassword
+        ? setPasswordsMatch(true)
+        : setPasswordsMatch(false)
+    }
 
     return (
         <>
@@ -129,6 +141,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setUsername(event.target.value)
                                         }
+                                        aria-required = "true"
                                     />
                                     <Form.Control
                                         required
@@ -139,6 +152,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setPassword(event.target.value)
                                         }
+                                        aria-required= "true"
                                     />
                                     <Form.Control
                                         required
@@ -151,7 +165,12 @@ const Register = () => {
                                                 event.target.value,
                                             )
                                         }
+                                        aria-required="true"
+                                        aria-invalid={passwordsMatch}
                                     />
+                                    <div className="input-error">
+                                        {passwordsMatch? "" : "Passwords do not match"}
+                                    </div>
                                 </Form>
                             </div>
                             <div>
