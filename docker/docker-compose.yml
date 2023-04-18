@@ -1,7 +1,25 @@
 services:
+  caddy:
+    image: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      server:
+        condition: service_healthy
+      client:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    links:
+      - client
+      - server
+
   db:
     image: postgres
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ppdb_admin
       POSTGRES_PASSWORD: admin
@@ -39,6 +57,7 @@ services:
     build:
       context: ../
       dockerfile: ./server/Dockerfile
+    restart: unless-stopped
     env_file: ./database-url.env
     ports:
       - "1337:5000"
@@ -55,16 +74,34 @@ services:
 
   client:
     build: ./client
+    restart: unless-stopped
     ports:
-      - "80:8080"
+      - "8080:8080"
     depends_on:
       server:
         condition: service_healthy
+    healthcheck:
+      test: curl --fail -s http://localhost:8080 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 10
 
   rss-scraper:
     build:
       context: ../
       dockerfile: ./rss-scraper/Dockerfile
+    restart: unless-stopped
+    env_file: ./database-url.env
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully
+
+  similarity-checker:
+    build:
+      context: ../
+      dockerfile: ./similarity-checker/Dockerfile
     env_file: ./database-url.env
     depends_on:
       db:

@@ -8,6 +8,15 @@ Note: When the records are already present in the database this script just exit
 import asyncio
 from prisma import Prisma
 from prisma.errors import UniqueViolationError
+from argon2 import PasswordHasher
+
+users = {
+    "laurens": "admin",
+    "jonas": "admin",
+    "david": "admin",
+    "chloë": "admin",
+    "ayoub": "admin",
+}
 
 
 async def main() -> None:
@@ -15,46 +24,16 @@ async def main() -> None:
     await db.connect()
 
     async with db.batch_() as b:
-        b.users.create(
-            data={
-                "id": 1,
-                "username": "laurens",
-                "admin": True,
-                "login": {"create": {"password": "admin"}},
-            }
-        )
-        b.users.create(
-            data={
-                "id": 2,
-                "username": "jonas",
-                "admin": True,
-                "login": {"create": {"password": "admin"}},
-            }
-        )
-        b.users.create(
-            data={
-                "id": 3,
-                "username": "david",
-                "admin": True,
-                "login": {"create": {"password": "admin"}},
-            }
-        )
-        b.users.create(
-            data={
-                "id": 4,
-                "username": "chloë",
-                "admin": True,
-                "login": {"create": {"password": "admin"}},
-            }
-        )
-        b.users.create(
-            data={
-                "id": 5,
-                "username": "ayoub",
-                "admin": True,
-                "login": {"create": {"password": "admin"}},
-            }
-        )
+        ph = PasswordHasher()
+        for [username, password] in users.items():
+            hashed_password = ph.hash(password)
+            b.users.create(
+                data={
+                    "username": username,
+                    "admin": True,
+                    "login": {"create": {"password": hashed_password}},
+                },
+            )
 
         try:
             await b.commit()
