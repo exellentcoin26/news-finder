@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
 
-import { ApiError } from '../interfaces/api/apiResponse';
+import { UserApiResponse } from '../interfaces/api/user';
 
 import '../styles/Login-Register.css';
-import { UserApiResponse } from '../interfaces/api/user';
 
 interface LoginStatusInfo {
     kind: LoginStatusKind;
