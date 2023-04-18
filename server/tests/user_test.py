@@ -221,8 +221,8 @@ def test_login_non_existing_user(client: Flask.testing):
         "data": {},
         "errors": [
             {
-                "kind": "RecordNotFoundError",
-                "message": ""
+                "kind": "IncorrectCredentials",
+                "message": "Wrong combination of username and/or password"
             }
         ],
         "status": 400
@@ -244,8 +244,8 @@ def test_login_wrong_password(client: Flask.testing):
         "data": {},
         "errors": [
             {
-                "kind": "WrongPassword",
-                "message": ""
+                "kind": "IncorrectCredentials",
+                "message": "Wrong combination of username and/or password"
             }
         ],
         "status": 401
