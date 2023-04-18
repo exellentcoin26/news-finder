@@ -12,27 +12,13 @@ from http import HTTPStatus
 def test_add_admin(client: Flask.testing):
     response = client.post("/user/", json={"username": "jan", "password": "qwerty"})
     assert response.status_code == HTTPStatus.OK
-    response = client.post(
-        "/user/", json={"username": "piet-joris", "password": "qwerty"}
-    )
-    assert response.status_code == HTTPStatus.OK
-    response = client.post("/user/", json={"username": "korneel", "password": "qwerty"})
-    assert response.status_code == HTTPStatus.OK
 
-    response_make_admin = client.post(
-        "/admin/", json={"usernames": ["Jan", "piet-joris"]}
-    )
+    response_make_admin = client.post("/admin/", json={"usernames": ["Jan"]})
     assert response_make_admin.status_code == HTTPStatus.OK
 
-    response = client.post("/admin/status/", json={"username": "Jan"})
+    response = client.get("/admin/")
     assert response.status_code == HTTPStatus.OK
     assert response.get_json()["data"]["admin"]
-    response = client.post("/admin/status/", json={"username": "PIET-JORIS"})
-    assert response.status_code == HTTPStatus.OK
-    assert response.get_json()["data"]["admin"]
-    response = client.post("/admin/status/", json={"username": "Korneel"})
-    assert response.status_code == HTTPStatus.OK
-    assert not response.get_json()["data"]["admin"]
 
 
 def test_add_admin_no_json(client: Flask.testing):
@@ -110,16 +96,12 @@ def test_status(client: Flask.testing):
     response_make_admin = client.post("/admin/", json={"usernames": ["jan"]})
     assert response_make_admin.status_code == HTTPStatus.OK
 
-    response = client.post("/admin/status/", json={"username": "Jan"})
+    response = client.post("/admin/", json={"usernames": ["Jan", "piet-joris"]})
     assert response.status_code == HTTPStatus.OK
-    assert response.get_json()["data"]["admin"]
-    response = client.post("/admin/status/", json={"username": "piet-joris"})
-    assert response.status_code == HTTPStatus.OK
-    assert not response.get_json()["data"]["admin"]
 
 
 def test_status_no_json(client: Flask.testing):
-    response = client.post("/admin/status/")
+    response = client.post("/admin/")
     expected = """{
         "data": {},
         "errors": [
@@ -135,13 +117,13 @@ def test_status_no_json(client: Flask.testing):
 
 
 def test_status_schema(client: Flask.testing):
-    response = client.post("/admin/status/", json={"test": "test"})
+    response = client.post("/admin/", json={"test": "test"})
     expected = """{
         "data": {},
         "errors": [
             {
                 "kind": "JsonValidationError",
-                "message": "'username' is a required property"
+                "message": "'usernames' is a required property"
             }
         ],
         "status": 400

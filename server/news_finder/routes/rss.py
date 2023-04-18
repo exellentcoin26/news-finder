@@ -113,7 +113,7 @@ async def add_rss_feed() -> Response:
                 "description": "list off rss feeds to be added",
                 "type": "array",
                 "items": {"type": "string"},
-            },
+            }
         },
         "required": ["feeds"],
     }
@@ -139,7 +139,6 @@ async def add_rss_feed() -> Response:
     b = db.batch_()
 
     for rss_feed in data["feeds"]:
-        # Extract news source and news source url from rss feed url
         # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
         # TODO: Fixme
         url_components: ParseResult = urlparse(rss_feed)  # pyright: ignore
@@ -158,15 +157,7 @@ async def add_rss_feed() -> Response:
                     "url": news_source_url,
                     "rss": {"create": {"feed": rss_feed}},
                 },
-                "update": {
-                    "rss": {
-                        "create": [
-                            {
-                                "feed": rss_feed,
-                            }
-                        ]
-                    }
-                },
+                "update": {"rss": {"create": [{"feed": rss_feed}]}},
             },
         )
 
@@ -209,10 +200,10 @@ async def delete_rss() -> Response:
         "type": "object",
         "properties": {
             "feeds": {
-                "description": "list of rss feeds to be deleted",
+                "description": "list off rss feeds to be deleted",
                 "type": "array",
                 "items": {"type": "string"},
-            },
+            }
         },
         "required": ["feeds"],
     }

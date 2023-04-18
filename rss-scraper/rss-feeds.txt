@@ -24,5 +24,4 @@ https://www.cbsnews.com/latest/rss/world
 https://www.washingtontimes.com/rss/headlines/news/politics/
 https://www.washingtontimes.com/atom/headlines/sports/tennis/
 https://telegraph.co.uk/rss.xml
-https://moxie.foxnews.com/google-publisher/world.xml
 https://www.nasa.gov/rss/dyn/breaking_news.rss
