@@ -1,10 +1,14 @@
-from flask import Blueprint, Response, request, make_response, jsonify
+from flask import Blueprint, Response, request
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 from prisma.errors import RecordNotFoundError
 
 from news_finder.db import get_db
-from news_finder.utils.error_response import make_error_response, ResponseError
+from news_finder.response import (
+    make_response_from_error,
+    ErrorKind,
+    make_success_response,
+)
 
 import sys
 
@@ -42,15 +46,13 @@ async def add_admin() -> Response:
 
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
-        )
+        return make_response_from_error(HTTPStatus.BAD_REQUEST, ErrorKind.InvalidJson)
 
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST, ErrorKind.JsonValidationError, e.message
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -65,18 +67,19 @@ async def add_admin() -> Response:
     try:
         await b.commit()
     except RecordNotFoundError as e:
-        return make_error_response(
-            ResponseError.RecordNotFoundError,
-            str(e.with_traceback(None)),
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.RecordNotFoundError,
+            str(e.with_traceback(None)),
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
-    return make_response("", HTTPStatus.OK)
+    return make_success_response()
 
 
 @admin_bp.post("/status/")
@@ -106,15 +109,13 @@ async def is_admin() -> Response:
 
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
-        )
+        return make_response_from_error(HTTPStatus.BAD_REQUEST, ErrorKind.InvalidJson)
 
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST, ErrorKind.JsonValidationError, e.message
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -129,19 +130,25 @@ async def is_admin() -> Response:
             }
         )
     except RecordNotFoundError as e:
-        return make_error_response(
-            ResponseError.RecordNotFoundError,
-            str(e.with_traceback(None)),
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.RecordNotFoundError,
+            str(e.with_traceback(None)),
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     if user is None:
-        return make_error_response(
-            ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.RecordNotFoundError,
         )
-    return make_response(jsonify({"admin": user.admin}), HTTPStatus.OK)
+
+    return make_success_response(
+        HTTPStatus.OK,
+        {"admin": user.admin},
+    )
