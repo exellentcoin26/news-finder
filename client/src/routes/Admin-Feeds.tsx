@@ -13,7 +13,6 @@ const server_url =
 const getSourcesFromServer = async () => {
     const response = await fetch(server_url + '/source/', {
         method: 'GET',
-        headers: { 'content-type': 'application/json' },
     });
 
     if (response.ok) {
@@ -30,7 +29,6 @@ const getFeedsFromServer = async (source: string) => {
         server_url + '/rss/?' + new URLSearchParams({ source: source }),
         {
             method: 'GET',
-            headers: { 'content-type': 'application/json' },
         },
     );
 
@@ -141,7 +139,10 @@ const AdminFeeds = () => {
                     <Button
                         type="submit"
                         variant="custom"
-                        onClick={() => handleAddFeed(inputFeeds)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleAddFeed(inputFeeds);
+                        }}
                     >
                         Submit
                     </Button>
@@ -176,7 +177,8 @@ const AdminFeeds = () => {
                     <Button
                         type="submit"
                         variant="custom"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             handleRemoveFeed(selectedFeed);
                         }}
                     >

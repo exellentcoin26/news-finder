@@ -16,7 +16,6 @@ const Navigation = () => {
             const response = await fetch(server_url + '/admin/', {
                 method: 'GET',
                 credentials: 'include',
-                headers: { 'content-type': 'application/json' },
             });
             const data: AdminStatusApiResponse = await response.json();
             setAdminStatus(data.admin);
