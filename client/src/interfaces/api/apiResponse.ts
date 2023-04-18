@@ -1,15 +1,15 @@
 export interface ApiResponse<Payload> {
-    data: Payload;
+    data?: Payload;
     errors: Error[];
     status: number;
 }
 
-interface Error {
+export interface Error {
     kind: ErrorKind;
     message: string;
 }
 
-enum ErrorKind {
+export enum ErrorKind {
     InvalidJson,
     JsonValidationError,
     UniqueViolationError,
