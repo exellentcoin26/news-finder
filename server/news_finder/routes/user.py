@@ -166,7 +166,7 @@ async def delete_user():
     if user is None:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
-            ErrorKind.ServerError,
+            ErrorKind.UserDoesNotExist,
         )
 
     try:
@@ -234,12 +234,9 @@ async def login_user() -> Response:
 
     try:
         user = await db.users.find_first(where={"username": data["username"].lower()})
-    except RecordNotFoundError:
-        return make_response_from_error(
-            HTTPStatus.BAD_REQUEST,
-            ErrorKind.RecordNotFoundError,
-        )
     except Exception as e:
+        # Note: Catching `RecordNotFoundError` is not needed because this is not thrown
+        # for `find_first`
         print(e.with_traceback(None), file=sys.stderr)
         return make_response_from_error(
             HTTPStatus.INTERNAL_SERVER_ERROR,
@@ -249,7 +246,8 @@ async def login_user() -> Response:
     if user is None:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
-            ErrorKind.RecordNotFoundError,
+            ErrorKind.IncorrectCredentials,
+            "Wrong combination of username and/or password",
         )
 
     try:
@@ -268,11 +266,8 @@ async def login_user() -> Response:
             ErrorKind.ServerError,
         )
 
-    if user_login is None:
-        return make_response_from_error(
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-            ErrorKind.ServerError,
-        )
+    # Should be ok to assert because prisma would have thrown a `RecordNotFoundError`.
+    assert user_login is not None
 
     ph = PasswordHasher()
 
@@ -281,7 +276,8 @@ async def login_user() -> Response:
     except VerifyMismatchError:
         return make_response_from_error(
             HTTPStatus.UNAUTHORIZED,
-            ErrorKind.WrongPassword,
+            ErrorKind.IncorrectCredentials,
+            "Wrong combination of username and/or password",
         )
     except InvalidHash as e:
         print(f"invalid hash: {user_login.password}", file=sys.stderr)

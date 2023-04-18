@@ -22,6 +22,8 @@ class ErrorKind(Enum):
     WrongPassword = 8
     IncorrectParameters = 9
     NewsSourceNotFound = 10
+    UserDoesNotExist = 11
+    IncorrectCredentials = 12
 
     ServerError = 500
 
