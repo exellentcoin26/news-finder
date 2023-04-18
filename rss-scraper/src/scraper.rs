@@ -8,6 +8,9 @@ use feed_rs::model::Feed;
 pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
     let rss_feeds = client.rss_entries().find_many(vec![]).exec().await?;
 
+
+    client.news_articles().delete();
+
     for rss_feed in rss_feeds {
         let source_id = rss_feed.source_id;
         let rss_feed = rss_feed.feed;
