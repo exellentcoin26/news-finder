@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -98,6 +98,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [registerStatusInfo, setRegisterStatusInfo] = useState<
         RegisterStatusInfo[] | null
     >(null);
@@ -105,6 +106,17 @@ const Register = () => {
     const handleRegisterStatus = (info: RegisterStatusInfo[]) => {
         setRegisterStatusInfo(info);
     };
+
+    useEffect(() => {
+        validatePasswords();},
+        [password, confirmPassword]
+    );
+
+    const validatePasswords = () => {
+        password === confirmPassword
+        ? setPasswordsMatch(true)
+        : setPasswordsMatch(false)
+    }
 
     return (
         <>
@@ -129,6 +141,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setUsername(event.target.value)
                                         }
+                                        aria-required = "true"
                                     />
                                     <Form.Control
                                         required
@@ -139,6 +152,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setPassword(event.target.value)
                                         }
+                                        aria-required= "true"
                                     />
                                     <Form.Control
                                         required
@@ -151,18 +165,24 @@ const Register = () => {
                                                 event.target.value,
                                             )
                                         }
+                                        aria-required="true"
+                                        aria-invalid={passwordsMatch}
                                     />
+                                    <div className="input-error">
+                                        {passwordsMatch? "" : "Passwords do not match"}
+                                    </div>
                                 </Form>
                             </div>
                             <div>
                                 <button
                                     className="default-button sign-up-button mb-3"
-                                    onClick={() =>
+                                    onClick={() => {
+                                        if (!passwordsMatch) return
                                         handleRegister(
                                             username,
                                             password,
                                             handleRegisterStatus,
-                                        )
+                                        )}
                                     }
                                 >
                                     {' '}
