@@ -6,10 +6,20 @@ import { Article, ArticlePlaceholder } from '../components/Article';
 
 import '../styles/Home.css';
 
-const getArticlesFromServer = async (_amount = 0): Promise<ArticleEntry[]> => {
+const getArticlesFromServer = async (
+    amount = 0,
+    offset = 0,
+): Promise<ArticleEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-    const response = await fetch(serverUrl + '/article');
+    const response = await fetch(
+        serverUrl +
+            '/article?' +
+            new URLSearchParams({
+                amount: amount.toString(),
+                offset: offset.toString(),
+            }),
+    );
     const body = await response.text();
 
     const articles = ((): ArticleApiResponse => {
