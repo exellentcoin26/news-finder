@@ -6,6 +6,8 @@ import { FeedsApiResponse } from '../interfaces/api/rss';
 import { SourcesApiResponse } from '../interfaces/api/newsSource';
 
 import '../styles/Admin.css';
+import { AdminStatusApiResponse } from '../interfaces/api/admin';
+import { Navigate } from 'react-router-dom';
 
 const server_url =
     import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
@@ -63,6 +65,8 @@ const AdminFeeds = () => {
     const [selectedSource, setSelectedSource] = useState<string | null>(null);
     const [selectedFeed, setSelectedFeed] = useState<string | null>(null);
     const [feedIsDisabled, setFeedIsDisabled] = useState<boolean>(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isFetchingAdmin, setIsFetchingAdmin] = useState(true);
 
     useEffect(() => {
         const fetchSources = async () => {
@@ -75,6 +79,31 @@ const AdminFeeds = () => {
         };
 
         fetchSources();
+
+        const fetchAdminStatus = async () => {
+            const response = await fetch(server_url + '/admin/', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            const adminStatusApiResponse: AdminStatusApiResponse =
+                await response.json();
+
+            if (adminStatusApiResponse.data == null) {
+                throw new Error(
+                    'data property on `AdminStatusApiResponse` object',
+                );
+            }
+
+            if (adminStatusApiResponse.data.admin) {
+                setIsAdmin(true);
+            } else {
+                setIsAdmin(false);
+            }
+            setIsFetchingAdmin(false);
+        };
+
+        fetchAdminStatus();
     }, []);
 
     useEffect(() => {
@@ -134,74 +163,82 @@ const AdminFeeds = () => {
         return response.ok;
     };
 
-    return (
-        <Container>
-            <Container className="page-title">Feed Management</Container>
+    if (isFetchingAdmin) {
+        return null;
+    }
+
+    if (!isAdmin) {
+        return <Navigate replace to={'/home'} />;
+    } else {
+        return (
             <Container>
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Add Feeds</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="feed"
-                            value={inputFeeds}
-                            onChange={(event) =>
-                                setInputFeeds(event.target.value)
-                            }
-                        ></Form.Control>
-                    </Form.Group>
-                    <Button
-                        type="submit"
-                        variant="custom"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            handleAddFeed(inputFeeds);
-                        }}
-                    >
-                        Submit
-                    </Button>
-                </Form>
-                <Container className="mb-5"></Container>
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Remove Feed</Form.Label>
-                        <Form.Select onChange={handleSourceChange}>
-                            <option value="">Choose a source</option>
-                            {sources.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Select
-                            onChange={handleFeedChange}
-                            disabled={feedIsDisabled}
+                <Container className="page-title">Feed Management</Container>
+                <Container>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Add Feeds</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="feed"
+                                value={inputFeeds}
+                                onChange={(event) =>
+                                    setInputFeeds(event.target.value)
+                                }
+                            ></Form.Control>
+                        </Form.Group>
+                        <Button
+                            type="submit"
+                            variant="custom"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleAddFeed(inputFeeds);
+                            }}
                         >
-                            <option value="">Choose a feed</option>
-                            {feeds.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    </Form.Group>
-                    <br />
-                    <Button
-                        type="submit"
-                        variant="custom"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            handleRemoveFeed(selectedFeed);
-                        }}
-                    >
-                        Remove
-                    </Button>
-                </Form>
+                            Submit
+                        </Button>
+                    </Form>
+                    <Container className="mb-5"></Container>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Remove Feed</Form.Label>
+                            <Form.Select onChange={handleSourceChange}>
+                                <option value="">Choose a source</option>
+                                {sources.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Select
+                                onChange={handleFeedChange}
+                                disabled={feedIsDisabled}
+                            >
+                                <option value="">Choose a feed</option>
+                                {feeds.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                        <br />
+                        <Button
+                            type="submit"
+                            variant="custom"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleRemoveFeed(selectedFeed);
+                            }}
+                        >
+                            Remove
+                        </Button>
+                    </Form>
+                </Container>
             </Container>
-        </Container>
-    );
+        );
+    }
 };
 
 export default AdminFeeds;
