@@ -4,6 +4,15 @@ use crate::{
     prisma::{self, PrismaClient},
 };
 use feed_rs::model::Feed;
+use nom::{
+    IResult,
+    sequence::delimited,
+    // see the "streaming/complete" paragraph lower for an explanation of these submodules
+    character::complete::char,
+    bytes::complete::is_not,
+    bytes::complete::take_until
+};
+
 
 pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
     let rss_feeds = client.rss_entries().find_many(vec![]).exec().await?;
@@ -73,7 +82,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                     continue;
                 }
             };
-
+            // removing <p> tags using regex library
             let description = entry
                 .summary
                 .as_ref()
@@ -90,8 +99,12 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 .map(|category| category.term.clone())
                 .collect();
 
-            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
 
+
+
+
+            //log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
+            log::debug!("tags: {labels:?}");
             /* insert scraped data into db */
 
             // TODO: Make labels work :)
@@ -105,6 +118,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                     vec![],
                 ))
             }
+            
 
             // insert articles
             article_batch.push(client.news_articles().upsert(
