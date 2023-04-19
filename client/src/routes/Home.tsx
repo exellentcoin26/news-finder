@@ -24,7 +24,7 @@ const getArticlesFromServer = async (
         try {
             return await fetch(
                 serverUrl +
-                    '/article?' +
+                    '/article/?' +
                     new URLSearchParams({
                         amount: amount.toString(),
                         offset: offset.toString(),
@@ -75,7 +75,7 @@ const Home = () => {
         const fetchArticles = async () => {
             try {
                 const articles = await getArticlesFromServer(
-                    0,
+                    50,
                     0,
                     handleArticleErrors,
                 );
