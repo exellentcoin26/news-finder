@@ -2713,6 +2713,7 @@ dependencies = [
  "mime",
  "nom",
  "prisma-client-rust",
+ "regex",
  "reqwest",
  "serde",
  "thiserror",

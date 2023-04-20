@@ -13,6 +13,9 @@ use nom::{
     bytes::complete::take_until
 };
 
+use regex::Regex;
+use crate::prisma::users::SetParam;
+
 
 pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
     let rss_feeds = client.rss_entries().find_many(vec![]).exec().await?;
@@ -82,11 +85,22 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                     continue;
                 }
             };
-            // removing <p> tags using regex library
+
             let description = entry
                 .summary
                 .as_ref()
                 .map(|description| description.content.to_string());
+
+
+
+            // Create a regex pattern to match HTML tags
+            let mut string_html: Option<String>=None;
+            if description.is_some(){
+                let pattern = Regex::new(r"<.*?>").unwrap();
+                let clean_de = description.as_ref().map(|description| description.to_string()).unwrap();
+                let clean_html = pattern.replace_all(&clean_de, "");
+                string_html = clean_html.into_owned().into();
+            }
 
             let photo = get_photos_from_entry(&entry).into_iter().next();
 
@@ -100,11 +114,8 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 .collect();
 
 
+            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {string_html:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
 
-
-
-            //log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
-            log::debug!("tags: {labels:?}");
             /* insert scraped data into db */
 
             // TODO: Make labels work :)
@@ -119,24 +130,32 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 ))
             }
             
+            let mut description_article= prisma::news_articles::description::set(description);
+
 
             // insert articles
+            if string_html.is_some()
+            {
+                println!("{:?}",string_html);
+                description_article = prisma::news_articles::description::set(string_html);
+            }
+
             article_batch.push(client.news_articles().upsert(
-                prisma::news_articles::url::equals(url.clone()),
-                prisma::news_articles::create(
-                    prisma::news_sources::id::equals(source_id),
-                    url,
-                    title,
-                    vec![
-                        prisma::news_articles::description::set(description),
-                        prisma::news_articles::photo::set(photo),
-                        prisma::news_articles::publication_date::set(pub_date),
-                    ],
-                ),
-                // Update is not needed, because we want to ignore articles that have been inserted
-                // before.
-                vec![],
-            ));
+                    prisma::news_articles::url::equals(url.clone()),
+                    prisma::news_articles::create(
+                        prisma::news_sources::id::equals(source_id),
+                        url,
+                        title,
+                        vec![
+                            prisma::news_articles::photo::set(photo),
+                            prisma::news_articles::publication_date::set(pub_date),
+                            description_article
+                        ],
+                    ),
+                    // Update is not needed, because we want to ignore articles that have been inserted
+                    // before.
+                    vec![],
+                ));
         }
 
         client._batch((label_batch, article_batch)).await?;
@@ -151,6 +170,8 @@ async fn get_rss_and_validate(url: &str) -> std::result::Result<Feed, RssError> 
 
     Ok(feed)
 }
+
+
 
 /// Returns a vector of photo urls found in the entry.
 /// Locations:
