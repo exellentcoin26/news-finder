@@ -37,7 +37,12 @@ const Navigation = () => {
         <Navbar expand="lg" className="primary_color navbar-dark">
             <Container fluid>
                 <Navbar.Brand>
-                    <Link to="/home" className="home_text nav_text">
+                    <Link to="/home" className="home-text nav-text">
+                        <img
+                            src="/img/favicon.ico"
+                            alt=""
+                            className="nav-icon"
+                        />
                         newsfinder
                     </Link>
                 </Navbar.Brand>
@@ -45,14 +50,14 @@ const Navigation = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <LinkContainer to="/about">
-                            <Nav.Link className="nav_text">about</Nav.Link>
+                            <Nav.Link className="nav-text">about</Nav.Link>
                         </LinkContainer>
                     </Nav>
                     <Nav>
                         {isAdmin && (
                             <NavDropdown
-                                title={<span className="nav_text">admin</span>}
-                                className="nav_text"
+                                title={<span className="nav-text">admin</span>}
+                                className="nav-text"
                             >
                                 <Dropdown.Item>
                                     <Link
@@ -73,7 +78,7 @@ const Navigation = () => {
                             </NavDropdown>
                         )}
                         <LinkContainer to="/login">
-                            <Nav.Link className="nav_text">login</Nav.Link>
+                            <Nav.Link className="nav-text">login</Nav.Link>
                         </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
