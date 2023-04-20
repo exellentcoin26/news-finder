@@ -136,7 +136,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             // insert articles
             if string_html.is_some()
             {
-                println!("{:?}",string_html);
                 description_article = prisma::news_articles::description::set(string_html);
             }
 
