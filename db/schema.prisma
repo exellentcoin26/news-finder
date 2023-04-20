@@ -5,7 +5,14 @@ datasource db {
 }
 
 // generator
+// Note: this is only present for backwards compatibility (use of `python` generator is recommended).
 generator server {
+    provider             = "prisma-client-py"
+    interface            = "asyncio"
+    recursive_type_depth = -1
+}
+
+generator python {
     provider             = "prisma-client-py"
     interface            = "asyncio"
     recursive_type_depth = -1
