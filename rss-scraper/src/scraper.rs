@@ -44,7 +44,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
         // TODO: Store the language of the article for equality checking
 
         /* scrape the rss feed */
-
         for entry in feed.entries {
             /*
                 Required fields:
@@ -131,7 +130,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             }
             
             let mut description_article= prisma::news_articles::description::set(description);
-
 
             // insert articles
             if string_html.is_some()
