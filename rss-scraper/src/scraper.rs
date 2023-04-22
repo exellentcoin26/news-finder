@@ -96,21 +96,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             let mut description_article= prisma::news_articles::description::set(Some(String::new()));
             let mut string_html: String = String::new();
             
-            //let mut string_html = match description{
-                // pattern
-
-            //    Some(&description) => {
-            //    
-            //        let pattern = Regex::new(r"<.*?>").unwrap();
-            //        let clean_de = description.as_ref().map(|description| description.to_string()).unwrap();
-            //        let clean_html = pattern.replace_all(&clean_de, "");
-            //        string_html = clean_html.into_owned().into();
-            //        description_article = prisma::news_articles::description::set(Some(string_html));
-            //    }
-            //    _ => ()
-            //};
-            
-
+           
             match description {
                 Some(description) => {
                     let pattern = Regex::new(r"<.*?>").unwrap();
@@ -121,6 +107,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                     }
                 None => {description_article = prisma::news_articles::description::set(description);}
             };
+            
             let photo = get_photos_from_entry(&entry).into_iter().next();
 
             let pub_date: Option<chrono::DateTime<chrono::FixedOffset>> =
