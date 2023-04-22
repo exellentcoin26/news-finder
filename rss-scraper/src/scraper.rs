@@ -122,7 +122,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
 
                 }else
                 {
-                    //println!("no structure");
                     new_labels.push(outerparts[0].to_string());
                 }
             }
