@@ -1,20 +1,12 @@
-use clap::error::ContextValue::String;
-use crate::{error::RssError, prelude::*, prisma::{self, PrismaClient}, scraper};
+use crate::{error::RssError,
+            prelude::*,
+            prisma::{self, PrismaClient}, scraper};
 use feed_rs::model::Feed;
-use nom::{
-    IResult,
-    sequence::delimited,
-    // see the "streaming/complete" paragraph lower for an explanation of these submodules
-    character::complete::char,
-    bytes::complete::is_not,
-    bytes::complete::take_until
-};
-use serde::de::Unexpected::Option;
 
 
-use news_article_labels::UniqueWhereParam;
+
 use crate::prisma::{news_article_labels, news_articles};
-use crate::prisma::news_article_labels::id_label;
+
 
 pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
     let rss_feeds = client.rss_entries().find_many(vec![]).exec().await?;
@@ -106,8 +98,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             let mut new_labels: Vec<String>=Vec::new();
             for label in labels
             {
-                let outerparts: Vec<&str> = label.split(':').collect(); // Split the string by ':' and collect the parts into a Vec<&str>
-
+                let outerparts: Vec<&str> = label.split(':').collect(); // Split the string by ':' and collect the parts into a outerparts
                 if outerparts.len() != 1{
                     if outerparts[0] == "structure"
                         {
@@ -137,63 +128,40 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             // TODO: Connect labels to articles.
 
             // insert labels
-            for label in new_labels {
-                label_batch.push(client.labels().upsert(
-                    prisma::labels::name::equals(label.clone()),
-                    prisma::labels::create(label.clone(), vec![]),
-                    vec![],
-                ))
-            }
 
+            let labels= client.labels().create(new_labels[0].clone(),
+                                   vec![]
+            );
 
-            let my_argument:Option<String> = "Hello, world!"; //
-
-
-
-
-
-            for element in new_labels {
-                let label = news_article_labels::label::equals(element);
-                prisma::news_articles::create(
-                    prisma::news_sources::id::equals(source_id),
-                    url,
-                    title,
-                    vec![
-                        prisma::news_articles::description::set(description),
-                        prisma::news_articles::photo::set(photo),
-                        prisma::news_articles::publication_date::set(pub_date),
-                        prisma::news_articles::labels::set(nfez)
-
-                    ],
-                ),
-                new_vect.push(unique_param);
-            }
+            let temp_news_article_labels = client.news_article_labels().create(
+                    news_articles::create(
+                        news_articles::source_id::set(source_id),
+                        news_articles::url::set(url),
+                        news_articles::title::set(title),
+                        vec![
+                            news_articles::description::set(description),
+                            news_articles::photo::set(photo),
+                            news_articles::publication_date::set(pub_date)
+                        ]),
+                prisma::labels::SetParam(labels),
+                    vec![]
+            );
 
 
 
 
-            // insert articles
-            article_batch.push(client.news_articles().upsert(
-                prisma::news_articles::url::equals(url.clone()),
-                prisma::news_articles::create(
-                    prisma::news_sources::id::equals(source_id),
-                    url,
-                    title,
-                    vec![
-                        prisma::news_articles::description::set(description),
-                        prisma::news_articles::photo::set(photo),
-                        prisma::news_articles::publication_date::set(pub_date),
-                        prisma::news_articles::labels::set(nfez)
 
-                    ],
-                ),
-                // Update is not needed, because we want to ignore articles that have been inserted
-                // before.
-                vec![],
-            ));
+
+
+
+
+
+
+
+
+
+
         }
-
-        client._batch((label_batch, article_batch)).await?;
     }
 
     Ok(())
