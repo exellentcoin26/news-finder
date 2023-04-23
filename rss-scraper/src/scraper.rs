@@ -73,15 +73,14 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 }
             };
 
-            let description = entry
+            let _description = entry
                 .summary
                 .as_ref()
                 .map(|description| description.content.to_string());
 
             // remove html tags from description
-            let mut description_article =
-                prisma::news_articles::description::set(Some(String::new()));
-            let mut string_html: String = String::new();
+            let description_article = prisma::news_articles::description::set(Some(String::new()));
+            let _string_html: String = String::new();
 
             let description = match entry
                 .summary
@@ -175,12 +174,7 @@ fn get_photos_from_entry(entry: &feed_rs::model::Entry) -> Vec<String> {
                     .as_ref()
                     .map_or(true, |content_type| content_type.type_() == mime::IMAGE)
             })
-            .filter_map(|content| {
-                content
-                    .url
-                    .as_ref()
-                    .map_or(None, |url| Some(url.to_string()))
-            })
+            .filter_map(|content| content.url.as_ref().map(|url| url.to_string()))
             .collect();
 
         photos.extend(rss2_photos);
