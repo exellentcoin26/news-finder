@@ -20,6 +20,7 @@ job_scheduler_ng = "2.0.4"
 clap = { version = "4.2.2", features = ["derive"] }
 env_logger = "0.10.0"
 log = "0.4.17"
+regex = "1.7.2"
 
 [dependencies.prisma-client-rust]
 git = "https://github.com/Brendonovich/prisma-client-rust"
