@@ -1,5 +1,7 @@
 import { AdminStatusApiResponse } from './interfaces/api/admin';
 
+import Cookies from 'js-cookie';
+
 import { SERVER_URL } from './env';
 
 export const fetchAdminStatus = async (
@@ -24,4 +26,12 @@ export const fetchAdminStatus = async (
         setIsAdmin(false);
     }
     setIsFetchingAdmin(false);
+};
+
+export const isLoggedIn = (): boolean => {
+    return !!Cookies.get('session');
+};
+
+export const logout = () => {
+    Cookies.remove('session');
 };
