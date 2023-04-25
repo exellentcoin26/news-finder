@@ -113,9 +113,9 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                     url,
                     title,
                     vec![
+                        prisma::news_articles::description::set(description),
                         prisma::news_articles::photo::set(photo),
                         prisma::news_articles::publication_date::set(pub_date),
-                        description_article,
                     ],
                 ),
                 // Update is not needed, because we want to ignore articles that have been inserted
