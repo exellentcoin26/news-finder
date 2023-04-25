@@ -73,15 +73,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 }
             };
 
-            let _description = entry
-                .summary
-                .as_ref()
-                .map(|description| description.content.to_string());
-
-            // remove html tags from description
-            let description_article = prisma::news_articles::description::set(Some(String::new()));
-            let _string_html: String = String::new();
-
             let description = match entry
                 .summary
                 .as_ref()
