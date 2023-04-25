@@ -63,10 +63,12 @@ async def register_user() -> Response:
             "username": {
                 "description": "The username of the user to be created",
                 "type": "string",
+                "minLength" : 1
             },
             "password": {
                 "description": "The password of the user to be created",
                 "type": "string",
+                "minLength" : 1,
             },
         },
         "required": ["username", "password"],
