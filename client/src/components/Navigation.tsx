@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Container,
-    Navbar,
-    Nav,
-    NavDropdown,
-    Dropdown,
-    Button,
-} from 'react-bootstrap';
+import { Container, Navbar, Nav, NavDropdown, Dropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-
-import { AdminStatusApiResponse } from '../interfaces/api/admin';
 
 import {
     fetchAdminStatus,
@@ -21,9 +12,6 @@ import {
 import '../styles/Navigation.css';
 
 const Navigation = () => {
-    const server_url =
-        import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-
     const [isAdmin, setAdminStatus] = useState<boolean>(false);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
@@ -80,7 +68,7 @@ const Navigation = () => {
                         )}
                         {isLoggedIn ? (
                             <Nav.Link onClick={logout} className="nav-text">
-                                Logout
+                                logout
                             </Nav.Link>
                         ) : (
                             <LinkContainer to="/login">
