@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { UserApiResponse } from '../interfaces/api/user';
 
+import { SERVER_URL } from '../env';
+
 import '../styles/Login-Register.css';
 
 interface RegisterStatusInfo {
@@ -15,6 +17,8 @@ enum RegisterStatusKind {
     Success,
     Error,
 }
+
+const TARGET_URL = SERVER_URL + '/user/';
 
 const RegisterStatusBanner = ({ info }: { info: RegisterStatusInfo[] }) => {
     return (
@@ -36,9 +40,13 @@ const RegisterStatusBanner = ({ info }: { info: RegisterStatusInfo[] }) => {
 };
 
 const Register = () => {
-    const server_url =
-        import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-    const target_url = server_url + '/user/';
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const [registerStatusInfo, setRegisterStatusInfo] = useState<
+        RegisterStatusInfo[] | null
+    >(null);
 
     const handleRegister = async (
         username: string,
@@ -47,7 +55,7 @@ const Register = () => {
     ) => {
         const response = await (async (): Promise<Response> => {
             try {
-                return await fetch(target_url, {
+                return await fetch(TARGET_URL, {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'content-type': 'application/json' },
@@ -95,28 +103,19 @@ const Register = () => {
         }
     };
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [passwordsMatch, setPasswordsMatch] = useState(true);
-    const [registerStatusInfo, setRegisterStatusInfo] = useState<
-        RegisterStatusInfo[] | null
-    >(null);
-
     const handleRegisterStatus = (info: RegisterStatusInfo[]) => {
         setRegisterStatusInfo(info);
     };
 
     useEffect(() => {
-        validatePasswords();},
-        [password, confirmPassword]
-    );
+        validatePasswords();
+    }, [password, confirmPassword]);
 
     const validatePasswords = () => {
         password === confirmPassword
-        ? setPasswordsMatch(true)
-        : setPasswordsMatch(false)
-    }
+            ? setPasswordsMatch(true)
+            : setPasswordsMatch(false);
+    };
 
     return (
         <>
@@ -141,7 +140,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setUsername(event.target.value)
                                         }
-                                        aria-required = "true"
+                                        aria-required="true"
                                     />
                                     <Form.Control
                                         required
@@ -152,7 +151,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setPassword(event.target.value)
                                         }
-                                        aria-required= "true"
+                                        aria-required="true"
                                     />
                                     <Form.Control
                                         required
@@ -169,7 +168,9 @@ const Register = () => {
                                         aria-invalid={passwordsMatch}
                                     />
                                     <div className="input-error">
-                                        {passwordsMatch? "" : "Passwords do not match"}
+                                        {passwordsMatch
+                                            ? ''
+                                            : 'Passwords do not match'}
                                     </div>
                                 </Form>
                             </div>
@@ -177,13 +178,22 @@ const Register = () => {
                                 <button
                                     className="default-button sign-up-button mb-3"
                                     onClick={() => {
-                                        if (!passwordsMatch) return
+                                        if (!passwordsMatch) {
+                                            setRegisterStatusInfo([
+                                                {
+                                                    kind: RegisterStatusKind.Error,
+                                                    message:
+                                                        'Passwords do not match',
+                                                },
+                                            ]);
+                                            return;
+                                        }
                                         handleRegister(
                                             username,
                                             password,
                                             handleRegisterStatus,
-                                        )}
-                                    }
+                                        );
+                                    }}
                                 >
                                     {' '}
                                     Sign up{' '}

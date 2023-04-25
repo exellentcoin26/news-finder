@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { UserApiResponse } from '../interfaces/api/user';
+
+import { SERVER_URL } from '../env';
 
 import '../styles/Login-Register.css';
 
@@ -15,6 +17,8 @@ enum LoginStatusKind {
     Success,
     Error,
 }
+
+const TARGET_URL = SERVER_URL + '/user/login/';
 
 const LoginStatusBanner = ({ info }: { info: LoginStatusInfo[] }) => {
     return (
@@ -34,9 +38,11 @@ const LoginStatusBanner = ({ info }: { info: LoginStatusInfo[] }) => {
 };
 
 const Login = () => {
-    const server_url =
-        import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-    const target_url = server_url + '/user/login/';
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [loginStatusInfo, setLoginStatusInfo] = useState<
+        LoginStatusInfo[] | null
+    >(null);
 
     const handleLogin = async (
         username: string,
@@ -45,7 +51,7 @@ const Login = () => {
     ) => {
         const response = await (async (): Promise<Response> => {
             try {
-                return await fetch(target_url, {
+                return await fetch(TARGET_URL, {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'content-type': 'application/json' },
@@ -89,12 +95,6 @@ const Login = () => {
             ]);
         }
     };
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginStatusInfo, setLoginStatusInfo] = useState<
-        LoginStatusInfo[] | null
-    >(null);
 
     const handleLoginStatus = (info: LoginStatusInfo[]) => {
         setLoginStatusInfo(info);
