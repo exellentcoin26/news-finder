@@ -147,18 +147,37 @@ const AdminFeeds = () => {
             body: JSON.stringify({ feeds: array }),
         });
 
+        if (response.ok) {
+            window.alert('Successfully added rss feed(s)!');
+        } else {
+            window.alert('Could not add rss feed(s).');
+        }
+
         return response.ok;
     };
 
     const handleRemoveFeed = async (feed: string | null): Promise<boolean> => {
+        const confirmAction = window.confirm(
+            `Do you want to remove feed \`${feed}\`?`,
+        );
+
+        if (!confirmAction) return false;
+
         if (feed == null) {
             return false;
         }
+
         const response = await fetch(server_url + '/rss/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ feeds: [feed] }),
         });
+
+        if (response.ok) {
+            window.alert('Successfully removed rss feed!');
+        } else {
+            window.alert('Could not remove rss feed.');
+        }
 
         return response.ok;
     };
