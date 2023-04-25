@@ -111,6 +111,11 @@ const Register = () => {
 
     const handleRegisterStatus = (info: RegisterStatusInfo[]) => {
         setRegisterStatusInfo(info);
+
+        // Reload page when login is successful
+        info.map((info) => {
+            if (info.kind == RegisterStatusKind.Success) location.reload();
+        });
     };
 
     useEffect(() => {

@@ -104,6 +104,11 @@ const Login = () => {
 
     const handleLoginStatus = (info: LoginStatusInfo[]) => {
         setLoginStatusInfo(info);
+
+        // Reload page when login is successful
+        info.map((info) => {
+            if (info.kind == LoginStatusKind.Success) location.reload();
+        });
     };
 
     return (

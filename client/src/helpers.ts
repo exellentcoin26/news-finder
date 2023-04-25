@@ -34,4 +34,5 @@ export const isLoggedIn = (): boolean => {
 
 export const logout = () => {
     Cookies.remove('session');
+    location.reload();
 };
