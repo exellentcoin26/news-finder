@@ -2726,7 +2726,6 @@ dependencies = [
  "job_scheduler_ng",
  "log",
  "mime",
- "nom",
  "prisma-client-rust",
  "regex",
  "reqwest",
