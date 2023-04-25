@@ -1,0 +1,11 @@
+:80 {
+	handle_path /api/* {
+		rewrite /api/* /{path}
+
+		reverse_proxy server:5000 {
+			header_down Location "(^.*?://.*?)/(.*)$" "$1/api/$2"
+		}
+	}
+
+	reverse_proxy client:8080
+}

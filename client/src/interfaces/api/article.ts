@@ -1,7 +1,10 @@
+import { ApiResponse } from './apiResponse';
+
 export interface ArticleEntry {
     title: string;
     description?: string;
     photo?: string;
+    link: string;
 }
 
 export interface ArticleSourceEntry {
@@ -9,6 +12,8 @@ export interface ArticleSourceEntry {
     source: string;
 }
 
-export interface ArticleApiResponse {
+export interface ArticlePayload {
     articles: ArticleSourceEntry[];
 }
+
+export type ArticleApiResponse = ApiResponse<ArticlePayload>;
