@@ -252,6 +252,19 @@ async def login_user() -> Response:
 
     db = await get_db()
 
+    username = data["username"].lower()
+    password = data["password"]
+
+    errors: List[Error] = []
+    if len(username) == 0:
+        error_username = Error(ErrorKind.UsernameToShort, "Username cannot be empty")
+        errors.append(error_username)
+    if len(password) == 0:
+        error_password = Error(ErrorKind.PasswordToShort, "Password cannot be empty")
+        errors.append(error_password)
+    if len(errors) != 0:
+        return make_response_from_errors(HTTPStatus.BAD_REQUEST, errors)
+
     try:
         user = await db.users.find_first(where={"username": data["username"].lower()})
     except Exception as e:
