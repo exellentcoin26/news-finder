@@ -35,6 +35,7 @@ export const Article = ({
                         >
                             <Card.Title>{title}</Card.Title>
                             <Card.Text>{description}</Card.Text>
+                            <button className="similar-articles-button"> show similar </button>
                         </Card.Body>
                     </Col>
                 </Row>
