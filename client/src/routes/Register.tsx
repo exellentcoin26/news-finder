@@ -121,100 +121,105 @@ const Register = () => {
     return (
         <>
             <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
-                {registerStatusInfo ? (
-                    <RegisterStatusBanner info={registerStatusInfo} />
-                ) : null}
                 <div className="form-div row d-flex align-items-center">
-                    <Card>
-                        <Card.Body>
-                            <div>
-                                <h2 className="title mb-3"> Register </h2>
-                            </div>
-                            <div>
-                                <Form>
-                                    <div>
-                                        <Form.Control
-                                            required
-                                            className="input-text mb-3"
-                                            type="text"
-                                            placeholder="Username"
-                                            value={username}
-                                            onChange={(event) =>
-                                                setUsername(event.target.value)
-                                            }
-                                            aria-required = "true"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Form.Control
-                                            required
-                                            className="input-text mb-3"
-                                            type="password"
-                                            placeholder="Password"
-                                            value={password}
-                                            onChange={(event) =>
-                                                setPassword(event.target.value)
-                                            }
-                                            aria-required= "true"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Form.Control
-                                            required
-                                            className="input-text mb-3"
-                                            type="password"
-                                            placeholder="Confirm Password"
-                                            value={confirmPassword}
-                                            onChange={(event) =>
-                                                setConfirmPassword(
-                                                    event.target.value,
-                                                )
-                                            }
-                                            aria-required="true"
-                                            aria-invalid={passwordsMatch}
-                                        />
-                                    </div>
-                                    <div className="input-error">
-                                        {passwordsMatch
-                                            ? ''
-                                            : 'Passwords do not match'}
-                                    </div>
-                                </Form>
+                    <div>
+                        {registerStatusInfo ? (
+                            <RegisterStatusBanner info={registerStatusInfo} />
+                        ) : null}
+                    </div>
+                    <div>
+                        <Card>
+                            <Card.Body>
                                 <div>
-                                    <div className="float-start">
+                                    <h2 className="title mb-3"> Register </h2>
+                                </div>
+                                <div>
+                                    <Form>
+                                        <div>
+                                            <Form.Control
+                                                required
+                                                className="input-text mb-3"
+                                                type="text"
+                                                placeholder="Username"
+                                                value={username}
+                                                onChange={(event) =>
+                                                    setUsername(event.target.value)
+                                                }
+                                                aria-required = "true"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Form.Control
+                                                required
+                                                className="input-text mb-3"
+                                                type="password"
+                                                placeholder="Password"
+                                                value={password}
+                                                onChange={(event) =>
+                                                    setPassword(event.target.value)
+                                                }
+                                                aria-required= "true"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Form.Control
+                                                required
+                                                className="input-text mb-3"
+                                                type="password"
+                                                placeholder="Confirm Password"
+                                                value={confirmPassword}
+                                                onChange={(event) =>
+                                                    setConfirmPassword(
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                aria-required="true"
+                                                aria-invalid={passwordsMatch}
+                                            />
+                                        </div>
+                                        <div className="input-error">
+                                            {passwordsMatch
+                                                ? ''
+                                                : 'Passwords do not match'}
+                                        </div>
+                                    </Form>
+                                    <div>
                                         <div className="float-start">
-                                            <p className="normal-text">
-                                                {' '}
-                                                Already have an account?{' '}
-                                            </p>
-                                            <Link to="/login">
-                                                <button className="default-button link-button">
+                                            <div className="float-start">
+                                                <p className="normal-text">
                                                     {' '}
-                                                    Log in{' '}
-                                                </button>
-                                            </Link>
+                                                    Already have an account?{' '}
+                                                </p>
+                                                <Link to="/login">
+                                                    <button className="default-button link-button">
+                                                        {' '}
+                                                        Log in{' '}
+                                                    </button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                        <div className="float-end">
+                                            <button
+                                                className="default-button sign-up-button mb-3"
+                                                onClick={() => {
+                                                    if (!passwordsMatch) return
+                                                    handleRegister(
+                                                        username,
+                                                        password,
+                                                        handleRegisterStatus,
+                                                    )}
+                                                }
+                                            >
+                                                {' '}
+                                                Sign up{' '}
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className="float-end">
-                                        <button
-                                            className="default-button sign-up-button mb-3"
-                                            onClick={() => {
-                                                if (!passwordsMatch) return
-                                                handleRegister(
-                                                    username,
-                                                    password,
-                                                    handleRegisterStatus,
-                                                )}
-                                            }
-                                        >
-                                            {' '}
-                                            Sign up{' '}
-                                        </button>
-                                    </div>
                                 </div>
-                            </div>
-                        </Card.Body>
-                    </Card>
+                            </Card.Body>
+                        </Card>
+                    </div>
+
                 </div>
             </Container>
         </>

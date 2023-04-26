@@ -2,7 +2,6 @@
     .form-div {
         width: 35%;
         overflow: auto;
-        height: 80vh;
     }
 }
 
@@ -11,7 +10,6 @@
         min-width: min-content;
         width: 70%;
         overflow: auto;
-        height: 100vh;
     }
 
 }
