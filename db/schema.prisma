@@ -88,17 +88,10 @@ model SimilarArticles {
     @@id([id1, id2])
 }
 
-// List of labels scraped from rss feeds (useful for filtering by label).
-model Labels {
-    name     String              @id
-    articles NewsArticleLabels[]
-}
-
 // One to many relation of articles to labels.
 model NewsArticleLabels {
     article      NewsArticles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     id           Int
-    label_object Labels       @relation(fields: [label], references: [name], onDelete: Cascade, onUpdate: Cascade)
     label        String
 
     @@id([id, label])

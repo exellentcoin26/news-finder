@@ -108,15 +108,14 @@ const Register = () => {
     };
 
     useEffect(() => {
-        validatePasswords();},
-        [password, confirmPassword]
-    );
+        validatePasswords();
+    }, [password, confirmPassword]);
 
     const validatePasswords = () => {
         password === confirmPassword
-        ? setPasswordsMatch(true)
-        : setPasswordsMatch(false)
-    }
+            ? setPasswordsMatch(true)
+            : setPasswordsMatch(false);
+    };
 
     return (
         <>
@@ -141,7 +140,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setUsername(event.target.value)
                                         }
-                                        aria-required = "true"
+                                        aria-required="true"
                                     />
                                     <Form.Control
                                         required
@@ -152,7 +151,7 @@ const Register = () => {
                                         onChange={(event) =>
                                             setPassword(event.target.value)
                                         }
-                                        aria-required= "true"
+                                        aria-required="true"
                                     />
                                     <Form.Control
                                         required
@@ -169,7 +168,9 @@ const Register = () => {
                                         aria-invalid={passwordsMatch}
                                     />
                                     <div className="input-error">
-                                        {passwordsMatch? "" : "Passwords do not match"}
+                                        {passwordsMatch
+                                            ? ''
+                                            : 'Passwords do not match'}
                                     </div>
                                 </Form>
                             </div>
@@ -177,13 +178,13 @@ const Register = () => {
                                 <button
                                     className="default-button sign-up-button mb-3"
                                     onClick={() => {
-                                        if (!passwordsMatch) return
+                                        if (!passwordsMatch) return;
                                         handleRegister(
                                             username,
                                             password,
                                             handleRegisterStatus,
-                                        )}
-                                    }
+                                        );
+                                    }}
                                 >
                                     {' '}
                                     Sign up{' '}
