@@ -85,14 +85,16 @@ model SimilarArticles {
     similar NewsArticles @relation("similar", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
     id2     Int
 
+    similarity Float
+
     @@id([id1, id2])
 }
 
 // One to many relation of articles to labels.
 model NewsArticleLabels {
-    article      NewsArticles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    id           Int
-    label        String
+    article NewsArticles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    id      Int
+    label   String
 
     @@id([id, label])
 }
