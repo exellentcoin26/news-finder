@@ -114,50 +114,63 @@ const Login = () => {
                             </div>
                             <div>
                                 <Form>
-                                    <Form.Group>
-                                        <Form.Control
-                                            className="input-text mb-3"
-                                            type="text"
-                                            placeholder="Username"
-                                            value={username}
-                                            onChange={(event) =>
-                                                setUsername(event.target.value)
-                                            }
-                                        />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Form.Control
-                                            className="input-text mb-3"
-                                            type="password"
-                                            placeholder="Password"
-                                            value={password}
-                                            onChange={(event) =>
-                                                setPassword(event.target.value)
-                                            }
-                                        />
-                                    </Form.Group>
+                                    <div>
+                                        <Form.Group>
+                                            <div>
+                                                <Form.Control
+                                                    className="input-text mb-3"
+                                                    type="text"
+                                                    placeholder="Username"
+                                                    value={username}
+                                                    onChange={(event) =>
+                                                        setUsername(event.target.value)
+                                                    }
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
+                                    <div>
+                                        <Form.Group>
+                                            <div>
+                                                <Form.Control
+                                                    className="input-text mb-3"
+                                                    type="password"
+                                                    placeholder="Password"
+                                                    value={password}
+                                                    onChange={(event) =>
+                                                        setPassword(event.target.value)
+                                                    }
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </div>
                                 </Form>
                             </div>
                             <div>
-                                <Link to="/register">
-                                    <button className="default-button link-button mb-3">
+                                <div className="float-start">
+                                    <Link to="/register">
+                                        <button className="default-button link-button mb-3">
+                                            {' '}
+                                            Create an account{' '}
+                                        </button>
+                                    </Link>
+                                </div>
+                                <div className="float-end">
+                                    <button
+                                        className="default-button login-button mb-3"
+                                        onClick={() =>
+                                            handleLogin(
+                                                username,
+                                                password,
+                                                handleLoginStatus,
+                                            )
+                                        }
+                                    >
                                         {' '}
-                                        Create an account{' '}
+                                        Login{' '}
                                     </button>
-                                </Link>
-                                <button
-                                    className="default-button login-button mb-3"
-                                    onClick={() =>
-                                        handleLogin(
-                                            username,
-                                            password,
-                                            handleLoginStatus,
-                                        )
-                                    }
-                                >
-                                    {' '}
-                                    Login{' '}
-                                </button>
+                                </div>
+
                             </div>
                         </Card.Body>
                     </Card>

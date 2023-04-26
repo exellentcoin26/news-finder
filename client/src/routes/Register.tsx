@@ -108,14 +108,15 @@ const Register = () => {
     };
 
     useEffect(() => {
-        validatePasswords();
-    }, [password, confirmPassword]);
+        validatePasswords();},
+        [password, confirmPassword]
+    );
 
     const validatePasswords = () => {
         password === confirmPassword
-            ? setPasswordsMatch(true)
-            : setPasswordsMatch(false);
-    };
+        ? setPasswordsMatch(true)
+        : setPasswordsMatch(false)
+    }
 
     return (
         <>
@@ -179,59 +180,37 @@ const Register = () => {
                                             : 'Passwords do not match'}
                                     </div>
                                 </Form>
-                            </div>
-                            <div>
-                                <button
-                                    className="default-button sign-up-button mb-3"
-                                    onClick={() => {
-                                        if (!passwordsMatch) return;
-                                        handleRegister(
-                                            username,
-                                            password,
-                                            handleRegisterStatus,
-                                        );
-                                    }}
-                                >
-                                    {' '}
-                                    Sign up{' '}
-                                </button>
-                            </div>
-                            <div>
-                                <p className="normal-text">
-                                    {' '}
-                                    Already have an account?{' '}
-                                </p>
-                                <Link to="/login">
-                                    <button className="default-button link-button">
-                                        {' '}
-                                        Log in{' '}
-                                    </button>
-                                </Link>
                                 <div>
-                                    <p className="normal-text">
-                                        {' '}
-                                        Already have an account?{' '}
-                                    </p>
-                                    <Link to="/login">
-                                        <button className="default-button link-button">
+                                    <div className="float-start">
+                                        <div className="float-start">
+                                            <p className="normal-text">
+                                                {' '}
+                                                Already have an account?{' '}
+                                            </p>
+                                            <Link to="/login">
+                                                <button className="default-button link-button">
+                                                    {' '}
+                                                    Log in{' '}
+                                                </button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="float-end">
+                                        <button
+                                            className="default-button sign-up-button mb-3"
+                                            onClick={() => {
+                                                if (!passwordsMatch) return
+                                                handleRegister(
+                                                    username,
+                                                    password,
+                                                    handleRegisterStatus,
+                                                )}
+                                            }
+                                        >
                                             {' '}
-                                            Log in{' '}
+                                            Sign up{' '}
                                         </button>
-                                    </Link>
-                                    <button
-                                        className="default-button sign-up-button mb-3"
-                                        onClick={() => {
-                                            if (!passwordsMatch) return
-                                            handleRegister(
-                                                username,
-                                                password,
-                                                handleRegisterStatus,
-                                            )}
-                                        }
-                                    >
-                                        {' '}
-                                        Sign up{' '}
-                                    </button>
+                                    </div>
                                 </div>
                             </div>
                         </Card.Body>

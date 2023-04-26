@@ -8,6 +8,7 @@
 
 @media (max-width:1000px) {
     .form-div {
+        min-width: min-content;
         width: 70%;
         overflow: auto;
         height: 100vh;
@@ -24,12 +25,13 @@
     font-family: Outfit, sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 2.5em;
+    font-size: 36px;
     color: black;
     text-align: center;
 }
 
 .default-button {
+    white-space: nowrap;
     font-family: Outfit, sans-serif;
     border: none;
     padding: 4px 9px;
@@ -46,6 +48,7 @@
     font-weight: bold;
     color: aliceblue;
     float: right;
+    display: inline-block;
 }
 
 .link-button {
@@ -59,12 +62,7 @@
     background-color: forestgreen;
     color: white;
     font-weight: bold;
-    float: right;
-}
-
-.input-box {
-    display: flex;
-    flex-direction: column;
+    display: inline-block;
 }
 
 .input-text {
@@ -75,6 +73,7 @@
     font-family: Outfit, sans-serif;
     color: black;
     display: inline;
+    white-space: nowrap;
 }
 
 a:link { text-decoration: none; }
