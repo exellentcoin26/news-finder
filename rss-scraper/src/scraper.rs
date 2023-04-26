@@ -1,15 +1,10 @@
-use feed_rs::model::Feed;
-use prisma_client_rust::query_core::schema_builder::capitalize;
 
-use regex::Regex;
-
-use crate::prisma::{news_article_labels, news_articles};
 use crate::{
     error::RssError,
     prelude::*,
     prisma::{self, PrismaClient},
-    scraper,
 };
+
 use feed_rs::model::Feed;
 use regex::Regex;
 
@@ -82,7 +77,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             };
 
             // removing <p> tags using regex library
-            let description = entry
+            let description = match entry
                 .summary
                 .as_ref()
                 .map(|description| description.content.to_string())
@@ -108,7 +103,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
 
             let mut labels = Vec::new();
             for label in raw_labels {
-                if label.contains(":") {
+                if label.contains(':') {
                     if label.contains("structure") {
                         let pattern = Regex::new(r"structure:(?:.*/)?(?P<category>[^/]+)/?$")
                             .expect("failed to build regex");
