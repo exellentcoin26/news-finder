@@ -1,17 +1,18 @@
 @media (min-width:1000px) {
     .form-div {
         width: 35%;
-        overflow:hidden;
-        height:50vh
+        overflow: auto;
+        height: 80vh;
     }
 }
 
 @media (max-width:1000px) {
     .form-div {
         width: 70%;
-        overflow:hidden;
-        height:50vh
+        overflow: auto;
+        height: 100vh;
     }
+
 }
 
 .form-container {
@@ -23,7 +24,7 @@
     font-family: Outfit, sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 36px;
+    font-size: 2.5em;
     color: black;
     text-align: center;
 }
