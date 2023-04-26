@@ -11,21 +11,47 @@ const AdminUsers = () => {
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
 
     const handleUserDeletion = async (username: string): Promise<boolean> => {
+        const confirmAction = window.confirm(
+            `Do you want to delete user \`${username}\`?`,
+        );
+
+        if (!confirmAction) return false;
+
         const response = await fetch(server_url + '/user/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ username: username }),
         });
 
+        if (response.ok) {
+            window.alert(`User \`${username}\` successfully deleted!`);
+        } else {
+            window.alert(`Could not delete user \`${username}\`.`);
+        }
+
         return response.ok;
     };
 
     const handleMakeAdmin = async (username: string): Promise<boolean> => {
+        const confirmAction = window.confirm(
+            `Do you want to make user \`${username}\` an admin?`,
+        );
+
+        if (!confirmAction) return false;
+
         const response = await fetch(server_url + '/admin/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ usernames: [username] }),
         });
+
+        if (response.ok) {
+            window.alert(
+                `User \`${username}\` successfully promoted to admin!`,
+            );
+        } else {
+            window.alert(`Could not promote user \`${username}\` to an admin.`);
+        }
 
         return response.ok;
     };
