@@ -102,36 +102,40 @@ const Login = () => {
 
     return (
         <>
-            <Container className="form-container center">
+            <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
                 {loginStatusInfo ? (
                     <LoginStatusBanner info={loginStatusInfo} />
                 ) : null}
-                <div>
-                    <Card>
+                <div className="form-div row d-flex align-items-center">
+                    <Card className="">
                         <Card.Body>
                             <div>
                                 <h2 className="title mb-3"> Login </h2>
                             </div>
                             <div>
                                 <Form>
-                                    <Form.Control
-                                        className="input-text mb-3"
-                                        type="text"
-                                        placeholder="Username"
-                                        value={username}
-                                        onChange={(event) =>
-                                            setUsername(event.target.value)
-                                        }
-                                    />
-                                    <Form.Control
-                                        className="input-text mb-3"
-                                        type="password"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(event) =>
-                                            setPassword(event.target.value)
-                                        }
-                                    />
+                                    <Form.Group>
+                                        <Form.Control
+                                            className="input-text mb-3"
+                                            type="text"
+                                            placeholder="Username"
+                                            value={username}
+                                            onChange={(event) =>
+                                                setUsername(event.target.value)
+                                            }
+                                        />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Control
+                                            className="input-text mb-3"
+                                            type="password"
+                                            placeholder="Password"
+                                            value={password}
+                                            onChange={(event) =>
+                                                setPassword(event.target.value)
+                                            }
+                                        />
+                                    </Form.Group>
                                 </Form>
                             </div>
                             <div>

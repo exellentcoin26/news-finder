@@ -1,16 +1,23 @@
-.form-container {
-    width: 500px !important;
-    position: relative;
+@media (min-width:1000px) {
+    .form-div {
+        width: 35%;
+        overflow:hidden;
+        height:50vh
+    }
 }
 
-.center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+@media (max-width:1000px) {
+    .form-div {
+        width: 70%;
+        overflow:hidden;
+        height:50vh
+    }
 }
+
+.form-container {
+    height: 100vh;
+}
+
 
 .title {
     font-family: Outfit, sans-serif;
@@ -52,6 +59,11 @@
     color: white;
     font-weight: bold;
     float: right;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
 }
 
 .input-text {

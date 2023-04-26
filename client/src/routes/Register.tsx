@@ -120,11 +120,11 @@ const Register = () => {
 
     return (
         <>
-            <Container className="form-container center">
+            <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
                 {registerStatusInfo ? (
                     <RegisterStatusBanner info={registerStatusInfo} />
                 ) : null}
-                <div>
+                <div className="form-div row d-flex align-items-center">
                     <Card>
                         <Card.Body>
                             <div>
