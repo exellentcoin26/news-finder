@@ -1,8 +1,10 @@
+
 use crate::{
     error::RssError,
     prelude::*,
     prisma::{self, PrismaClient},
 };
+
 use feed_rs::model::Feed;
 use regex::Regex;
 
@@ -13,6 +15,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
         let source_id = rss_feed.source_id;
         let rss_feed = rss_feed.feed;
 
+        let mut labels_with_articles = Vec::new();
         let mut article_batch = Vec::new();
 
         let feed = match get_rss_and_validate(&rss_feed).await {
@@ -73,6 +76,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 }
             };
 
+            // removing <p> tags using regex library
             let description = match entry
                 .summary
                 .as_ref()
@@ -91,13 +95,37 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             let pub_date: Option<chrono::DateTime<chrono::FixedOffset>> =
                 entry.published.map(|date| date.into());
 
-            let labels: Vec<String> = entry
+            let raw_labels: Vec<String> = entry
                 .categories
                 .iter()
                 .map(|category| category.term.clone())
                 .collect();
 
-            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, pub_date: `{pub_date:?}`,description:{description:?} ,tags: {labels:?}");
+            let mut labels = Vec::new();
+            for label in raw_labels {
+                if label.contains(':') {
+                    if label.contains("structure") {
+                        let pattern = Regex::new(r"structure:(?:.*/)?(?P<category>[^/]+)/?$")
+                            .expect("failed to build regex");
+                        let label = match pattern.captures(&label) {
+                            Some(captures) => match captures.name("category") {
+                                Some(matches) => matches.as_str().to_string(),
+                                None => "".to_string(),
+                            },
+                            None => label.to_string(),
+                        };
+                        if !label.is_empty() {
+                            labels.push(label);
+                        }
+                    } else {
+                        Some(());
+                    }
+                } else {
+                    labels.push(label);
+                }
+            }
+
+            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
 
             /* insert scraped data into db */
 
@@ -110,7 +138,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 prisma::news_articles::url::equals(url.clone()),
                 prisma::news_articles::create(
                     prisma::news_sources::id::equals(source_id),
-                    url,
+                    url.clone(),
                     title,
                     vec![
                         prisma::news_articles::description::set(description),
@@ -122,9 +150,41 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 // before.
                 vec![],
             ));
+
+            for label in labels {
+                labels_with_articles.push((label.clone(), url.clone()))
+            }
         }
 
         client._batch(article_batch).await?;
+
+        // insert labels
+        let mut label_batch = Vec::new();
+
+        for (label, article_url) in labels_with_articles {
+            let article = client
+                .news_articles()
+                .find_unique(prisma::news_articles::url::equals(article_url.clone()))
+                .exec()
+                .await?
+                .ok_or(())
+                .expect("no article found with that url");
+
+            label_batch.push(client.news_article_labels().upsert(
+                prisma::news_article_labels::UniqueWhereParam::IdLabelEquals(
+                    article.id,
+                    label.clone(),
+                ),
+                prisma::news_article_labels::create(
+                    prisma::news_articles::url::equals(article_url.clone()),
+                    label.clone(),
+                    vec![],
+                ),
+                vec![],
+            ))
+        }
+
+        client._batch(label_batch).await?;
     }
 
     Ok(())
