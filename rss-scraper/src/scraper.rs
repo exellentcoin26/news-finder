@@ -4,6 +4,7 @@ use crate::{
     prisma::{self, PrismaClient},
 };
 use feed_rs::model::Feed;
+use regex::Regex;
 
 pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
     let rss_feeds = client.rss_entries().find_many(vec![]).exec().await?;
@@ -12,7 +13,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
         let source_id = rss_feed.source_id;
         let rss_feed = rss_feed.feed;
 
-        let mut label_batch = Vec::new();
         let mut article_batch = Vec::new();
 
         let feed = match get_rss_and_validate(&rss_feed).await {
@@ -32,7 +32,6 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
         // TODO: Store the language of the article for equality checking
 
         /* scrape the rss feed */
-
         for entry in feed.entries {
             /*
                 Required fields:
@@ -74,10 +73,18 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 }
             };
 
-            let description = entry
+            let description = match entry
                 .summary
                 .as_ref()
-                .map(|description| description.content.to_string());
+                .map(|description| description.content.to_string())
+            {
+                Some(description) => {
+                    let pattern =
+                        Regex::new(r"<.*?>").expect("failed to build HTML bracket matching regex");
+                    Some(pattern.replace_all(&description, "").into_owned())
+                }
+                None => None,
+            };
 
             let photo = get_photos_from_entry(&entry).into_iter().next();
 
@@ -90,7 +97,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 .map(|category| category.term.clone())
                 .collect();
 
-            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
+            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, pub_date: `{pub_date:?}`,description:{description:?} ,tags: {labels:?}");
 
             /* insert scraped data into db */
 
@@ -98,15 +105,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             // TODO: Connect labels to articles.
 
             // insert labels
-            for label in labels {
-                label_batch.push(client.labels().upsert(
-                    prisma::labels::name::equals(label.clone()),
-                    prisma::labels::create(label, vec![]),
-                    vec![],
-                ))
-            }
 
-            // insert articles
             article_batch.push(client.news_articles().upsert(
                 prisma::news_articles::url::equals(url.clone()),
                 prisma::news_articles::create(
@@ -125,7 +124,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             ));
         }
 
-        client._batch((label_batch, article_batch)).await?;
+        client._batch(article_batch).await?;
     }
 
     Ok(())
@@ -166,12 +165,7 @@ fn get_photos_from_entry(entry: &feed_rs::model::Entry) -> Vec<String> {
                     .as_ref()
                     .map_or(true, |content_type| content_type.type_() == mime::IMAGE)
             })
-            .filter_map(|content| {
-                content
-                    .url
-                    .as_ref()
-                    .map_or(None, |url| Some(url.to_string()))
-            })
+            .filter_map(|content| content.url.as_ref().map(|url| url.to_string()))
             .collect();
 
         photos.extend(rss2_photos);
