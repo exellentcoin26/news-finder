@@ -79,7 +79,7 @@ def test_register_existing_username(client: Flask.testing):
         "errors": [
             {
                 "kind": "UserAlreadyPresent",
-                "message": "User already present in database"
+                "message": "This username isn't available. Please try another."
             }
         ],
         "status": 409
