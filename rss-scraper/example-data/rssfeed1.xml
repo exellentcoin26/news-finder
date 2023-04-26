@@ -1,0 +1,1622 @@
+<rss version="2.0">
+	<channel>
+		<title>NYT > World News</title>
+		<link>https://www.nytimes.com/section/world</link>
+		<atom:link href="https://rss.nytimes.com/services/xml/rss/nyt/World.xml" rel="self" type="application/rss+xml"/>
+		<description/>
+		<language>en-us</language>
+		<copyright>Copyright 2023 The New York Times Company</copyright>
+		<lastBuildDate>Sun, 16 Apr 2023 09:23:50 +0000</lastBuildDate>
+		<pubDate>Sun, 16 Apr 2023 09:23:49 +0000</pubDate>
+		<image>
+			<title>NYT > World News</title>
+			<url>
+				https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png
+			</url>
+			<link>https://www.nytimes.com/section/world</link>
+		</image>
+		<item>
+			<title>
+				Live Updates: Fighting Intensifies in Sudan’s Capital as Chaos Engulfs Nation
+			</title>
+			<link>
+				https://www.nytimes.com/live/2023/04/16/world/sudan-military-rsf
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/live/2023/04/16/world/sudan-military-rsf
+			</guid>
+			<atom:link href="https://www.nytimes.com/live/2023/04/16/world/sudan-military-rsf" rel="standout"/>
+			<description>
+				Dozens were reported to have died as rival military factions fought for control of the capital. The clashes further dashed hopes of a transition to civilian rule.
+			</description>
+			<dc:creator>The New York Times</dc:creator>
+			<pubDate>Sun, 16 Apr 2023 09:23:49 +0000</pubDate>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/16/multimedia/16sudan-blog-header-tkzm/16sudan-blog-header-tkzm-moth.jpg" width="151"/>
+			<media:credit>Agence France-Presse — Getty Images</media:credit>
+			<media:description>
+				Smoke rising above residential buildings in Khartoum, Sudan, on Sunday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Ukrainian Soldiers Freeze Sperm as a Way to Defy Russia
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/16/world/europe/ukraine-soldiers-freeze-sperm.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/16/world/europe/ukraine-soldiers-freeze-sperm.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/16/world/europe/ukraine-soldiers-freeze-sperm.html" rel="standout"/>
+			<description>
+				Some Ukrainian soldiers are trying to ensure that even if they die in the war, their partner can still build a family. They also want to send Russia a message of defiance.
+			</description>
+			<dc:creator>Emma Bubola</dc:creator>
+			<pubDate>Sun, 16 Apr 2023 09:11:47 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ukraine</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Children and Childhood</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Artificial Insemination</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/03/26/multimedia/00Ukraine-Sperm-01-hqgv/00Ukraine-Sperm-01-hqgv-moth.jpg" width="151"/>
+			<media:credit>Laetitia Vancon for The New York Times</media:credit>
+			<media:description>
+				An embryologist at the IVMED fertility clinic in Kyiv, Ukraine, which says it is freezing the sperm of about 10 soldiers every week. A bill in Parliament would have the government cover the cost of the procedure.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Ahead of Elections, Turkish Opposition Leader Takes on Erdogan’s Legacy
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/16/world/middleeast/turkey-elections-erdogan-kilicdaroglu.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/16/world/middleeast/turkey-elections-erdogan-kilicdaroglu.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/16/world/middleeast/turkey-elections-erdogan-kilicdaroglu.html" rel="standout"/>
+			<description>
+				Ahead of next month’s elections, Kemal Kilicdaroglu has pledged to undo President Recep Tayyip Erdogan’s legacy with a focus on tackling inflation and strengthening democracy.
+			</description>
+			<dc:creator>Ben Hubbard and Gulsin Harman</dc:creator>
+			<pubDate>Sun, 16 Apr 2023 07:00:17 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Elections</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Appointments and Executive Changes</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Economic Conditions and Trends</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Turkey Earthquake (Feb 6, 2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Justice and Development Party (Turkey)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Republican People's Party (Turkey)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Erdogan, Recep Tayyip</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Kilicdaroglu, Kemal</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Turkey</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/06/multimedia/06turkey-opposition-01-hwmc/06turkey-opposition-01-hwmc-moth.jpg" width="151"/>
+			<media:credit>Erdem Sahin/EPA, via Shutterstock</media:credit>
+			<media:description>
+				Kemal Kilicdaroglu, center, in Istanbul last month. Mr. Kilicdaroglu represents six opposition parties in elections next month against President Recep Tayyip Erdogan.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				What Leaked Pentagon Documents Say About the Russia-Ukraine War
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/europe/pentagon-document-leaks-ukraine-war.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/europe/pentagon-document-leaks-ukraine-war.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/europe/pentagon-document-leaks-ukraine-war.html" rel="standout"/>
+			<description>
+				Some in Ukraine even welcomed the disclosures as confirming what they have been saying for months — that its forces desperately need more weapons and munitions.
+			</description>
+			<dc:creator>
+				Anton Troianovski, Andrew E. Kramer, Erika Solomon and Eric Schmitt
+			</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 14:18:35 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">US Intelligence Documents Leak (2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Bakhmut (Ukraine)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Zelensky, Volodymyr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Germany</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Teixeira, Jack</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Classified Information and State Secrets</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">United States</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15leaks-analysis-01-vfjk/15leaks-analysis-01-vfjk-moth.jpg" width="151"/>
+			<media:credit>Finbarr O'Reilly for The New York Times</media:credit>
+			<media:description>
+				A Ukrainian artillery team unloading artillery shells. The leaked Pentagon documents warned of looming shortages of the munitions, but Ukrainian officials have been saying that publicly for months.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Ishay Ribo, Religious Pop Star, Is Winning Over Secular Israel
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/middleeast/israel-music-ishay-ribo.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/middleeast/israel-music-ishay-ribo.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/middleeast/israel-music-ishay-ribo.html" rel="standout"/>
+			<description>
+				The songs of Ishay Ribo, who was raised in a settlement on the West Bank, are a staple of Israeli radio. He is part of a wave of singers from religious backgrounds who are also gaining a wider audience.
+			</description>
+			<dc:creator>Patrick Kingsley</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 18:49:00 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Ribo, Ishay</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Israel</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Jews and Judaism</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Pop and Rock Music</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Content Type: Personal Profile</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Orthodox Judaism</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/03/31/multimedia/31israel-pop-mfjw/31israel-pop-mfjw-moth.jpg" width="151"/>
+			<media:credit>Avishag Shaar-Yashuv for The New York Times</media:credit>
+			<media:description>
+				Ishay Ribo performing at a culture hall in Kibbutz Gan Shmuel, Israel, in January.
+			</media:description>
+		</item>
+		<item>
+		</item>
+		<item>
+			<title>
+				Boy’s Suicide in Poland Spurs Backlash Against State Media Tactics
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/europe/poland-suicide-radio-szczecin.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/europe/poland-suicide-radio-szczecin.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/europe/poland-suicide-radio-szczecin.html" rel="standout"/>
+			<description>
+				A public radio station in the city of Szczecin is under fire for helping to identify a 15-year-old sex abuse victim, the son of a local opposition politician, who later killed himself.
+			</description>
+			<dc:creator>Andrew Higgins</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 14:32:51 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Child Abuse and Neglect</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Sex Crimes</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Radio</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Law and Justice (Poland)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Poland</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/05/09/multimedia/09poland-opposition-01-wpjh/09poland-opposition-01-wpjh-moth.jpg" width="151"/>
+			<media:credit>Sergey Ponomarev for The New York Times</media:credit>
+			<media:description>
+				A view of the neighborhood in Szczecin, Poland, where a 15-year-old sex abuse victim who killed himself in March lived.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				At Christianity’s Holiest Site, Rival Monks Struggle to Turn Other Cheek
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/middleeast/orthodox-easter-holy-sepulcher.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/middleeast/orthodox-easter-holy-sepulcher.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/middleeast/orthodox-easter-holy-sepulcher.html" rel="standout"/>
+			<description>
+				At the Church of the Holy Sepulcher in Jerusalem, on the site where Jesus is believed to have been crucified and resurrected, a centuries-long real estate spat tends to flare up at Orthodox Easter.
+			</description>
+			<dc:creator>Hiba Yazbek</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 10:00:13 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Jerusalem (Israel)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Jesus Christ</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Monasteries and Monks</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Christians and Christianity</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Easter and Holy Week</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Church of the Holy Sepulcher (Jerusalem)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Religion and Belief</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Historic Buildings and Sites</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2022/11/15/world/00jerusalem-church-dispatch-1/merlin_213549339_5f436d4c-8cea-416c-b7ac-f6fe4f27be6e-moth.jpg" width="151"/>
+			<media:credit>Amit Elkayam for The New York Times</media:credit>
+			<media:description>
+				The dome of Deir Al-Sultan Monastery on the roof of the Church of the Holy Sepulcher in Jerusalem. Monks from Egypt and Ethiopia contest who owns the monastery.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Fumio Kishida, Japan’s Leader, Safely Evacuated After Blast
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/asia/japan-prime-minister-blast-fumio-kishida.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/asia/japan-prime-minister-blast-fumio-kishida.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/asia/japan-prime-minister-blast-fumio-kishida.html" rel="standout"/>
+			<description>
+				Prime Minister Fumio Kishida was about to give a campaign speech in the western Japanese city of Wakayama when a loud explosion was heard.
+			</description>
+			<dc:creator>Motoko Rich, Hikari Hida and Mike Ives</dc:creator>
+			<pubDate>Sun, 16 Apr 2023 01:53:47 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Bombs and Explosives</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Kishida, Fumio</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Japan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Assassinations and Attempted Assassinations</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15xp-japan-blast-bflk/15xp-japan-blast-bflk-moth.jpg" width="151"/>
+			<media:credit>Kyodo, via Reuters</media:credit>
+			<media:description>
+				Fumio Kishida arriving to give a speech in Wakayama on Saturday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Ghosts Past and Present Cross Paths as War Comes to Nuclear Wasteland
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/chernobyl-russia-ukraine-war.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/chernobyl-russia-ukraine-war.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/chernobyl-russia-ukraine-war.html" rel="standout"/>
+			<description>
+				Not everyone evacuated when the Chernobyl nuclear plant melted down in 1986. The few who stayed lived through another calamity when Russian troops marched in.
+			</description>
+			<dc:creator>Marc Santora and Emile Ducke</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 17:13:44 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Chernobyl (Ukraine)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Nuclear Energy</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Radiation</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Nuclear Wastes</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Accidents and Safety</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ukraine</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Russia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">International Atomic Energy Agency</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">audio-neutral-informative</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">vis-photo</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/03/24/multimedia/ukraine-chernobyl-dispatch-bqfz-promo/ukraine-chernobyl-dispatch-bqfz-moth.jpg" width="151"/>
+			<media:credit>Emile Ducke for The New York Times</media:credit>
+		</item>
+		<item>
+			<title>
+				Macron’s Plan to Increase the Retirement Age Clears Key Legal Test
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/macron-pension-retirement-ruling.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/macron-pension-retirement-ruling.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/macron-pension-retirement-ruling.html" rel="standout"/>
+			<description>
+				A constitutional council reviewing President Emmanuel Macron’s law upheld an increase in the retirement age, but struck down some sections. Anger over the plan remains high.
+			</description>
+			<dc:creator>Aurelien Breeden</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 08:08:35 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">France</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Macron, Emmanuel (1977- )</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Retirement</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Pensions and Retirement Plans</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Age, Chronological</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Demonstrations, Protests and Riots</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Strikes</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14france-new1-gwjz/14france-new1-gwjz-moth.jpg" width="151"/>
+			<media:credit>Lewis Joly/Associated Press</media:credit>
+			<media:description>
+				A rally outside City Hall in Paris on Friday to protest the pension overhaul. Few expect the Constitutional Council’s decision to put an end to the intense political and social turmoil that the government’s plan kindled.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Decades on From Peace, Northern Ireland Schools Are Still Deeply Divided
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/northern-ireland-schools-good-friday-agreement.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/northern-ireland-schools-good-friday-agreement.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/northern-ireland-schools-good-friday-agreement.html" rel="standout"/>
+			<description>
+				The nation’s school system still sees the country’s pupils starkly divided by their religious backgrounds, years after the Good Friday Agreement brought an end to sectarian strife.
+			</description>
+			<dc:creator>Megan Specia and Andrew Testa</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 13:51:42 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Northern Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Education (K-12)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Private and Sectarian Schools</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Protestant Churches</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Roman Catholic Church</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Segregation and Desegregation</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Belfast (Northern Ireland)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Great Britain</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Good Friday Agreement (1998)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/XXnireland-schools-dispatch-promo/XXnireland-schools-dispatch-01-vthf-moth.jpg" width="151"/>
+			<media:credit>Andrew Testa for The New York Times</media:credit>
+			<media:description>
+				Practicing the Stations of the Cross at the Catholic St Joseph’s Primary School in the Falls Road neighborhood of West Belfast.
+			</media:description>
+		</item>
+		<item>
+			<title>The Great Goat War of Southern France</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/france-goats-vineyards.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/france-goats-vineyards.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/france-goats-vineyards.html" rel="standout"/>
+			<description>
+				A former Parisian moved to the country, fell in love with goats and let them roam free and multiply. Her winemaking neighbors are not enchanted.
+			</description>
+			<dc:creator>Catherine Porter</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 14:30:17 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Goats</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Wines</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Agriculture and Farming</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Animal Abuse, Rights and Welfare</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Corbieres (France)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Saint-Andre-de-Roquelongue (France)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">internal-sub-only</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/00france-goats-02-phgm/00france-goats-02-phgm-moth.jpg" width="151"/>
+			<media:credit>Andrea Mantovani for The New York Times</media:credit>
+			<media:description>
+				Ms. Corbeaux’s goats in Saint-André-de-Roquelongue. The male goats, whose horns are marked with purple, have recently been castrated.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Sudan Military Clashes: Why It Matters and Who Is Battling for Control
+			</title>
+			<link>
+				https://www.nytimes.com/article/sudan-khartoum-military.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/article/sudan-khartoum-military.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/article/sudan-khartoum-military.html" rel="standout"/>
+			<description>
+				The strategically important country in northeastern Africa has been consumed by turmoil after overthrowing a dictator in 2019, with plans for a civilian-led democracy now in shambles.
+			</description>
+			<dc:creator>Gerry Mullany</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 18:08:14 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Coups D'Etat and Attempted Coups D'Etat</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Civilian Casualties</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">African Union</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Arab League</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Janjaweed</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">United Nations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">al-Burhan, Abdel Fattah</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Hamdan, Mohamed (Hemeti)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Bashir, Omar Hassan Al-</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Blinken, Antony J</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Khartoum (Sudan)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Darfur (Sudan)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Africa</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15sudan-explainer-topart-vftk/15sudan-explainer-topart-vftk-moth.jpg" width="151"/>
+			<media:credit>Mohamed Nureldin Abdallah/Reuters</media:credit>
+			<media:description>
+				Smoke rose in Omdurman, Sudan, as fighting broke out on Saturday between two rival military factions in Khartoum, the capital, and around the country.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				What to Know About General Hamdan, Leader of Sudan’s Rapid Support Forces
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/africa/hamdan-hemeti-sudan-rsf.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/africa/hamdan-hemeti-sudan-rsf.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/africa/hamdan-hemeti-sudan-rsf.html" rel="standout"/>
+			<description>
+				A former camel trader who led a militia accused of genocidal violence in Darfur, Lt. Gen. Mohamed Hamdan, widely known as Hemeti, leads the Rapid Support Forces paramilitary unit.
+			</description>
+			<dc:creator>Declan Walsh</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 21:29:58 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Demonstrations, Protests and Riots</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Sudan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Darfur (Sudan)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Hamdan, Mohamed (Hemeti)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15sudan-Mohamed-Hamdan-Dagalo-1-lbkh/15sudan-Mohamed-Hamdan-Dagalo-1-lbkh-moth.jpg" width="151"/>
+			<media:credit>Mohamed Nureldin Abdallah/Reuters</media:credit>
+			<media:description>
+				Lt. Gen. Mohamed Hamdan speaking during a media briefing at the Rapid Support Forces’ headquarters in Khartoum, Sudan, in February.
+			</media:description>
+		</item>
+		<item>
+			<title>Who Is Gen. Abdel Fattah al-Burhan of Sudan?</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/africa/sudan-military-abdel-fattah-al-burhan.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/africa/sudan-military-abdel-fattah-al-burhan.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/africa/sudan-military-abdel-fattah-al-burhan.html" rel="standout"/>
+			<description>
+				Little known before 2019, he rose to power in the aftermath of the military-led coup that ousted Omar Hassan al-Bashir, the longtime leader who was deposed after popular uprisings.
+			</description>
+			<dc:creator>Abdi Latif Dahir</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 15:19:25 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Coups D'Etat and Attempted Coups D'Etat</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">al-Burhan, Abdel Fattah</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Bashir, Omar Hassan Al-</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Sudan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Khartoum (Sudan)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/world/15sudan-Abdel-Fattah-al-Burhan/15sudan-Abdel-Fattah-al-Burhan-moth.jpg" width="151"/>
+			<media:credit>Karim Jaafar/Agence France-Presse — Getty Images</media:credit>
+			<media:description>
+				Sudan’s army chief, Gen. Abdel Fattah al-Burhan, in March. Hopes of a peaceful transition to democracy were dashed on Saturday when his strained relations with another general in charge turned violent
+			</media:description>
+		</item>
+		<item>
+			<title>Reconsidering Tax Day</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/briefing/surviving-tax-day.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/briefing/surviving-tax-day.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/briefing/surviving-tax-day.html" rel="standout"/>
+			<description>
+				Make it a time of personal inventory, of looking back and taking account.
+			</description>
+			<dc:creator>Melissa Kirsch</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 10:19:05 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Rebates and Refunds</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Tax Credits, Deductions and Exemptions</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Finances</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Accounting and Accountants</category>
+		</item>
+		<item>
+			<title>
+				Death Toll From Russian Strike in Sloviansk, Ukraine, Climbs
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/europe/ukraine-russia-war-sloviansk.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/europe/ukraine-russia-war-sloviansk.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/europe/ukraine-russia-war-sloviansk.html" rel="standout"/>
+			<description>
+				Rescuers were searching through rubble a day after the city of Sloviansk was struck as fighting raged in Bakhmut.
+			</description>
+			<dc:creator>Matthew Mpoke Bigg</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 23:07:41 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ukraine</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Slovyansk (Ukraine)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Donbas (Ukraine)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Bakhmut (Ukraine)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/15-ukraine-ledeall-01/15-ukraine-ledeall-01-moth.jpg" width="151"/>
+			<media:credit>Mauricio Lima for The New York Times</media:credit>
+			<media:description>
+				Firefighters trying to rescue residents trapped in the rubble of a residential building in Sloviansk, Ukraine, on Friday.
+			</media:description>
+		</item>
+		<item>
+			<title>We Want to Hear From Canada Letter Readers</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/canada/canada-letter-readers.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/canada/canada-letter-readers.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/canada/canada-letter-readers.html" rel="standout"/>
+			<description>
+				An overview of what the newsletter is and isn’t and what we try to achieve each week.
+			</description>
+			<dc:creator>Ian Austen</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 10:00:03 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Canada</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">New York Times</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15canadaletter-newsroom-mvbh/15canadaletter-newsroom-mvbh-moth.jpg" width="151"/>
+			<media:credit>Jeenah Moon for The New York Times</media:credit>
+			<media:description>The newsroom of The New York Times in Manhattan.</media:description>
+		</item>
+		<item>
+			<title>
+				‘The Tale of Genji’ Is More Than 1,000 Years Old. What Explains Its Lasting Appeal?
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/books/tale-of-genji-japan-women.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/books/tale-of-genji-japan-women.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/books/tale-of-genji-japan-women.html" rel="standout"/>
+			<description>
+				The book is often described as the world’s first novel and a touchstone of Japanese literature. But some of its themes, including its take on gender and power, have echoed over centuries.
+			</description>
+			<dc:creator>Motoko Rich</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 18:57:41 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Books and Literature</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Women and Girls</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Royal Families</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">#MeToo Movement</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Murasaki Shikibu</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_ttl">The Tale of Genji (Book)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Japan</category>
+		</item>
+		<item>
+			<title>
+				How African Restaurant Baobab Fare Found Success in Detroit
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/dining/baobab-fare-restaurant-detroit.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/dining/baobab-fare-restaurant-detroit.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/dining/baobab-fare-restaurant-detroit.html" rel="standout"/>
+			<description>
+				Hamissi Mamba, a refugee from Burundi, knew little of American culture when he arrived eight years ago and learned English watching the “Peppa Pig” cartoon. But he opened his dream restaurant, and the accolades have rolled in.
+			</description>
+			<dc:creator>Amy Haimerl</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 19:50:55 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Restaurants</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Cooking and Cookbooks</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Food</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Refugees and Displaced Persons</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Detroit (Mich)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Hamissi Mamba</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Nadia Nijimbere</category>
+			<category domain="">Baobab Fare</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14Making-It-Work-01-01-mfbg/14Making-It-Work-01-01-mfbg-moth.jpg" width="151"/>
+			<media:credit>Ali Lapetina for The New York Times</media:credit>
+			<media:description>
+				Hamissi Mamba, left, and his wife, Nadia Nijimbere, refugees from Burundi, opened their Detroit restaurant, Baobab Fare, in February 2021. They wondered if anyone would come.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				New Mars Map Lets You ‘See the Whole Planet at Once’
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/science/astronomy-mars-atlas.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/science/astronomy-mars-atlas.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/science/astronomy-mars-atlas.html" rel="standout"/>
+			<description>
+				Scientists assembled 3,000 images from an Emirati orbiter to create the prettiest atlas yet of the red planet.
+			</description>
+			<dc:creator>Kenneth Chang</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 18:19:21 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Space and Astronomy</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Mars (Planet)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Maps</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">New York University</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Abu Dhabi (United Arab Emirates)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">United Arab Emirates</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">your-feed-science</category>
+		</item>
+		<item>
+			<title>
+				Fighting Rages in Sudan as Rival Military Factions Battle for Control
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/15/world/africa/khartoum-sudan-fighting.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/15/world/africa/khartoum-sudan-fighting.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/15/world/africa/khartoum-sudan-fighting.html" rel="standout"/>
+			<description>
+				One of Africa’s largest countries is spinning out of control, as weeks of mounting tensions between two military leaders erupted in battles in the capital, Khartoum, and in other cities.
+			</description>
+			<dc:creator>Declan Walsh</dc:creator>
+			<pubDate>Sun, 16 Apr 2023 04:13:58 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Sudan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Coups D'Etat and Attempted Coups D'Etat</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">War and Armed Conflicts</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">al-Burhan, Abdel Fattah</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Hamdan, Mohamed (Hemeti)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15sudan-fighting-header-hpwk/15sudan-fighting-header-hpwk-moth.jpg" width="151"/>
+			<media:credit>Agence France-Presse — Getty Images</media:credit>
+			<media:description>
+				Heavy smoke billows above buildings in the vicinity of the Khartoum airport on Saturday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Brazil’s Lula Meets Xi in China as They Seek Path to Peace in Ukraine
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/asia/brazil-china-russia-ukraine.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/asia/brazil-china-russia-ukraine.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/asia/brazil-china-russia-ukraine.html" rel="standout"/>
+			<description>
+				Brazil has been reluctant about choosing sides in the war, as its new president, Luiz Inácio Lula da Silva, seeks to rebuild the country’s ties with Beijing.
+			</description>
+			<dc:creator>Keith Bradsher</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 01:21:17 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Brazil</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">China</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Da Silva, Luiz Inacio Lula</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Xi Jinping</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Russia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ukraine</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14ukraine-ledeall-kbzl/14ukraine-ledeall-kbzl-moth.jpg" width="151"/>
+			<media:credit>Pool photo by Ken Ishii</media:credit>
+			<media:description>
+				President Xi Jinping of China and President Luiz Inácio Lula da Silva of Brazil reviewing troops outside the Great Hall of the People in Beijing on Friday.
+			</media:description>
+		</item>
+		<item>
+			<title>Airman Charged in Leak of Classified Documents</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/us/politics/jack-teixeira-classified-documents-leak.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/us/politics/jack-teixeira-classified-documents-leak.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/us/politics/jack-teixeira-classified-documents-leak.html" rel="standout"/>
+			<description>
+				Jack Teixeira, 21, was granted a top-secret security clearance in 2021, which was required for his job, the Justice Department complaint said.
+			</description>
+			<dc:creator>Michael Crowley</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 02:28:50 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">US Intelligence Documents Leak (2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Teixeira, Jack</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Classified Information and State Secrets</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Espionage and Intelligence Services</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Computers and the Internet</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14dc-intel-lbfg/14dc-intel-lbfg-moth.jpg" width="151"/>
+			<media:credit>Sophie Park for The New York Times</media:credit>
+			<media:description>
+				People gathering outside the federal courthouse in Boston where Jack Teixeira, a 21-year-old Massachusetts Air National Guardsman, was charged Friday with two counts related to the leaking of hundreds of U.S. classified documents.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Bird Flu Sample from Chilean Man Showed Some Signs of Adaptation to Mammals
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/science/bird-flu-humans.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/science/bird-flu-humans.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/science/bird-flu-humans.html" rel="standout"/>
+			<description>
+				These changes were unlikely to be enough to allow the virus to spread easily among humans, and the health risk to the public remains low, experts said.
+			</description>
+			<dc:creator>Emily Anthes</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 23:00:25 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Avian Influenza</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Mammals</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Chile</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Centers for Disease Control and Prevention</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">your-feed-health</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">your-feed-science</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Genetics and Heredity</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Birds</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Viruses</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14BIRD-FLU-pqcf/14BIRD-FLU-pqcf-moth.jpg" width="151"/>
+			<media:credit>Adriana Thomasa/EPA, via Shutterstock</media:credit>
+			<media:description>
+				A dead sea lion in Viña del Mar, Chile, where penguins and sea lions have been dying in large numbers from bird flu.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Russian Attack in Sloviansk, Ukraine, Kills Toddler
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/ukraine-strike-sloviansk-toddler.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/ukraine-strike-sloviansk-toddler.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/ukraine-strike-sloviansk-toddler.html" rel="standout"/>
+			<description>
+				The 2-year-old boy and at least seven other people were killed after a Russian attack in Sloviansk, Ukrainian officials said. His father is believed to still be trapped in the carnage.
+			</description>
+			<dc:creator>Anushka Patil</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 22:52:04 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Zelenska, Olena</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Slovyansk (Ukraine)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Bakhmut (Ukraine)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">War and Armed Conflicts</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14-ukraine-briefing-sloviansk-promo/14-ukraine-briefing-sloviansk-promo-moth-v2.jpg" width="151"/>
+			<media:credit>Anatolii Stepanov/AFP</media:credit>
+		</item>
+		<item>
+			<title>
+				In Ireland, Biden Draws on a Family Story Rooted in Hope
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/biden-ireland-ancestry.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/biden-ireland-ancestry.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/biden-ireland-ancestry.html" rel="standout"/>
+			<description>
+				He may not be a candidate yet, but President Biden delivered a message of optimism to the people of Ireland. It was a possible preview of a campaign to come.
+			</description>
+			<dc:creator>Katie Rogers and Michael D. Shear</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 01:06:24 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Dodd, Christopher J</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Sebelius, Kathleen</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ballina (Ireland)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Good Friday Agreement (1998)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14BIDEN-ROOTS-wzft/14BIDEN-ROOTS-wzft-moth.jpg" width="151"/>
+			<media:credit>Kenny Holston/The New York Times</media:credit>
+			<media:description>
+				President Biden delivering remarks in County Mayo, Ireland, on Friday night.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Biden Overcome After Seeing Priest Who Gave Last Rites to Son Beau
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/biden-beau-priest-ireland.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/biden-beau-priest-ireland.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/biden-beau-priest-ireland.html" rel="standout"/>
+			<description>
+				President Biden was in tears after the surprise meeting with the priest, Friar Frank O’Grady, who was given a last-minute security approval to meet with the president.
+			</description>
+			<dc:creator>Katie Rogers</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 07:28:15 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Hunter</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Brain Cancer</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Priests</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14biden-beau-1-qzlb/14biden-beau-1-qzlb-moth.jpg" width="151"/>
+			<media:credit>Kenny Holston/The New York Times</media:credit>
+			<media:description>
+				President Biden touring the basilica at the Knock Shrine in County Mayo, Ireland, on Friday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				El Chapo’s Sons Face Sweeping New Charges in Fentanyl Indictments
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/us/politics/el-chapo-sons-fentanyl-charges.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/us/politics/el-chapo-sons-fentanyl-charges.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/us/politics/el-chapo-sons-fentanyl-charges.html" rel="standout"/>
+			<description>
+				The charges, in five related cases, offered a panoramic view of how the deadly drug was created, transported and ultimately sold by the Sinaloa cartel on American streets.
+			</description>
+			<dc:creator>Benjamin Weiser and Alan Feuer</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 20:59:53 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Sinaloa Cartel</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Drug Cartels</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Fentanyl</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Drug Enforcement Administration</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Garland, Merrick B</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Justice Department</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Guzman Loera, Joaquin</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Guzman Lopez, Joaquin</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Guzman Lopez, Ovidio</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Guzman Salazar, Ivan Archivaldo</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Guzman Salazar, Jesus Alfredo</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Mexico</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/15/multimedia/15dc-sinaloa-cmlk/15dc-sinaloa-cmlk-moth.jpg" width="151"/>
+			<media:credit>Drew Angerer/Getty Images</media:credit>
+			<media:description>
+				“The Justice Department is attacking every aspect of the cartel’s operations,” Attorney General Merrick B. Garland said at a news conference in Washington on Friday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Pressure Mounts on China to Offer Debt Relief to Poor Countries Facing Default
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/business/economy/china-debt-relief.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/business/economy/china-debt-relief.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/business/economy/china-debt-relief.html" rel="standout"/>
+			<description>
+				There was optimism at the spring meetings of the I.M.F. and World Bank that China will make concessions over restructuring its loans.
+			</description>
+			<dc:creator>Alan Rappeport</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 18:22:14 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">China</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Developing Countries</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Foreign Investments</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Economic Conditions and Trends</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Banking and Financial Institutions</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Credit and Debt</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">International Monetary Fund</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">World Bank</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Africa</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ghana</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Zambia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Sri Lanka</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14dc-globaldebt-01-kjtz/14dc-globaldebt-01-kjtz-moth.jpg" width="151"/>
+			<media:credit>Andy Wong/Associated Press</media:credit>
+			<media:description>
+				China has lent more than $500 billion to developing countries through its lending program, making it one of the world’s largest creditors.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Billy Waugh, 93, ‘Godfather of the Green Berets,’ Is Dead
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/asia/billy-waugh-dead.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/asia/billy-waugh-dead.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/asia/billy-waugh-dead.html" rel="standout"/>
+			<description>
+				He was a Special Forces soldier during the Vietnam War then worked for the C.I.A., tracking Osama bin Laden in Sudan and fighting in Afghanistan after 9/11.
+			</description>
+			<dc:creator>Richard Sandomir</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 16:45:21 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Espionage and Intelligence Services</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Vietnam War</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Afghanistan War (2001- )</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Deaths (Obituaries)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Waugh, Billy (1929-2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">United States Army Special Forces (Green Berets)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Central Intelligence Agency</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Sanchez, Ilich Ramirez</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">bin Laden, Osama</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Afghanistan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Vietnam</category>
+		</item>
+		<item>
+			<title>How Much Power Should the Courts Have?</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/magazine/courts-power-government.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/magazine/courts-power-government.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/magazine/courts-power-government.html" rel="standout"/>
+			<description>
+				In Israel, the United States and other democracies, bitter battles are being waged over the same question.
+			</description>
+			<dc:creator>Emily Bazelon</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 14:40:19 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Law and Legislation</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Israel</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Supreme Court (US)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">State Legislatures</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Democracy (Theory and Philosophy)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Orban, Viktor</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Netanyahu, Benjamin</category>
+		</item>
+		<item>
+			<title>
+				Russia’s Ambassador Says U.S. Threatened Retaliation Unless Evan Gershkovich Is Released
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/russia-gershkovich-ambassador.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/russia-gershkovich-ambassador.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/russia-gershkovich-ambassador.html" rel="standout"/>
+			<description>
+				American officials and The Wall Street Journal have vehemently denied the accusation that Evan Gershkovich was engaged in any kind of spying activity.
+			</description>
+			<dc:creator>Ivan Nechepurenko</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 12:45:58 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Espionage and Intelligence Services</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Freedom of the Press</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Political Prisoners</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Antonov, Anatoly Ivanovich</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Gershkovich, Evan</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Russia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14ukraine-briefing-Gershkovich-01-kmzp/14ukraine-briefing-Gershkovich-01-kmzp-moth.jpg" width="151"/>
+			<media:credit>Michael A. McCoy for The New York Times</media:credit>
+			<media:description>
+				Supporters of Evan Gershkovich, the detained journalist, outside the World Bank headquarters in Washington on Wednesday.
+			</media:description>
+		</item>
+		<item>
+			<title>Will Abortion Kill the Filibuster?</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/briefing/abortion.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/briefing/abortion.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/briefing/abortion.html" rel="standout"/>
+			<description>Courts don’t make laws. Congress does.</description>
+			<dc:creator>David Leonhardt</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 10:43:11 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">internal-storyline-no</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Abortion</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Abortion Drugs</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Democratic Party</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Filibusters and Debate Curbs</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14themorning-promo/14themorning-lede-fkqp-moth-v2.jpg" width="151"/>
+			<media:credit>Kenny Holston/The New York Times</media:credit>
+			<media:description>U.S. Capitol.</media:description>
+		</item>
+		<item>
+			<title>
+				This is how Ukraine has survived the war on its power grid.
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/this-is-how-ukraine-has-survived-the-war-on-its-power-grid.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/this-is-how-ukraine-has-survived-the-war-on-its-power-grid.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/this-is-how-ukraine-has-survived-the-war-on-its-power-grid.html" rel="standout"/>
+			<description/>
+			<dc:creator>Marc Santora</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 12:49:56 +0000</pubDate>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/07/multimedia/11ukraine-briefing-mines-VERSION-02/00ukraine-energy-2-hptw-moth.jpg" width="151"/>
+			<media:credit>Emile Ducke for The New York Times</media:credit>
+			<media:description>
+				Ukrainian electrical workers inspecting a power line in Kyiv replaced after a Russian strike at the end of last year.
+			</media:description>
+		</item>
+		<item>
+			<title>Learning to Love My Incomprehensible Kiwi Accent</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/asia/learning-to-love-my-incomprehensible-kiwi-accent.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/asia/learning-to-love-my-incomprehensible-kiwi-accent.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/asia/learning-to-love-my-incomprehensible-kiwi-accent.html" rel="standout"/>
+			<description>
+				It’s surprising how hard it is for New Zealanders to make themselves understood in America.
+			</description>
+			<dc:creator>Pete McKenzie</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 06:00:55 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">New Zealand</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14ozletter302-1-lkwc/14ozletter302-1-lkwc-moth.jpg" width="151"/>
+			<media:credit>Jonah Rosenberg for The New York Times</media:credit>
+			<media:description>
+				In New York — and in many other places — New Zealanders are finding it hard to make themselves understood.
+			</media:description>
+		</item>
+		<item>
+			<title>Your Friday Briefing</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/briefing/leak-airman-protests-france.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/briefing/leak-airman-protests-france.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/briefing/leak-airman-protests-france.html" rel="standout"/>
+			<description>An arrest in the document leak in the U.S.</description>
+			<dc:creator>Natasha Frost</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 05:07:11 +0000</pubDate>
+		</item>
+		<item>
+			<title>
+				Germany Quits Nuclear Power, Ending a Decades-Long Struggle
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/14/world/europe/germany-nuclear-power-plants.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/14/world/europe/germany-nuclear-power-plants.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/14/world/europe/germany-nuclear-power-plants.html" rel="standout"/>
+			<description>
+				The last three plants in Germany are scheduled to shut down by Saturday, while other European countries are looking to expand nuclear energy.
+			</description>
+			<dc:creator>Melissa Eddy and Erika Solomon</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 04:01:09 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Nuclear Energy</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Germany</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Shutdowns (Institutional)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Electric Light and Power</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14german-nuclear-print1/00german-nuclear-01-fqkb-moth.jpg" width="151"/>
+			<media:credit>Laetitia Vancon for The New York Times</media:credit>
+			<media:description>
+				Germany’s move to phase out nuclear energy makes it an outlier in much of the industrialized world.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				North Korea Says It Launched a Solid-Fuel ICBM, a First
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/asia/north-korea-missile-launch.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/asia/north-korea-missile-launch.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/asia/north-korea-missile-launch.html" rel="standout"/>
+			<description>
+				If successfully developed, solid-fuel technology would be a significant advance, making the North’s missiles easier to move and harder to target.
+			</description>
+			<dc:creator>Choe Sang-Hun</dc:creator>
+			<pubDate>Sat, 15 Apr 2023 02:45:06 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">North Korea</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Kim Jong-un</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Missiles and Missile Defense Systems</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Nuclear Weapons</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">South Korea</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/14/multimedia/14nkorea-jqzb/14nkorea-jqzb-moth.jpg" width="151"/>
+			<media:credit>KCNA via KNS, via Associated Press</media:credit>
+			<media:description>
+				State media on Friday released this photo of North Korea’s leader, Kim Jong-un, center, his daughter and an unidentified person, said to be watching the launch of the North’s new missile on Thursday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Jack Teixeira: The Airman Who Wanted to Give Gamers a Real Taste of War
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/jack-teixeira-pentagon-leak.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/jack-teixeira-pentagon-leak.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/jack-teixeira-pentagon-leak.html" rel="standout"/>
+			<description>
+				A group liked online war games. But then Jack Teixeira, a 21-year-old National Guard airman, began showing members classified documents, they say.
+			</description>
+			<dc:creator>
+				Aric Toler, Christiaan Triebert, Haley Willis, Malachy Browne, Michael Schwirtz and Riley Mellen
+			</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 20:42:49 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">US Intelligence Documents Leak (2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Teixeira, Jack</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Classified Information and State Secrets</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Air National Guard</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Computer and Video Games</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">your-feed-visual-investigations</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13gaming-leak-group-promo-wbvq/13gaming-leak-group-promo-wbvq-moth.jpg" width="151"/>
+			<media:credit>WCVB-TV, via Associated Press</media:credit>
+		</item>
+		<item>
+			<title>
+				Ex-C.I.A. Psychologist Re-enacts Interrogations for Guantánamo Court
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/us/politics/cia-torture-guantanamo-saudi-detainee-nashiri.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/us/politics/cia-torture-guantanamo-saudi-detainee-nashiri.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/us/politics/cia-torture-guantanamo-saudi-detainee-nashiri.html" rel="standout"/>
+			<description>
+				Lawyers for a Saudi prisoner had the psychologist show some of his practices in an effort to exclude evidence as derived from torture.
+			</description>
+			<dc:creator>Carol Rosenberg</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 22:18:25 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Espionage and Intelligence Services</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Torture</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Terrorism</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Waterboarding</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Jessen, Bruce</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Nashiri, Abd al-Rahim al-</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Al Qaeda</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Central Intelligence Agency</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Guantanamo Bay Naval Base (Cuba)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Prisons and Prisoners</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13dc-gitmo-gchj/13dc-gitmo-gchj-moth.jpg" width="151"/>
+			<media:credit>Erin Schaff/The New York Times</media:credit>
+			<media:description>
+				Lawyers for Abd al-Rahim al-Nashiri have portrayed him as deeply damaged by physical, psychological and sexual abuse in his nearly four years of C.I.A. detention.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Your Friday Briefing: An Arrest in the Documents Leak
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/briefing/arrest-documents-leak-asia.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/briefing/arrest-documents-leak-asia.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/briefing/arrest-documents-leak-asia.html" rel="standout"/>
+			<description>Also, the WTA will return to China.</description>
+			<dc:creator>Amelia Nierenberg</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 21:02:35 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">
+				Far East, South and Southeast Asia and Pacific Areas
+			</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">United States</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">China</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Classified Information and State Secrets</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Abortion</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Abortion Drugs</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Women's Tennis Assn</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Peng Shuai</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Kerala (India)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Guam</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/14ambriefing-asia-promo/14ambriefing-asia-nl-leak-moth.jpg" width="151"/>
+			<media:credit>Joshua Roberts/Reuters</media:credit>
+			<media:description>
+				The disclosures have rattled the Pentagon, and the diplomatic community.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Iran and Nicaragua Discussed Military Cooperation, Leaked Report Says
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/middleeast/iran-nicaragua-military-cooperation.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/middleeast/iran-nicaragua-military-cooperation.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/middleeast/iran-nicaragua-military-cooperation.html" rel="standout"/>
+			<description>
+				The two countries had found common ground in opposing “perceived U.S. efforts to expand influence in Latin America,” according to an intelligence update based on C.I.A. intercepts.
+			</description>
+			<dc:creator>Vivian Yee</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 21:07:00 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Iran</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Nicaragua</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Latin America</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Ortega, Daniel</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Amir Abdollahian, Hossein</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13iran-nicaragua-lbzh/13iran-nicaragua-lbzh-moth.jpg" width="151"/>
+			<media:credit>Vahid Salemi/Associated Press</media:credit>
+			<media:description>
+				The Iranian foreign minister, Hossein Amir Abdollahian, left, greeting his Nicaraguan counterpart, Denis Moncada, in Tehran in December. Their two countries share grudges against the United States.
+			</media:description>
+		</item>
+		<item>
+			<title>Biden Thanks Ireland for Backing Ukraine</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/biden-ireland-ukraine-speech.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/biden-ireland-ukraine-speech.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/biden-ireland-ukraine-speech.html" rel="standout"/>
+			<description>
+				“I’m at home,” the president told the Irish Parliament to thunderous applause. “I only wish I could stay longer.”
+			</description>
+			<dc:creator>Michael D. Shear and Katie Rogers</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 20:37:14 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Peace Process</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Putin, Vladimir V</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Varadkar, Leo</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Northern Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Russia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ukraine</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Refugees and Displaced Persons</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13biden-diplo-lgkz/13biden-diplo-lgkz-moth.jpg" width="151"/>
+			<media:credit>Kenny Holston/The New York Times</media:credit>
+			<media:description>
+				President Biden became the fourth American president to address the Irish Parliament, giving an emotional address that mixed personal themes with the diplomatic.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				After Shunning Assad for Years, the Arab World Is Returning Him to the Fold
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/middleeast/assad-syria-middle-east.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/middleeast/assad-syria-middle-east.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/middleeast/assad-syria-middle-east.html" rel="standout"/>
+			<description>
+				President Bashar al-Assad of Syria was isolated for years after brutally crushing his country’s Arab Spring uprising. But in most Arab capitals today, the only question is how — not whether — they should deal with him again.
+			</description>
+			<dc:creator>Vivian Nereim, Raja Abdulrahim and Edward Wong</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 02:53:25 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Syria</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Assad, Bashar al-</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Turkey Earthquake (Feb 6, 2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Arab League</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Damascus (Syria)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Saudi Arabia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Iran</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Middle East</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Arabs</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Turkey</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Egypt</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13syria-1-wtbg/13syria-1-wtbg-moth.jpg" width="151"/>
+			<media:credit>
+				United Arab Emirates Presidential Court /EPA, via Shutterstock
+			</media:credit>
+			<media:description>
+				A photograph released by the United Arab Emirates presidential court showing President Bashar al-Assad of Syria, left, and the Emirati ruler, Sheikh Mohammed bin Zayed, in Abu Dhabi, the United Arab Emirates, last month.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Biden Plans an Electric Vehicle Revolution. Now, the Hard Part.
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/climate/electric-vehicles-biden-epa.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/climate/electric-vehicles-biden-epa.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/climate/electric-vehicles-biden-epa.html" rel="standout"/>
+			<description>
+				The administration’s push to supercharge E.V. sales must now surmount resistance from manufacturers and consumers as well as likely legal challenges.
+			</description>
+			<dc:creator>Coral Davenport and Neal E. Boudette</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 20:28:06 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Global Warming</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Greenhouse Gas Emissions</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Automobiles</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Electric and Hybrid Vehicles</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Regulation and Deregulation of Industry</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Environmental Protection Agency</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Factories and Manufacturing</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13cli-EVs-01-vzkh/13cli-EVs-01-vzkh-moth.jpg" width="151"/>
+			<media:credit>Justin Sullivan/Getty Images</media:credit>
+			<media:description>
+				If the new electric vehicle rule is enacted as proposed, it could cut the equivalent of two years’ worth of carbon dioxide emissions from the entire U.S. economy.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				As World Warms, Droughts Come On Faster, Study Finds
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/climate/flash-drought-warming.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/climate/flash-drought-warming.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/climate/flash-drought-warming.html" rel="standout"/>
+			<description>
+				When rains fail unexpectedly, higher temperatures can more rapidly parch the ground, to devastating effect.
+			</description>
+			<dc:creator>Raymond Zhong</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 19:46:36 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Global Warming</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Greenhouse Gas Emissions</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Drought</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Rain</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Agriculture and Farming</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Science (Journal)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/climate/13cli-flashdrought-02/13cli-flashdrought-02-moth.jpg" width="151"/>
+			<media:credit>Ritesh Shukla/Getty Images</media:credit>
+			<media:description>
+				The dried bed of the Belan River in India last spring.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Northern Ireland Shows How Hard It Is to End a Conflict
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/northern-ireland-peace-deal.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/northern-ireland-peace-deal.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/northern-ireland-peace-deal.html" rel="standout"/>
+			<description>
+				Northern Ireland had tremendous economic, political, and geographic advantages — but ending the Troubles still proved extremely difficult.
+			</description>
+			<dc:creator>Amanda Taub</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 19:24:36 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Northern Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Good Friday Agreement (1998)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Ireland</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Great Britain</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/05/13/multimedia/13Int-NorthernIreland-01-lhtm/13Int-NorternIreland-01-lhtm-moth.jpg" width="151"/>
+			<media:credit>Andrew Testa for The New York Times</media:credit>
+			<media:description>A view over the city of Belfast in March.</media:description>
+		</item>
+		<item>
+			<title>
+				Once Shocking, U.S. Spying on Its Allies Draws a Global Shrug
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/us/politics/us-spying-allies.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/us/politics/us-spying-allies.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/us/politics/us-spying-allies.html" rel="standout"/>
+			<description>
+				Compared with revelations in 2013 of mass surveillance by the National Security Agency, intelligence reports in a trove of recently leaked documents have resulted in limited outrage abroad.
+			</description>
+			<dc:creator>Michael Crowley</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 14:34:55 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">US Intelligence Documents Leak (2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Classified Information and State Secrets</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Espionage and Intelligence Services</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Surveillance of Citizens by Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">
+				Wiretapping and Other Eavesdropping Devices and Methods
+			</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Politics and Government</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">National Security Agency</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">WikiLeaks</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Obama, Barack</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Snowden, Edward J</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Biden, Joseph R Jr</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Polls and Public Opinion</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/00dc-spying-kzlb/00dc-spying-kzlb-moth.jpg" width="151"/>
+			<media:credit>Rafael Marchante/Reuters</media:credit>
+			<media:description>
+				The classified documents leaked by Edward Snowden in 2013 revealed a new age of spying after the Cold War and Sept. 11, 2001.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				F.B.I. Arrests Jack Teixeira, a National Guardsman, in Leaked Documents Case
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/documents-leak-leaker-identity.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/documents-leak-leaker-identity.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/documents-leak-leaker-identity.html" rel="standout"/>
+			<description>
+				Authorities say Jack Teixeira, a 21-year-old member of the Massachusetts Air National Guard, posted sensitive materials in an online chat group.
+			</description>
+			<dc:creator>
+				Haley Willis, Thomas Gibbons-Neff, Aric Toler, Christiaan Triebert, Julian E. Barnes and Malachy Browne
+			</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 20:42:06 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">US Intelligence Documents Leak (2023)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Teixeira, Jack</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Classified Information and State Secrets</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Air National Guard</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">United States Defense and Military Forces</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Computer and Video Games</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">your-feed-visual-investigations</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13dc-leaks-lede-hmwl/13dc-leaks-lede-hmwl-moth.jpg" width="151"/>
+			<media:credit>Haley Willis/The New York Times</media:credit>
+			<media:description>
+				Law enforcement personnel outside the home of Airman First Class Jack Teixeira’s mother in North Dighton, Mass., on Thursday. The F.B.I. had been zeroing in on him for several days.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				The U.S. investigation into the leaked Pentagon documents is ‘getting close’ to finding answers, Biden says.
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/biden-says-the-us-investigation-into-the-leaked-pentagon-documents-is-getting-close-to-finding-answers.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/biden-says-the-us-investigation-into-the-leaked-pentagon-documents-is-getting-close-to-finding-answers.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/biden-says-the-us-investigation-into-the-leaked-pentagon-documents-is-getting-close-to-finding-answers.html" rel="standout"/>
+			<description/>
+			<dc:creator>Michael D. Shear</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 16:30:04 +0000</pubDate>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13ukraine-briefing-Biden-leaks-topart-fvgp/13ukraine-briefing-Biden-leaks-topart-fvgp-moth.jpg" width="151"/>
+			<media:credit>Kenny Holston/The New York Times</media:credit>
+			<media:description>
+				President Biden commented on leaked American intelligence documents while on a trip to Ireland.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Seeking Visibility, Pope’s Commission on Sex Abuse Gets a New Home
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/vatican-sex-abuse-rome.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/vatican-sex-abuse-rome.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/vatican-sex-abuse-rome.html" rel="standout"/>
+			<description>
+				In moving from cramped offices to a palazzo, the organization is aiming for more visibility, and to be better able to welcome victims.
+			</description>
+			<dc:creator>Jason Horowitz</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 20:44:26 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Priests</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Cardinals (Roman Catholic Prelates)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Monuments and Memorials (Structures)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Churches (Buildings)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Religion and Belief</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Francis</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">O'Malley, Sean P</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Roman Catholic Church</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Vatican City</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Child Abuse and Neglect</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Sex Crimes</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/12/multimedia/12vatican-palace-01-hbvz/12vatican-palace-01-hbvz-moth.jpg" width="151"/>
+			<media:credit>Stephanie Gengotti for The New York Times</media:credit>
+			<media:description>
+				Dr. Stefano Simone Mattei and Rev. Andrew Small, both members of the Pontifical Commission for the Protection of Minors, outside of Palazzo Maffei Marescotti in Rome.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				2 Arrested in Hong Kong After Dousing Police With Water Guns
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/asia/hong-kong-songkran-water-arrests.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/asia/hong-kong-songkran-water-arrests.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/asia/hong-kong-songkran-water-arrests.html" rel="standout"/>
+			<description>
+				Songkran, a traditional Thai festival, often involves splashing and squirting. But the continuing crackdowns on all forms of dissent in Hong Kong made things different this year.
+			</description>
+			<dc:creator>Tiffany May</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 02:13:00 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Festivals</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Hong Kong</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">New Year</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Police</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Hong Kong Protests (2019)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Thailand</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13hk-watergun-kwlj/13hk-watergun-kwlj-moth.jpg" width="151"/>
+			<media:credit>Louise Delmotte/Associated Press</media:credit>
+			<media:description>
+				Revelers splashing water on police officers, among others, during a celebration of the Songkran festival in Hong Kong on Sunday.
+			</media:description>
+		</item>
+		<item>
+			<title>
+				Protests Persist in France as Macron’s Pension Law Nears Last Hurdle
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/france-pension-protests-constitutional-council.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/france-pension-protests-constitutional-council.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/france-pension-protests-constitutional-council.html" rel="standout"/>
+			<description>
+				A constitutional ruling expected on Friday may be the final legal obstacle for President Emmanuel Macron’s push to increase the retirement age. But the plan hasn’t become any more popular.
+			</description>
+			<dc:creator>Aurelien Breeden</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 19:17:02 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">France</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Macron, Emmanuel (1977- )</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Pensions and Retirement Plans</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Strikes</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Constitutional Council (France)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Demonstrations, Protests and Riots</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Confederation Generale du Travail (France)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Paris (France)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13France-protests-01-fpjv/13France-protests-01-fpjv-moth.jpg" width="151"/>
+			<media:credit>
+				Lionel Bonaventure/Agence France-Presse — Getty Images
+			</media:credit>
+			<media:description>A demonstration on Thursday in Toulouse, France.</media:description>
+		</item>
+		<item>
+			<title>
+				Belarus Extradites Russian Man Convicted After His Daughter Drew Antiwar Picture, State Media Reports
+			</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/world/europe/belarus-russia-extradition-anti-war-picture.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/world/europe/belarus-russia-extradition-anti-war-picture.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/world/europe/belarus-russia-extradition-anti-war-picture.html" rel="standout"/>
+			<description>
+				Aleksei Moskalyov, a single father, escaped house arrest in Russia after he was charged with “discrediting” the Russian Army over the war in Ukraine.
+			</description>
+			<dc:creator>Ivan Nechepurenko</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 11:49:54 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Russian Invasion of Ukraine (2022)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Child Custody and Support</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Extradition</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Belarus</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Russia</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Moskalyov, Aleksei</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/03/28/multimedia/13ukraine-briefing-moskalyov-01/28russia-child-01-ktpg-moth.jpg" width="151"/>
+			<media:credit>Associated Press</media:credit>
+			<media:description>
+				Aleksei Moskalyov in a Russian courtroom in March. His case has attracted international attention, in part because it has thrown custody of his daughter into question.
+			</media:description>
+		</item>
+		<item>
+			<title>That Famous Black Hole Just Got Even Darker</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/science/astronomy-black-holes.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/science/astronomy-black-holes.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/science/astronomy-black-holes.html" rel="standout"/>
+			<description>
+				Astronomers recently used artificial intelligence to fine-tune the first-ever image of a black hole, captured in 2019 by the Event Horizon Telescope.
+			</description>
+			<dc:creator>Dennis Overbye</dc:creator>
+			<pubDate>Fri, 14 Apr 2023 02:30:08 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Space and Astronomy</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Artificial Intelligence</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Photography</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Event Horizon Telescope</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Black Holes (Space)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Stars and Galaxies</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Telescopes and Observatories</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Astrophysical Journal Letters</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/nyt_org">Institute for Advanced Study</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">your-feed-science</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/science/13SCI-BLACKHOLE-vid-cover/13SCI-BLACKHOLE-vid-cover-moth.jpg" width="151"/>
+			<media:credit>Medeiros et al., 2023</media:credit>
+		</item>
+		<item>
+			<title>Inflation Keeps Cooling</title>
+			<link>
+				https://www.nytimes.com/2023/04/13/briefing/cooling-inflation-prices.html
+			</link>
+			<guid isPermaLink="true">
+				https://www.nytimes.com/2023/04/13/briefing/cooling-inflation-prices.html
+			</guid>
+			<atom:link href="https://www.nytimes.com/2023/04/13/briefing/cooling-inflation-prices.html" rel="standout"/>
+			<description>
+				Prices aren’t climbing as quickly as they once were.
+			</description>
+			<dc:creator>German Lopez</dc:creator>
+			<pubDate>Thu, 13 Apr 2023 14:37:58 +0000</pubDate>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">internal-storyline-no</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Prices (Fares, Fees and Rates)</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Banking and Financial Institutions</category>
+			<category domain="http://www.nytimes.com/namespaces/keywords/des">Inflation (Economics)</category>
+			<media:content height="151" medium="image" url="https://static01.nyt.com/images/2023/04/13/multimedia/13themorning-promo/13themorning-lede-gtqk-moth.jpg" width="151"/>
+			<media:credit>Gabby Jones for The New York Times</media:credit>
+			<media:description>
+				As the economy has recovered from the Covid shock and people have started to go out again, consumer demand is shifting to services.
+			</media:description>
+		</item>
+	</channel>
+</rss>

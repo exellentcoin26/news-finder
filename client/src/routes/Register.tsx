@@ -108,15 +108,14 @@ const Register = () => {
     };
 
     useEffect(() => {
-        validatePasswords();},
-        [password, confirmPassword]
-    );
+        validatePasswords();
+    }, [password, confirmPassword]);
 
     const validatePasswords = () => {
         password === confirmPassword
-        ? setPasswordsMatch(true)
-        : setPasswordsMatch(false)
-    }
+            ? setPasswordsMatch(true)
+            : setPasswordsMatch(false);
+    };
 
     return (
         <>
@@ -175,11 +174,39 @@ const Register = () => {
                                         />
                                     </div>
                                     <div className="input-error">
-                                        {passwordsMatch? "" : "Passwords do not match"}
+                                        {passwordsMatch
+                                            ? ''
+                                            : 'Passwords do not match'}
                                     </div>
                                 </Form>
                             </div>
                             <div>
+                                <button
+                                    className="default-button sign-up-button mb-3"
+                                    onClick={() => {
+                                        if (!passwordsMatch) return;
+                                        handleRegister(
+                                            username,
+                                            password,
+                                            handleRegisterStatus,
+                                        );
+                                    }}
+                                >
+                                    {' '}
+                                    Sign up{' '}
+                                </button>
+                            </div>
+                            <div>
+                                <p className="normal-text">
+                                    {' '}
+                                    Already have an account?{' '}
+                                </p>
+                                <Link to="/login">
+                                    <button className="default-button link-button">
+                                        {' '}
+                                        Log in{' '}
+                                    </button>
+                                </Link>
                                 <div>
                                     <p className="normal-text">
                                         {' '}
