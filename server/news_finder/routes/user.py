@@ -97,7 +97,7 @@ async def register_user() -> Response:
         return make_response_from_error(
             HTTPStatus.CONFLICT,
             ErrorKind.UserAlreadyPresent,
-            "User already present in database",
+            "This username isn't available. Please try another.",
         )
 
     user = await db.users.create(data={"username": username})
