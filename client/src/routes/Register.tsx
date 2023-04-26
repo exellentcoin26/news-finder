@@ -45,6 +45,25 @@ const Register = () => {
         password: string,
         handleStatus: (status: RegisterStatusInfo[]) => void,
     ) => {
+        const cleanUsername = username.trim();
+
+        const errors = [];
+        if (cleanUsername === '') {
+            errors.push({
+                kind: RegisterStatusKind.Error,
+                message: 'Username cannot be empty',
+            });
+        }
+        if (password === '') {
+            errors.push({
+                kind: RegisterStatusKind.Error,
+                message: 'Password cannot be empty',
+            });
+        }
+        if (errors.length > 1) {
+            handleStatus(errors);
+            return;
+        }
         const response = await (async (): Promise<Response> => {
             try {
                 return await fetch(target_url, {
