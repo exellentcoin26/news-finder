@@ -133,105 +133,105 @@ const Register = () => {
             {isLoggedIn ? (
                 <Navigate replace to={'/home'} />
             ) : (
-                <Container className="form-container center">
-                    {registerStatusInfo ? (
-                        <RegisterStatusBanner info={registerStatusInfo} />
-                    ) : null}
-                    <div>
-                        <Card>
-                            <Card.Body>
-                                <div>
-                                    <h2 className="title mb-3">
-                                        {' '}
-                                        Register Page{' '}
-                                    </h2>
-                                </div>
-                                <div>
-                                    <Form>
-                                        <Form.Control
-                                            required
-                                            className="input-text mb-3"
-                                            type="text"
-                                            placeholder="Username"
-                                            value={username}
-                                            onChange={(event) =>
-                                                setUsername(event.target.value)
-                                            }
-                                            aria-required="true"
-                                        />
-                                        <Form.Control
-                                            required
-                                            className="input-text mb-3"
-                                            type="password"
-                                            placeholder="Password"
-                                            value={password}
-                                            onChange={(event) =>
-                                                setPassword(event.target.value)
-                                            }
-                                            aria-required="true"
-                                        />
-                                        <Form.Control
-                                            required
-                                            className="input-text mb-3"
-                                            type="password"
-                                            placeholder="Confirm Password"
-                                            value={confirmPassword}
-                                            onChange={(event) =>
-                                                setConfirmPassword(
-                                                    event.target.value,
-                                                )
-                                            }
-                                            aria-required="true"
-                                            aria-invalid={passwordsMatch}
-                                        />
-                                        <div className="input-error">
-                                            {passwordsMatch
-                                                ? ''
-                                                : 'Passwords do not match'}
-                                        </div>
-                                    </Form>
-                                </div>
-                                <div>
-                                    <button
-                                        className="default-button sign-up-button mb-3"
-                                        onClick={() => {
-                                            if (!passwordsMatch) {
-                                                setRegisterStatusInfo([
-                                                    {
-                                                        kind: RegisterStatusKind.Error,
-                                                        message:
-                                                            'Passwords do not match',
-                                                    },
-                                                ]);
-                                                return;
-                                            }
-                                            handleRegister(
-                                                username,
-                                                password,
-                                                handleRegisterStatus,
-                                            );
-                                        }}
-                                    >
-                                        {' '}
-                                        Sign up{' '}
-                                    </button>
-                                </div>
-                                <div>
-                                    <p className="normal-text">
-                                        {' '}
-                                        Already have an account?{' '}
-                                    </p>
-                                    <Link to="/login">
-                                        <button className="default-button link-button">
-                                            {' '}
-                                            Log in{' '}
-                                        </button>
-                                    </Link>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </div>
-                </Container>
+              <Container className="form-container center">
+                  {registerStatusInfo ? (
+                      <RegisterStatusBanner info={registerStatusInfo} />
+                  ) : null}
+                  <div>
+                      <Card>
+                          <Card.Body>
+                              <div>
+                                  <h2 className="title mb-3"> Register Page </h2>
+                              </div>
+                              <div>
+                                  <Form>
+                                      <Form.Control
+                                          required
+                                          className="input-text mb-3"
+                                          type="text"
+                                          placeholder="Username"
+                                          value={username}
+                                          onChange={(event) =>
+                                              setUsername(event.target.value)
+                                          }
+                                          aria-required="true"
+                                      />
+                                      <Form.Control
+                                          required
+                                          className="input-text mb-3"
+                                          type="password"
+                                          placeholder="Password"
+                                          value={password}
+                                          onChange={(event) =>
+                                              setPassword(event.target.value)
+                                          }
+                                          aria-required="true"
+                                      />
+                                      <Form.Control
+                                          required
+                                          className="input-text mb-3"
+                                          type="password"
+                                          placeholder="Confirm Password"
+                                          value={confirmPassword}
+                                          onChange={(event) =>
+                                              setConfirmPassword(
+                                                  event.target.value,
+                                              )
+                                          }
+                                          aria-required="true"
+                                          aria-invalid={passwordsMatch}
+                                      />
+                                      <div className="input-error">
+                                          {passwordsMatch
+                                              ? ''
+                                              : 'Passwords do not match'}
+                                      </div>
+                                  </Form>
+                              </div>
+                              <div>
+                                  <button
+                                      className="default-button sign-up-button mb-3"
+                                      onClick={() => {
+                                          if (!passwordsMatch) return;
+                                          handleRegister(
+                                              username,
+                                              password,
+                                              handleRegisterStatus,
+                                          );
+                                      }}
+                                  >
+                                      {' '}
+                                      Sign up{' '}
+                                  </button>
+                              </div>
+                              <div>
+                                  <p className="normal-text">
+                                      {' '}
+                                      Already have an account?{' '}
+                                  </p>
+                                  <Link to="/login">
+                                      <button className="default-button link-button">
+                                          {' '}
+                                          Sign up{' '}
+                                      </button>
+                                  </div>
+                                  <div>
+                                      <p className="normal-text">
+                                          {' '}
+                                          Already have an account?{' '}
+                                      </p>
+                                      <Link to="/login">
+                                          <button className="default-button link-button">
+                                              {' '}
+                                              Log in{' '}
+                                          </button>
+                                      </Link>
+                                  </div>
+                              </Card.Body>
+                          </Card>
+                      </div>
+                  </Container>
+                }
             )}
         </>
     );
