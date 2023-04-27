@@ -144,7 +144,7 @@ const AdminFeeds = () => {
         if (feed == null) {
             return false;
         }
-        
+
         const response = await fetch(SERVER_URL + '/rss/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
