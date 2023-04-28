@@ -1,4 +1,4 @@
-import { Card, Row, Col } from 'react-bootstrap';
+import {Card, Row, Col, Popover, OverlayTrigger, ListGroup} from 'react-bootstrap';
 import '../styles/Article.css';
 
 export const Article = ({
@@ -35,7 +35,21 @@ export const Article = ({
                         >
                             <Card.Title>{title}</Card.Title>
                             <Card.Text>{description}</Card.Text>
-                            <button className="similar-articles-button"> show similar </button>
+                            <OverlayTrigger
+                                placement="right"
+                                trigger="click"
+                                overlay={(<Popover>
+                                        <ListGroup>
+                                            <ListGroup.Item>Cras justo odio</ListGroup.Item>
+                                            <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+                                            <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+                                            <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+                                            <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                                        </ListGroup>
+                                    </Popover>
+                                )}>
+                                <button className="similar-articles-button"> show similar </button>
+                            </OverlayTrigger>
                         </Card.Body>
                     </Col>
                 </Row>
