@@ -1,14 +1,25 @@
-import Container from 'react-bootstrap/Container';
+import { Container, Form, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { AdminStatusApiResponse } from '../interfaces/api/admin';
+
 import { Navigate } from 'react-router-dom';
+
+import { fetchAdminStatus } from '../helpers';
+import { SERVER_URL } from '../env';
+
 import '../styles/Admin.css';
 
 const AdminUsers = () => {
-    const server_url =
-        import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
+    const [usernameDelete, setUsernameDelete] = useState('');
+    const [usernameMakeAdmin, setUsernameMakeAdmin] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isFetchingAdmin, setIsFetchingAdmin] = useState(true);
+
+    // Admin guard
+    useEffect(() => {
+        (async () => {
+            await fetchAdminStatus(setIsAdmin, setIsFetchingAdmin);
+        })();
+    }, []);
 
     const handleUserDeletion = async (username: string): Promise<boolean> => {
         const confirmAction = window.confirm(
@@ -17,7 +28,7 @@ const AdminUsers = () => {
 
         if (!confirmAction) return false;
 
-        const response = await fetch(server_url + '/user/', {
+        const response = await fetch(SERVER_URL + '/user/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ username: username }),
@@ -39,7 +50,7 @@ const AdminUsers = () => {
 
         if (!confirmAction) return false;
 
-        const response = await fetch(server_url + '/admin/', {
+        const response = await fetch(SERVER_URL + '/admin/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ usernames: [username] }),
@@ -55,38 +66,6 @@ const AdminUsers = () => {
 
         return response.ok;
     };
-
-    useEffect(() => {
-        const fetchAdminStatus = async () => {
-            const response = await fetch(server_url + '/admin/', {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            const adminStatusApiResponse: AdminStatusApiResponse =
-                await response.json();
-
-            if (adminStatusApiResponse.data == null) {
-                throw new Error(
-                    'data property on `AdminStatusApiResponse` object',
-                );
-            }
-
-            if (adminStatusApiResponse.data.admin) {
-                setIsAdmin(true);
-            } else {
-                setIsAdmin(false);
-            }
-            setIsFetchingAdmin(false);
-        };
-
-        fetchAdminStatus();
-    }, []);
-
-    const [usernameDelete, setUsernameDelete] = useState('');
-    const [usernameMakeAdmin, setUsernameMakeAdmin] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [isFetchingAdmin, setIsFetchingAdmin] = useState(true);
 
     if (isFetchingAdmin) {
         return null;
