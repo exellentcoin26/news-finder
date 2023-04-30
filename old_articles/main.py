@@ -1,12 +1,11 @@
 import asyncio
 
 import sys
-from datetime import datetime
+from datetime import date
 
 
 import schedule
 from prisma import Prisma
-from prisma.models import NewsArticles
 
 
 # failsafe for running async call with non async scheduler.
@@ -24,7 +23,7 @@ async def main():
         if next_run is None:
             exit(0)
 
-        delta = next_run - datetime.now()
+        delta = next_run - date.now()
 
         print(
             f"Time until next run: {int(delta.total_seconds())} seconds",
@@ -48,8 +47,14 @@ def delete_old_articles():
 
     db = Prisma()
     await db.connect()
+    articles = await db.newsarticles.find_many()
+    today = date.today()
 
-    db.newsarticles.delete_many()
+    for article in articles:
+        delta_article = today - article.publication_date
+        if delta_article.days > 2:
+            db.newsarticles.delete(where={"id": article.id})
+
     await db.disconnect()
     
     is_running = False
