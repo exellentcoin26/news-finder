@@ -25,13 +25,13 @@ generator rss-scraper {
 
 // data models
 model Users {
-  id         Int           @id @default(autoincrement())
-  username   String        @unique
-  created_at DateTime      @default(now())
-  admin      Boolean       @default(false)
+  id         Int             @id @default(autoincrement())
+  username   String          @unique
+  created_at DateTime        @default(now())
+  admin      Boolean         @default(false)
   login      UserLogins?
   cookies    UserCookies[]
-  History    Articles[]
+  History    UsersArticles[]
 }
 
 // User login information (user_id, password).
@@ -50,12 +50,12 @@ model UserCookies {
 
 // News source information.
 model NewsSources {
-  id       Int            @id @default(autoincrement())
-  name     String         @unique
-  url      String         @unique
-  rss      RssEntries[]
-  articles NewsArticles[]
-  Articles Articles[]
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  url           String          @unique
+  rss           RssEntries[]
+  articles      NewsArticles[]
+  UsersArticles UsersArticles[]
 }
 
 // An rss feed url with corresponding news source.
@@ -78,7 +78,7 @@ model NewsArticles {
   labels           NewsArticleLabels[]
   similar_relation SimilarArticles[]   @relation("similar_relation")
   similar_articles SimilarArticles[]   @relation("similar")
-  Articles         Articles?
+  UsersArticles    UsersArticles?
 
   @@unique([id, url])
 }
@@ -103,7 +103,7 @@ model NewsArticleLabels {
 }
 
 // One to many relation of user and articles to track user history
-model Articles {
+model UsersArticles {
   article    NewsArticles @relation(fields: [article_id, url], references: [id, url], onDelete: Cascade, onUpdate: Cascade)
   article_id Int
   source     NewsSources  @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
