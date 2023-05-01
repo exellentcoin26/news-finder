@@ -1,7 +1,7 @@
-import { Container } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 export const Label = ({ name }: { name: string }) => {
-    return <Container className="label">{name}</Container>;
+    return <Button className="label">{name}</Button>;
 };
 
 export default Label;
