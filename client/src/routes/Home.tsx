@@ -1,14 +1,13 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-
 import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
-
 import {
     Article,
     ArticlePlaceholder,
     NoArticlesToShow,
 } from '../components/Article';
 import ErrorPlaceholder from '../components/Error';
+import LabelBar from '../components/LabelBar';
 
 import '../styles/Home.css';
 
@@ -75,7 +74,7 @@ const Home = () => {
         const fetchArticles = async () => {
             try {
                 const articles = await getArticlesFromServer(
-                    0,
+                    50,
                     0,
                     handleArticleErrors,
                 );
@@ -92,6 +91,8 @@ const Home = () => {
 
     return (
         <Container className={'home-container'}>
+            <LabelBar />
+            <br />
             {hasErrored ? (
                 <ErrorPlaceholder />
             ) : isLoading ? (
