@@ -1,7 +1,7 @@
 # from prisma import Prisma
 from flask import Blueprint
 from http import HTTPStatus
-from db import get_db
+from news_finder.db import get_db
 from news_finder.response import (
     make_response_from_error,
     ErrorKind,
