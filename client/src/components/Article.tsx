@@ -21,9 +21,13 @@ export const Article = ({
                 <Row md={1} className={'h-100'}>
                     <Col className={'article-image'}>
                         <Card.Img
-                            src={img_src}
+                            src={img_src ? img_src : '/img/no-image.png'}
                             className={'h-100'}
-                            style={{ objectFit: 'cover' }}
+                            style={
+                                img_src
+                                    ? { objectFit: 'cover' }
+                                    : { objectFit: 'contain' }
+                            }
                         />
                     </Col>
                     <Col className={'h-100 '}>
