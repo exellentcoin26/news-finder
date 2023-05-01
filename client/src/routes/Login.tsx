@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
 
+
 import { UserApiResponse } from '../interfaces/api/user';
 
 import { SERVER_URL } from '../env';
@@ -55,6 +56,25 @@ const Login = () => {
         password: string,
         handleStatus: (status: LoginStatusInfo[]) => void,
     ) => {
+        const cleanUsername = username.trim();
+
+        const errors = [];
+        if (cleanUsername === '') {
+            errors.push({
+                kind: LoginStatusKind.Error,
+                message: 'Username cannot be empty',
+            });
+        }
+        if (password === '') {
+            errors.push({
+                kind: LoginStatusKind.Error,
+                message: 'Password cannot be empty',
+            });
+        }
+        if (errors.length > 1) {
+            handleStatus(errors);
+            return;
+        }
         const response = await (async (): Promise<Response> => {
             try {
                 return await fetch(TARGET_URL, {
