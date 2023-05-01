@@ -15,7 +15,7 @@ is_running = False
 
 
 async def main():
-    schedule.every(30).minutes.do(run)  # pyright: ignore
+    schedule.every(24*60).minutes.do(run)  # pyright: ignore
 
     while True:
         schedule.run_pending()
