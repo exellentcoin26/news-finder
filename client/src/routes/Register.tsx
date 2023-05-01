@@ -122,20 +122,13 @@ const Register = () => {
         <>
             <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
                 <div className="form-div row d-flex align-items-center">
-                    <div>
                         {registerStatusInfo ? (
                             <RegisterStatusBanner info={registerStatusInfo} />
                         ) : null}
-                    </div>
-                    <div>
                         <Card>
                             <Card.Body>
-                                <div>
                                     <h2 className="title mb-3"> Register </h2>
-                                </div>
-                                <div>
                                     <Form>
-                                        <div>
                                             <Form.Control
                                                 required
                                                 className="input-text mb-3"
@@ -147,8 +140,6 @@ const Register = () => {
                                                 }
                                                 aria-required = "true"
                                             />
-                                        </div>
-                                        <div>
                                             <Form.Control
                                                 required
                                                 className="input-text mb-3"
@@ -160,8 +151,6 @@ const Register = () => {
                                                 }
                                                 aria-required= "true"
                                             />
-                                        </div>
-                                        <div>
                                             <Form.Control
                                                 required
                                                 className="input-text mb-3"
@@ -176,15 +165,12 @@ const Register = () => {
                                                 aria-required="true"
                                                 aria-invalid={passwordsMatch}
                                             />
-                                        </div>
                                         <div className="input-error">
                                             {passwordsMatch
                                                 ? ''
                                                 : 'Passwords do not match'}
                                         </div>
                                     </Form>
-                                    <div>
-                                        <div className="float-start">
                                             <div className="float-start">
                                                 <p className="normal-text">
                                                     {' '}
@@ -197,8 +183,7 @@ const Register = () => {
                                                     </button>
                                                 </Link>
                                             </div>
-                                        </div>
-                                        <div className="float-end">
+                                        <div>
                                             <button
                                                 className="default-button sign-up-button mb-3"
                                                 onClick={() => {
@@ -214,12 +199,8 @@ const Register = () => {
                                                 Sign up{' '}
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
                             </Card.Body>
                         </Card>
-                    </div>
-
                 </div>
             </Container>
         </>

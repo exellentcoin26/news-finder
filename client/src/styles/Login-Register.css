@@ -2,6 +2,8 @@
     .form-div {
         width: 35%;
         overflow: auto;
+        height: 100vh;
+        max-height: fit-content;
     }
 }
 
@@ -10,6 +12,8 @@
         min-width: min-content;
         width: 70%;
         overflow: auto;
+        height: 100vh;
+        max-height: fit-content;
     }
 
 }
@@ -61,6 +65,7 @@
     color: white;
     font-weight: bold;
     display: inline-block;
+    float: right;
 }
 
 .input-text {

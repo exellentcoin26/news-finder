@@ -104,22 +104,14 @@ const Login = () => {
         <>
             <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
                 <div className="form-div row d-flex align-items-center">
-                    <div>
                         {loginStatusInfo ? (
                             <LoginStatusBanner info={loginStatusInfo} />
                         ) : null}
-                    </div>
-                    <div>
                         <Card>
                             <Card.Body>
-                                <div>
                                     <h2 className="title mb-3"> Login </h2>
-                                </div>
-                                <div>
                                     <Form>
-                                        <div>
                                             <Form.Group>
-                                                <div>
                                                     <Form.Control
                                                         className="input-text mb-3"
                                                         type="text"
@@ -129,12 +121,8 @@ const Login = () => {
                                                             setUsername(event.target.value)
                                                         }
                                                     />
-                                                </div>
                                             </Form.Group>
-                                        </div>
-                                        <div>
                                             <Form.Group>
-                                                <div>
                                                     <Form.Control
                                                         className="input-text mb-3"
                                                         type="password"
@@ -144,21 +132,14 @@ const Login = () => {
                                                             setPassword(event.target.value)
                                                         }
                                                     />
-                                                </div>
                                             </Form.Group>
-                                        </div>
                                     </Form>
-                                </div>
-                                <div>
-                                    <div className="float-start">
                                         <Link to="/register">
                                             <button className="default-button link-button mb-3">
                                                 {' '}
                                                 Create an account{' '}
                                             </button>
                                         </Link>
-                                    </div>
-                                    <div className="float-end">
                                         <button
                                             className="default-button login-button mb-3"
                                             onClick={() =>
@@ -172,13 +153,9 @@ const Login = () => {
                                             {' '}
                                             Login{' '}
                                         </button>
-                                    </div>
-
-                                </div>
                             </Card.Body>
                         </Card>
                     </div>
-                </div>
             </Container>
         </>
     );
