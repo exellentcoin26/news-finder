@@ -1,19 +1,17 @@
-import Container from 'react-bootstrap/Container';
+import { Container, Form, Button } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Navigate } from 'react-router-dom';
+
 import { FeedsApiResponse } from '../interfaces/api/rss';
 import { SourcesApiResponse } from '../interfaces/api/newsSource';
 
-import '../styles/Admin.css';
-import { AdminStatusApiResponse } from '../interfaces/api/admin';
-import { Navigate } from 'react-router-dom';
+import { fetchAdminStatus } from '../helpers';
+import { SERVER_URL } from '../env';
 
-const server_url =
-    import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
+import '../styles/Admin.css';
 
 const getSourcesFromServer = async () => {
-    const response = await fetch(server_url + '/source/', {
+    const response = await fetch(SERVER_URL + '/source/', {
         method: 'GET',
     });
 
@@ -36,7 +34,7 @@ const getSourcesFromServer = async () => {
 
 const getFeedsFromServer = async (source: string) => {
     const response = await fetch(
-        server_url + '/rss/?' + new URLSearchParams({ source: source }),
+        SERVER_URL + '/rss/?' + new URLSearchParams({ source: source }),
         {
             method: 'GET',
         },
@@ -68,46 +66,28 @@ const AdminFeeds = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isFetchingAdmin, setIsFetchingAdmin] = useState(true);
 
+    // Admin guard
     useEffect(() => {
-        const fetchSources = async () => {
+        (async () => {
+            await fetchAdminStatus(setIsAdmin, setIsFetchingAdmin);
+        })();
+    });
+
+    // Fetch sources
+    useEffect(() => {
+        (async () => {
             try {
                 const sources = await getSourcesFromServer();
                 setSources(sources);
             } catch (error) {
                 console.log(error);
             }
-        };
-
-        fetchSources();
-
-        const fetchAdminStatus = async () => {
-            const response = await fetch(server_url + '/admin/', {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            const adminStatusApiResponse: AdminStatusApiResponse =
-                await response.json();
-
-            if (adminStatusApiResponse.data == null) {
-                throw new Error(
-                    'data property on `AdminStatusApiResponse` object',
-                );
-            }
-
-            if (adminStatusApiResponse.data.admin) {
-                setIsAdmin(true);
-            } else {
-                setIsAdmin(false);
-            }
-            setIsFetchingAdmin(false);
-        };
-
-        fetchAdminStatus();
+        })();
     }, []);
 
+    // Fetch feeds
     useEffect(() => {
-        const fetchFeeds = async () => {
+        (async () => {
             if (selectedSource) {
                 try {
                     const feeds = await getFeedsFromServer(selectedSource);
@@ -120,9 +100,7 @@ const AdminFeeds = () => {
                 setFeeds([]);
                 setFeedIsDisabled(true);
             }
-        };
-
-        fetchFeeds();
+        })();
     }, [selectedSource]);
 
     const handleSourceChange = (
@@ -141,7 +119,7 @@ const AdminFeeds = () => {
             .map((feed) => feed.trim())
             .filter((str) => str.length !== 0);
 
-        const response = await fetch(server_url + '/rss/', {
+        const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ feeds: array }),
@@ -167,7 +145,7 @@ const AdminFeeds = () => {
             return false;
         }
 
-        const response = await fetch(server_url + '/rss/', {
+        const response = await fetch(SERVER_URL + '/rss/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ feeds: [feed] }),

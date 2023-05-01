@@ -1,8 +1,12 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
+import { Link, Navigate } from 'react-router-dom';
+
 
 import { UserApiResponse } from '../interfaces/api/user';
+
+import { SERVER_URL } from '../env';
+import { isLoggedIn as checkLoggedIn } from '../helpers';
 
 import '../styles/Login-Register.css';
 
@@ -15,6 +19,8 @@ enum LoginStatusKind {
     Success,
     Error,
 }
+
+const TARGET_URL = SERVER_URL + '/user/login/';
 
 const LoginStatusBanner = ({ info }: { info: LoginStatusInfo[] }) => {
     return (
@@ -34,18 +40,44 @@ const LoginStatusBanner = ({ info }: { info: LoginStatusInfo[] }) => {
 };
 
 const Login = () => {
-    const server_url =
-        import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
-    const target_url = server_url + '/user/login/';
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [loginStatusInfo, setLoginStatusInfo] = useState<
+        LoginStatusInfo[] | null
+    >(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        setIsLoggedIn(checkLoggedIn());
+    });
 
     const handleLogin = async (
         username: string,
         password: string,
         handleStatus: (status: LoginStatusInfo[]) => void,
     ) => {
+        const cleanUsername = username.trim();
+
+        const errors = [];
+        if (cleanUsername === '') {
+            errors.push({
+                kind: LoginStatusKind.Error,
+                message: 'Username cannot be empty',
+            });
+        }
+        if (password === '') {
+            errors.push({
+                kind: LoginStatusKind.Error,
+                message: 'Password cannot be empty',
+            });
+        }
+        if (errors.length > 1) {
+            handleStatus(errors);
+            return;
+        }
         const response = await (async (): Promise<Response> => {
             try {
-                return await fetch(target_url, {
+                return await fetch(TARGET_URL, {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'content-type': 'application/json' },
@@ -90,75 +122,78 @@ const Login = () => {
         }
     };
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginStatusInfo, setLoginStatusInfo] = useState<
-        LoginStatusInfo[] | null
-    >(null);
-
     const handleLoginStatus = (info: LoginStatusInfo[]) => {
         setLoginStatusInfo(info);
+
+        // Reload page when login is successful
+        info.map((info) => {
+            if (info.kind == LoginStatusKind.Success) location.reload();
+        });
     };
 
     return (
         <>
-            <Container className="form-container center">
-                {loginStatusInfo ? (
-                    <LoginStatusBanner info={loginStatusInfo} />
-                ) : null}
-                <div>
-                    <Card>
-                        <Card.Body>
-                            <div>
-                                <h2 className="title mb-3"> Login </h2>
-                            </div>
-                            <div>
-                                <Form>
-                                    <Form.Control
-                                        className="input-text mb-3"
-                                        type="text"
-                                        placeholder="Username"
-                                        value={username}
-                                        onChange={(event) =>
-                                            setUsername(event.target.value)
+            {isLoggedIn ? (
+                <Navigate replace to={'/home'} />
+            ) : (
+                <Container className="form-container center">
+                    {loginStatusInfo ? (
+                        <LoginStatusBanner info={loginStatusInfo} />
+                    ) : null}
+                    <div>
+                        <Card>
+                            <Card.Body>
+                                <div>
+                                    <h2 className="title mb-3"> Login </h2>
+                                </div>
+                                <div>
+                                    <Form>
+                                        <Form.Control
+                                            className="input-text mb-3"
+                                            type="text"
+                                            placeholder="Username"
+                                            value={username}
+                                            onChange={(event) =>
+                                                setUsername(event.target.value)
+                                            }
+                                        />
+                                        <Form.Control
+                                            className="input-text mb-3"
+                                            type="password"
+                                            placeholder="Password"
+                                            value={password}
+                                            onChange={(event) =>
+                                                setPassword(event.target.value)
+                                            }
+                                        />
+                                    </Form>
+                                </div>
+                                <div>
+                                    <Link to="/register">
+                                        <button className="default-button link-button mb-3">
+                                            {' '}
+                                            Create an account{' '}
+                                        </button>
+                                    </Link>
+                                    <button
+                                        className="default-button login-button mb-3"
+                                        onClick={() =>
+                                            handleLogin(
+                                                username,
+                                                password,
+                                                handleLoginStatus,
+                                            )
                                         }
-                                    />
-                                    <Form.Control
-                                        className="input-text mb-3"
-                                        type="password"
-                                        placeholder="Password"
-                                        value={password}
-                                        onChange={(event) =>
-                                            setPassword(event.target.value)
-                                        }
-                                    />
-                                </Form>
-                            </div>
-                            <div>
-                                <Link to="/register">
-                                    <button className="default-button link-button mb-3">
+                                    >
                                         {' '}
-                                        Create an account{' '}
+                                        Login{' '}
                                     </button>
-                                </Link>
-                                <button
-                                    className="default-button login-button mb-3"
-                                    onClick={() =>
-                                        handleLogin(
-                                            username,
-                                            password,
-                                            handleLoginStatus,
-                                        )
-                                    }
-                                >
-                                    {' '}
-                                    Login{' '}
-                                </button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </div>
-            </Container>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </Container>
+            )}
         </>
     );
 };
