@@ -121,7 +121,6 @@ const Register = () => {
                         kind == ErrorKind.UserAlreadyPresent ||
                         message == 'User already in the databse'
                     ) {
-                        console.log('just after Error.kind');
                         message =
                             "This username isn't available. Please try another.";
                     }
