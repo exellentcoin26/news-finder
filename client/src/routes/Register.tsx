@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Container, Card, Form, Alert } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Alert, Card, Container, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { UserApiResponse } from '../interfaces/api/user';
+import { ErrorKind } from '../interfaces/api/apiResponse';
 
 import '../styles/Login-Register.css';
 
@@ -81,7 +82,15 @@ const Register = () => {
 
         if (!response.ok) {
             handleStatus(
-                userApiResponse.errors.map(({ message }) => {
+                userApiResponse.errors.map(({ kind, message }) => {
+                    if (
+                        kind == ErrorKind.UserAlreadyPresent ||
+                        message == 'User already in the databse'
+                    ) {
+                        console.log('just after Error.kind');
+                        message =
+                            "This username isn't available. Please try another.";
+                    }
                     return { kind: RegisterStatusKind.Error, message };
                 }),
             );
