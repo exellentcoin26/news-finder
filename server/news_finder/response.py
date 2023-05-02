@@ -24,6 +24,8 @@ class ErrorKind(Enum):
     NewsSourceNotFound = 10
     UserDoesNotExist = 11
     IncorrectCredentials = 12
+    UsernameToShort = 13
+    PasswordToShort = 14
 
     ServerError = 500
 
