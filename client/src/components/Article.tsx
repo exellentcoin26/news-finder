@@ -99,7 +99,7 @@ export const Article = ({
                         >
                             <Card.Title>{title}</Card.Title>
                             <Card.Text>{description}</Card.Text>
-                            <Card.Link href={article_link}> Read full article </Card.Link>
+                            <Card.Link href={article_link} target="_blank" rel="noreferrer"> Read full article </Card.Link>
                             <OverlayTrigger
                                 placement="right"
                                 trigger="click"
