@@ -1,7 +1,7 @@
 import asyncio
 
 import sys
-from datetime import date
+from datetime import datetime
 
 import schedule
 from prisma import Prisma
@@ -14,7 +14,7 @@ is_running = False
 
 
 async def main():
-    schedule.every(24*60).minutes.do(run)  # pyright: ignore
+    schedule.every(24 * 60).minutes.do(run)  # pyright: ignore
 
     while True:
         schedule.run_pending()
@@ -22,7 +22,7 @@ async def main():
         if next_run is None:
             exit(0)
 
-        delta = next_run - date.now()
+        delta = next_run - datetime.now()
 
         print(
             f"Time until next run: {int(delta.total_seconds())} seconds",
@@ -47,16 +47,18 @@ async def delete_old_articles():
     db = Prisma()
     await db.connect()
     articles = await db.newsarticles.find_many()
-    today = date.today()
+    today = datetime.today()
 
     for article in articles:
-        delta_article = today - article.publication_date
-        if delta_article.days > 2:
-            await db.newsarticles.delete(where={"id": article.id})
+        if article.publication_date is not None:
+            delta_article = today - article.publication_date
+            if delta_article.days > 2:
+                await db.newsarticles.delete(where={"id": article.id})
 
     await db.disconnect()
-    
+
     is_running = False
+
 
 if __name__ == "__main__":
     asyncio.run(main())
