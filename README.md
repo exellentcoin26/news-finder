@@ -22,6 +22,11 @@ News aggregator application made for the `Project databases 2023` course at the 
 |   |-- src - Rust source code
 |   |-- prisma-cli - Rust prisma client cli application
 |
+|-- similarity-checker (Python) - Article similarity checker that runs periodically
+|   |-- similarity_checker - Python source code
+|   |-- res - Text files with stop words for languages
+|   |-- articles - Example articles used in development
+|
 |-- ...
 ```
 
@@ -30,8 +35,6 @@ News aggregator application made for the `Project databases 2023` course at the 
 ### Using docker (production)
 
 ```bash
-# make postgresql data directory
-mkdir docker/data
 # start all containers
 docker compose -f docker/docker-compose.yml up
 # stop and remove all containers
@@ -41,7 +44,7 @@ docker compose -f docker/docker-compose.yml down
 **Note**: when rebuilding first run `docker compose -f docker/docker-compose.yml build`.
 
 **Note**: To access the front-end application go to route: `http://localhost:80`.
-To access the back-end go to route: `http://localhost:1337`
+To access the back-end go to route: `http://localhost:80/api`
 
 ### Manual installation (development)
 
