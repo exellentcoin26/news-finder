@@ -35,4 +35,5 @@ reportMissingTypeStubs = true
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "-s"
+asyncio_mode = "auto"
 testpaths = ["tests"]
