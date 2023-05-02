@@ -88,7 +88,7 @@ Now you can restart postgres:
 sudo systemctl restart postgresql
 ```
 
-##### 3.Create virtual environment:
+##### 3. Create virtual environment:
 
 ```bash
 cd server
@@ -99,7 +99,7 @@ pip3 install .
 
 **Note**: If installing for development use `pip3 install --editable .`
 
-##### 4.Add tables to database:
+##### 4. Add tables to database:
 
 ```bash
 prisma db push --schema ../db/schema.prisma
