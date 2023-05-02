@@ -2,4 +2,4 @@
 protocol = "sparse"
 
 [alias]
-prisma = "run -p prisma-cli --"
+prisma = "run --release -p prisma-cli --"
