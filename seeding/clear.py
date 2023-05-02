@@ -21,7 +21,6 @@ async def main() -> None:
         b.rssentries.delete_many()
         b.newsarticles.delete_many()
         b.similararticles.delete_many()
-        b.labels.delete_many()
         b.newsarticlelabels.delete_many()
 
         await b.commit()
