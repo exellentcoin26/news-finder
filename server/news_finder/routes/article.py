@@ -111,6 +111,10 @@ async def get_similar_articles() -> Response:
             },
         )
 
+        assert (
+                current_article.id is not None
+        ), "article should always have an id"
+
         similar_articles = await db.similararticles.find_many(
             where={
                 "id1":current_article.id,
