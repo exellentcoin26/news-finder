@@ -131,7 +131,7 @@ async def get_similar_articles() -> Response:
             ErrorKind.ServerError,
         )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"similar": []}
+    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
     for pair in similar_articles:
 
         assert (
@@ -156,7 +156,7 @@ async def get_similar_articles() -> Response:
                 similar_article.source is not None
         ), "article should always have a source associated with it"
 
-        response["similar"].append(
+        response["articles"].append(
             {
                 "source": similar_article.source.name,
                 "article": {
