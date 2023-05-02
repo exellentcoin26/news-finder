@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Container, Card, Form, Alert } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
 
-
 import { UserApiResponse } from '../interfaces/api/user';
 import { ErrorKind } from '../interfaces/api/apiResponse';
 
