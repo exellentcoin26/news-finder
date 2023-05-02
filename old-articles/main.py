@@ -4,7 +4,7 @@ import sys
 from datetime import date
 
 import schedule
-from prisma import Prismagit
+from prisma import Prisma
 
 
 # failsafe for running async call with non async scheduler.
