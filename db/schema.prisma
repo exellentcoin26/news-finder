@@ -80,9 +80,9 @@ model NewsArticles {
 
 // Many to many articles relation denoting what articles are similar to eachother.
 model SimilarArticles {
-    article NewsArticles @relation("similar_relation", fields: [id1], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    article NewsArticles @relation("similar", fields: [id1], references: [id], onUpdate: Cascade, onDelete: Cascade)
     id1     Int
-    similar NewsArticles @relation("similar", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    similar NewsArticles @relation("similar_relation", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
     id2     Int
 
     similarity Float
