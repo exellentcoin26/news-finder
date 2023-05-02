@@ -103,8 +103,6 @@ async def get_articles() -> Response:
                     sim.similar.source is not None
                 ), "similar.similar_source for similar article cannot be none"
 
-                print(sim)
-
                 if sim.similar.publication_date is None:
                     continue
 
@@ -115,8 +113,7 @@ async def get_articles() -> Response:
 
             if article.publication_date is not None:
                 if (
-                    article.source_id in similar_article_sources
-                    and similar_article_sources[article.source_id]
+                    similar_article_sources.get(article.source_id, 0)
                     > article.publication_date.timestamp()
                 ):
                     continue
