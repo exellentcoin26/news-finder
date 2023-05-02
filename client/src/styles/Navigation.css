@@ -6,7 +6,12 @@
     background-color: #26d38e;
 }
 
-.nav_text {
+.nav-icon {
+    height: 40px;
+    margin-right: 0.5rem;
+}
+
+.nav-text {
     font-size: 16px;
     font-weight: 600;
     font-family: Outfit, sans-serif;
@@ -15,7 +20,7 @@
     color: white;
 }
 
-.nav_text:hover {
+.nav-text:hover {
     color: #26d38e;
 }
 
@@ -32,7 +37,7 @@
     color: white
 }
 
-.home_text {
+.home-text {
     font-size: 30px;
     font-weight: 1000;
 }

@@ -2,7 +2,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
 import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
-
 import {
     Article,
     ArticlePlaceholder,
@@ -24,7 +23,7 @@ const getArticlesFromServer = async (
         try {
             return await fetch(
                 serverUrl +
-                    '/article?' +
+                    '/article/?' +
                     new URLSearchParams({
                         amount: amount.toString(),
                         offset: offset.toString(),
@@ -72,10 +71,10 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const fetchArticles = async () => {
+        (async () => {
             try {
                 const articles = await getArticlesFromServer(
-                    0,
+                    50,
                     0,
                     handleArticleErrors,
                 );
@@ -85,9 +84,7 @@ const Home = () => {
             } finally {
                 setIsLoading(false);
             }
-        };
-
-        fetchArticles();
+        })();
     }, []);
 
     return (

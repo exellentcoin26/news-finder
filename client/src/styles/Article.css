@@ -31,3 +31,21 @@
         max-width: 100% !important;
     }
 }
+
+.similar-articles-button {
+    font-family: Outfit, sans-serif;
+    background-color: transparent;
+    border: solid #0a1f44 thin;
+    padding: 4px 9px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    float: right;
+    color: #0a1f44;
+}
+
+

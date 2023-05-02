@@ -11,8 +11,8 @@ from datetime import datetime
 from typing import List, Dict, Tuple, Set
 
 import schedule
-from prisma import Prisma
 from prisma.models import NewsArticles
+from prisma import Prisma
 
 from utils import Language, filter_stop_words, filter_numerics
 
@@ -84,6 +84,11 @@ async def calc_article_similarity(
         article.title + (article.description or "") for article in databse_articles
     ]
 
+    print(
+        f"Starting similarity checker on list of `{len(raw_articles)}` articles.",
+        file=sys.stderr,
+    )
+
     # Remove whitespace, punctuation and convert to lowercase
     cleaned_articles: List[str] = [
         re.sub(r"\s+", " ", article)
@@ -111,8 +116,8 @@ async def calc_article_similarity(
                 databse_articles[rhs_article_idx],
             )
             assert article1.source is not None and article2.source is not None
-            if article1.source.id == article2.source.id:
-                continue
+            # if article1.source.id == article2.source.id:
+            #     continue
 
             similarity = cos_similarity(
                 extract_tf_idf_values(tf_idf_table, lhs_article_idx),
@@ -126,6 +131,12 @@ async def calc_article_similarity(
                 + "\r"
             )
             if similarity > THRESHOLD:
+                if article1.source.id == article2.source.id:
+                    print(
+                        f"Found a possible update! ({article1.source.name})",
+                        file=sys.stderr,
+                    )
+
                 print(
                     "\033[K"
                     + f"Found:\n\t`{' '.join(articles[lhs_article_idx])}`\n"
@@ -149,6 +160,7 @@ async def calc_article_similarity(
                 await insert_similar_article_pair_into_db(
                     article1,
                     article2,
+                    similarity,
                     client,
                 )
 
@@ -156,7 +168,7 @@ async def calc_article_similarity(
 
 
 async def insert_similar_article_pair_into_db(
-    article1: NewsArticles, article2: NewsArticles, client: Prisma
+    article1: NewsArticles, article2: NewsArticles, similarity: float, client: Prisma
 ):
     await client.similararticles.upsert(
         where={
@@ -169,8 +181,9 @@ async def insert_similar_article_pair_into_db(
             "create": {
                 "id1": article1.id,
                 "id2": article2.id,
+                "similarity": similarity,
             },
-            "update": {},
+            "update": {"similarity": similarity},
         },
     )
 
@@ -185,8 +198,9 @@ async def insert_similar_article_pair_into_db(
             "create": {
                 "id1": article2.id,
                 "id2": article1.id,
+                "similarity": similarity,
             },
-            "update": {},
+            "update": {"similarity": similarity},
         },
     )
 
