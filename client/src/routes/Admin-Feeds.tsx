@@ -1,4 +1,10 @@
-import { Container, Form, Button } from 'react-bootstrap';
+import {
+    Container,
+    Form,
+    Button,
+    Popover,
+    OverlayTrigger,
+} from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
@@ -160,6 +166,16 @@ const AdminFeeds = () => {
         return response.ok;
     };
 
+    const addHelp = (
+        <Popover id="popover-add-help">
+            <Popover.Header as="h3">Add feeds</Popover.Header>
+            <Popover.Body>
+                Add several feeds at once by separating them with a
+                &apos;;&apos;
+            </Popover.Body>
+        </Popover>
+    );
+
     if (isFetchingAdmin) {
         return null;
     }
@@ -173,7 +189,21 @@ const AdminFeeds = () => {
                 <Container>
                     <Form>
                         <Form.Group className="mb-3">
-                            <Form.Label>Add Feeds</Form.Label>
+                            <Form.Label>
+                                Add Feeds
+                                <OverlayTrigger
+                                    trigger="hover"
+                                    overlay={addHelp}
+                                    placement="bottom"
+                                >
+                                    <Button variant="light help-button">
+                                        <img
+                                            src="../../public/img/question-circle.svg"
+                                            alt="?"
+                                        />
+                                    </Button>
+                                </OverlayTrigger>
+                            </Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="feed"

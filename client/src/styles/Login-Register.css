@@ -1,16 +1,27 @@
-.form-container {
-    width: 500px !important;
-    position: relative;
+@media (min-width:1000px) {
+    .form-div {
+        width: 35%;
+        overflow: auto;
+        height: 100vh;
+        max-height: fit-content;
+    }
 }
 
-.center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+@media (max-width:1000px) {
+    .form-div {
+        min-width: min-content;
+        width: 70%;
+        overflow: auto;
+        height: 100vh;
+        max-height: fit-content;
+    }
+
 }
+
+.form-container {
+    height: 100vh;
+}
+
 
 .title {
     font-family: Outfit, sans-serif;
@@ -22,6 +33,7 @@
 }
 
 .default-button {
+    white-space: nowrap;
     font-family: Outfit, sans-serif;
     border: none;
     padding: 4px 9px;
@@ -38,6 +50,7 @@
     font-weight: bold;
     color: aliceblue;
     float: right;
+    display: inline-block;
 }
 
 .link-button {
@@ -51,6 +64,7 @@
     background-color: forestgreen;
     color: white;
     font-weight: bold;
+    display: inline-block;
     float: right;
 }
 
@@ -62,6 +76,7 @@
     font-family: Outfit, sans-serif;
     color: black;
     display: inline;
+    white-space: nowrap;
 }
 
 a:link { text-decoration: none; }
