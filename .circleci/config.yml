@@ -219,5 +219,6 @@ workflows:
               only: main
           requires:
             - pytest
+            - pyright-similaity-checker
             - eslint
             - cargo

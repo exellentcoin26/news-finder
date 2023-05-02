@@ -1,9 +1,4 @@
-from tests import (
-    client,  # pyright: ignore
-    database_configure,  # pyright: ignore
-    database_clear,  # pyright: ignore
-    compare_json,
-)
+from .utils import compare_json
 from flask import Flask
 from http import HTTPStatus
 
@@ -79,7 +74,7 @@ def test_register_existing_username(client: Flask.testing):
         "errors": [
             {
                 "kind": "UserAlreadyPresent",
-                "message": "User already present in database"
+                "message": "User already in the databse"
             }
         ],
         "status": 409
