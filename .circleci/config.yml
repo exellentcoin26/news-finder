@@ -67,6 +67,28 @@ jobs:
             cd similarity-checker
             pyright .
 
+  pyright-delete-old:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: Install pip packages
+          command: |
+            cd old-articles
+            pip3 install .
+      - run:
+          name: Generate Prisma definitions
+          command: |
+            cd db
+            prisma generate --generator python
+      - run:
+          name: Run pyright
+          command: |
+            cd old-articles
+            pyright .
+
   pytest:
     resource_class: small
     docker:
@@ -198,6 +220,9 @@ workflows:
           requires:
             - prisma
       - pyright-similaity-checker:
+          requires:
+            - prisma
+      - pyright-delete-old:
           requires:
             - prisma
       - pytest:
