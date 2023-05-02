@@ -1,12 +1,12 @@
 import {Card, Row, Col, Popover, OverlayTrigger, ListGroup, ListGroupItem} from 'react-bootstrap';
 import '../styles/Article.css';
 import {useEffect, useState} from "react";
-import {ArticleApiResponse, ArticleEntry} from '../interfaces/api/article';
+import {ArticleApiResponse, ArticleEntry, ArticleSourceEntry} from '../interfaces/api/article';
 
 const getSimilarArticlesFromServer = async (
     link: string,
     errorHandler: () => void,
-):Promise<ArticleEntry[]> => {
+):Promise<ArticleSourceEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
 
@@ -42,7 +42,7 @@ const getSimilarArticlesFromServer = async (
     }
 
     return articleApiResponse.data.articles.map((articleSource) => {
-        return articleSource.article;
+        return articleSource;
     });
 
 }
@@ -58,7 +58,7 @@ export const Article = ({
     description?: string;
     article_link: string;
 }) => {
-    const [articles, setArticles] = useState<ArticleEntry[]>([]);
+    const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
     const [hasErrored, setHasErrored] = useState(false);
 
     const handleArticleErrors = () => {
@@ -106,16 +106,16 @@ export const Article = ({
                                 overlay={(
                                     <Popover>
                                         {articles.length == 0 ? (
-                                            <NoArticlesToShow />
-                                        ) : (articles.map(({ title, description, photo, link }, index) => {
+                                            <> No other news sources </>
+                                        ) : (articles.map(({source,article}, index) => {
                                             return (
                                                 <ListGroup
                                                     key={index}
                                                 >
                                                     <ListGroupItem
-                                                        href={link}
+                                                        href={article.link}
                                                     >
-                                                        <p> {title} </p>
+                                                        <p> {source} </p>
                                                     </ListGroupItem>
                                                 </ListGroup>
                                             );

@@ -16,5 +16,4 @@ export interface ArticlePayload {
     articles: ArticleSourceEntry[]
 }
 
-
 export type ArticleApiResponse = ApiResponse<ArticlePayload>;
