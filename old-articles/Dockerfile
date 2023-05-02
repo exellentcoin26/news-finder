@@ -10,4 +10,4 @@ RUN pip3 install .
 
 RUN prisma generate --generator python
 
-CMD python3 similarity_checker/main.py
+CMD python3 main.py
