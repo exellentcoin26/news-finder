@@ -1,6 +1,4 @@
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import { Container, Col, Row } from 'react-bootstrap';
 const About = () => {
     return (
         <Container>
@@ -26,7 +24,7 @@ const About = () => {
                     <p>David Scalais (2nd Bachelor Computer Science)</p>
                     <p>Laurens De Wachter (2nd Bachelor Computer Science)</p>
                     <p>Chloe Mansibang (2nd Bachelor Computer Science)</p>
-                    <p>Ayoub El Marchouchi (2nd Bachelor Computer Science)</p>
+                    <p>Ayoub El Marchouhi (2nd Bachelor Computer Science)</p>
                 </Col>
             </Row>
             <Row>

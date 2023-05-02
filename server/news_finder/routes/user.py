@@ -1,17 +1,23 @@
-from flask import Blueprint, Response, request, make_response, jsonify
-from flask_cors import CORS
-from prisma.errors import UniqueViolationError, RecordNotFoundError
-from jsonschema import validate, SchemaError, ValidationError
-from uuid import uuid4
-from http import HTTPStatus
-from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
-
 import sys
+from http import HTTPStatus
+from typing import List
+from uuid import uuid4
 
+from argon2 import PasswordHasher
+from argon2.exceptions import VerificationError, VerifyMismatchError, InvalidHash
+from flask import Blueprint, Response, request
+from flask_cors import CORS
+from jsonschema import validate, SchemaError, ValidationError
+from prisma.errors import UniqueViolationError, RecordNotFoundError
 
 from news_finder.db import get_db
-from news_finder.utils.error_response import make_error_response, ResponseError
+from news_finder.response import (
+    make_response_from_error,
+    make_response_from_errors,
+    ErrorKind,
+    Error,
+    make_success_response,
+)
 
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
@@ -19,6 +25,10 @@ CORS(user_bp, supports_credentials=True)
 
 
 async def create_cookie_for_user(user_id: int) -> str:
+    """
+    Tries to generate cookie for user and inserts into database.
+    """
+
     cookie = str(uuid4())
 
     db = await get_db()
@@ -44,8 +54,9 @@ async def register_user() -> Response:
 
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.InvalidJson,
         )
 
     schema = {
@@ -53,11 +64,11 @@ async def register_user() -> Response:
         "properties": {
             "username": {
                 "description": "The username of the user to be created",
-                "type": "string",
+                "type": "string"
             },
             "password": {
                 "description": "The password of the user to be created",
-                "type": "string",
+                "type": "string"
             },
         },
         "required": ["username", "password"],
@@ -66,8 +77,10 @@ async def register_user() -> Response:
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.JsonValidationError,
+            e.message,
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -76,17 +89,28 @@ async def register_user() -> Response:
     ph = PasswordHasher()
 
     username = data["username"].lower()
-    hashed_password = ph.hash(data["password"])
+    password = data["password"]
+
+    errors: List[Error] = []
+    if len(username) == 0:
+        error_username = Error(ErrorKind.UsernameToShort, "Username cannot be empty")
+        errors.append(error_username)
+    if len(password) == 0:
+        error_password = Error(ErrorKind.PasswordToShort, "Password cannot be empty")
+        errors.append(error_password)
+    if len(errors) != 0:
+        return make_response_from_errors(HTTPStatus.BAD_REQUEST, errors)
+    hashed_password = ph.hash(password)
 
     db = await get_db()
 
     existing_user = await db.users.find_first(where={"username": username})
 
     if existing_user is not None:
-        return make_error_response(
-            ResponseError.UserAlreadyPresent,
-            "User already present in database",
+        return make_response_from_error(
             HTTPStatus.CONFLICT,
+            ErrorKind.UserAlreadyPresent,
+            "User already present in database",
         )
 
     user = await db.users.create(data={"username": username})
@@ -99,7 +123,7 @@ async def register_user() -> Response:
         except UniqueViolationError:
             pass
 
-    resp = make_response("", HTTPStatus.OK)
+    resp = make_success_response()
     resp.set_cookie("session", cookie, samesite="lax")
 
     return resp
@@ -111,14 +135,18 @@ async def delete_user():
     Delete a user.
 
     # Json structure: (checked using schema validation)
-    {
-        "username": "user1"
-    }
+
+    .. code-block:: json
+
+        {
+            "username": "user1"
+        }
     """
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.InvalidJson,
         )
 
     schema = {
@@ -135,8 +163,8 @@ async def delete_user():
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST, ErrorKind.JsonValidationError, e.message
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -147,31 +175,30 @@ async def delete_user():
     db = await get_db()
 
     try:
-        user = await db.users.find_unique(
-            where={"username": username}
-        )
+        user = await db.users.find_unique(where={"username": username})
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     if user is None:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.UserDoesNotExist,
         )
 
     try:
-        await db.users.delete(
-            where={"username": username}
-        )
+        await db.users.delete(where={"username": username})
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
-    return make_response("", HTTPStatus.OK)
+    return make_success_response()
 
 
 @user_bp.post("/login/")
@@ -191,8 +218,9 @@ async def login_user() -> Response:
 
     data = request.get_json(silent=True)
     if not data:
-        return make_error_response(
-            ResponseError.InvalidJson, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.InvalidJson,
         )
 
     schema = {
@@ -213,8 +241,10 @@ async def login_user() -> Response:
     try:
         validate(instance=data, schema=schema)
     except ValidationError as e:
-        return make_error_response(
-            ResponseError.JsonValidationError, e.message, HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.JsonValidationError,
+            e.message,
         )
     except SchemaError as e:
         print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
@@ -222,21 +252,35 @@ async def login_user() -> Response:
 
     db = await get_db()
 
+    username = data["username"].lower()
+    password = data["password"]
+
+    errors: List[Error] = []
+    if len(username) == 0:
+        error_username = Error(ErrorKind.UsernameToShort, "Username cannot be empty")
+        errors.append(error_username)
+    if len(password) == 0:
+        error_password = Error(ErrorKind.PasswordToShort, "Password cannot be empty")
+        errors.append(error_password)
+    if len(errors) != 0:
+        return make_response_from_errors(HTTPStatus.BAD_REQUEST, errors)
+
     try:
         user = await db.users.find_first(where={"username": data["username"].lower()})
-    except RecordNotFoundError:
-        return make_error_response(
-            ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
-        )
     except Exception as e:
+        # Note: Catching `RecordNotFoundError` is not needed because this is not thrown
+        # for `find_first`
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     if user is None:
-        return make_error_response(
-            ResponseError.RecordNotFoundError, "", HTTPStatus.BAD_REQUEST
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.IncorrectCredentials,
+            "Wrong combination of username and/or password",
         )
 
     try:
@@ -244,27 +288,40 @@ async def login_user() -> Response:
             where={"user": {"is": {"id": user.id}}}
         )
     except RecordNotFoundError:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
-    if user_login is None:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
-        )
+    # Should be ok to assert because prisma would have thrown a `RecordNotFoundError`.
+    assert user_login is not None
 
     ph = PasswordHasher()
 
     try:
         ph.verify(user_login.password, data["password"])
     except VerifyMismatchError:
-        return make_error_response(
-            ResponseError.WrongPassword, "", HTTPStatus.UNAUTHORIZED
+        return make_response_from_error(
+            HTTPStatus.UNAUTHORIZED,
+            ErrorKind.IncorrectCredentials,
+            "Wrong combination of username and/or password",
+        )
+    except InvalidHash as e:
+        print(f"invalid hash: {user_login.password}", file=sys.stderr)
+        raise e
+    except VerificationError as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        raise e
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR, ErrorKind.ServerError
         )
 
     cookie: str = ""
@@ -274,7 +331,7 @@ async def login_user() -> Response:
         except UniqueViolationError:
             pass
 
-    resp = make_response("", HTTPStatus.OK)
+    resp = make_success_response()
     resp.set_cookie("session", cookie, samesite="lax")
 
     return resp
@@ -288,10 +345,10 @@ async def logout_user() -> Response:
 
     cookie = request.cookies.get("session")
     if cookie is None:
-        return make_error_response(
-            ResponseError.CookieNotSet,
-            "Cookie not present in request",
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.CookieNotSet,
+            "Cookie not present in request",
         )
 
     db = await get_db()
@@ -299,17 +356,18 @@ async def logout_user() -> Response:
     try:
         await db.usercookies.delete(where={"cookie": cookie})
     except RecordNotFoundError:
-        return make_error_response(
-            ResponseError.CookieNotFound,
-            "Cookie present in header not found in database",
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.CookieNotFound,
+            "Cookie present in header not found in database",
         )
     except Exception:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
-    return make_response("", HTTPStatus.OK)
+    return make_success_response()
 
 
 @user_bp.post("/status/")
@@ -320,17 +378,18 @@ async def login_status() -> Response:
 
     cookie = request.cookies.get("session")
     if cookie is None:
-        return make_response(jsonify({"logged_in": False}), HTTPStatus.OK)
+        return make_success_response(HTTPStatus.OK, {"logged_in": False})
 
     db = await get_db()
 
     try:
         await db.usercookies.find_unique(where={"cookie": cookie})
     except RecordNotFoundError:
-        return make_response(jsonify({"logged_in": False}), HTTPStatus.OK)
+        return make_success_response(HTTPStatus.OK, {"logged_in": False})
     except Exception:
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
-    return make_response(jsonify({"logged_in": True}), HTTPStatus.OK)
+    return make_success_response(HTTPStatus.OK, {"logged_in": True})

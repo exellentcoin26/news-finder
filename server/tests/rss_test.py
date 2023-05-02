@@ -1,9 +1,4 @@
-from . import (
-    client,  # pyright: ignore
-    database_configure,  # pyright: ignore
-    database_clear,  # pyright: ignore
-    compare_json,
-)
+from .utils import compare_json
 from flask import Flask
 from http import HTTPStatus
 
@@ -18,9 +13,13 @@ def test_add_rss(client: Flask.testing):
 
     response = client.get("/rss/")
     expected = """{
-        "feeds": [
-            {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
-        ]
+        "data": {
+            "feeds": [
+                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
+            ]
+        },
+        "errors": [],
+        "status": 200
     }"""
     assert response.status_code == HTTPStatus.OK
     assert compare_json(expected, response.get_json())
@@ -41,11 +40,15 @@ def test_add_multiple_rss(client: Flask.testing):
 
     response = client.get("/rss/")
     expected = """{
-        "feeds": [
-            {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"},
-            {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_buitenland.xml"},
-            {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_wetenschap.xml"}
-        ]
+        "data": {
+            "feeds": [
+                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"},
+                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_buitenland.xml"},
+                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_wetenschap.xml"}
+            ]
+        },
+        "errors": [],
+        "status": 200
     }"""
     assert response.status_code == HTTPStatus.OK
     assert compare_json(expected, response.get_json())
@@ -54,8 +57,14 @@ def test_add_multiple_rss(client: Flask.testing):
 def test_add_rss_no_json(client: Flask.testing):
     response = client.post("/rss/")
     expected = """{
-        "error": "InvalidJson",
-        "message": ""
+        "data": {},
+        "errors": [
+            {
+                "kind": "InvalidJson",
+                "message": ""
+            }
+        ],
+        "status": 400
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
@@ -64,8 +73,14 @@ def test_add_rss_no_json(client: Flask.testing):
 def test_add_rss_schema(client: Flask.testing):
     response = client.post("/rss/", json={"test": "test"})
     expected = """{
-        "error": "JsonValidationError",
-        "message": "'feeds' is a required property"
+        "data": {},
+        "errors": [
+            {
+                "kind": "JsonValidationError",
+                "message": "'feeds' is a required property"
+            }
+        ],
+        "status": 400
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
@@ -85,7 +100,11 @@ def test_add_duplicate_rss(client: Flask.testing):
 
     response = client.get("/rss/")
     expected = """{
-        "feeds": []
+        "data": {
+            "feeds": []
+        },
+        "errors": [],
+        "status": 200
     }"""
     assert response.status_code == HTTPStatus.OK
     assert compare_json(expected, response.get_json())
@@ -101,9 +120,13 @@ def test_delete_rss(client: Flask.testing):
 
     response = client.get("/rss/")
     expected = """{
-        "feeds": [
-            {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
-        ]
+        "data": {
+            "feeds": [
+                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
+            ]
+        },
+        "errors": [],
+        "status": 200
     }"""
     assert response.status_code == HTTPStatus.OK
     assert compare_json(expected, response.get_json())
@@ -116,7 +139,11 @@ def test_delete_rss(client: Flask.testing):
 
     response = client.get("/rss/")
     expected = """{
-        "feeds": []
+        "data": {
+            "feeds": []
+        },
+        "errors": [],
+        "status": 200
     }"""
     assert response.status_code == HTTPStatus.OK
     assert compare_json(expected, response.get_json())
@@ -125,8 +152,14 @@ def test_delete_rss(client: Flask.testing):
 def test_delete_rss_no_json(client: Flask.testing):
     response = client.delete("/rss/")
     expected = """{
-        "error": "InvalidJson",
-        "message": ""
+        "data": {},
+        "errors": [
+            {
+                "kind": "InvalidJson",
+                "message": ""
+            }
+        ],
+        "status": 400
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
@@ -135,8 +168,14 @@ def test_delete_rss_no_json(client: Flask.testing):
 def test_delete_rss_schema(client: Flask.testing):
     response = client.delete("/rss/", json={"test": "test"})
     expected = """{
-        "error": "JsonValidationError",
-        "message": "'feeds' is a required property"
+        "data": {},
+        "errors": [
+            {
+                "kind": "JsonValidationError",
+                "message": "'feeds' is a required property"
+            }
+        ],
+        "status": 400
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())
@@ -148,8 +187,14 @@ def test_delete_rss_not_found(client: Flask.testing):
         json={"feeds": ["https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"]},
     )
     expected = """{
-        "error": "RecordNotFoundError",
-        "message": ""
+            "data": {},
+            "errors": [
+                {
+                    "kind": "RecordNotFoundError",
+                    "message": ""
+                }
+            ],
+            "status": 400
     }"""
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert compare_json(expected, response.get_json())

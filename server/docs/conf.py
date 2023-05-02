@@ -39,3 +39,8 @@ html_static_path = ["_static"]
 todo_include_todos = True
 
 sys.path.insert(0, os.path.abspath(".."))
+
+main_script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(main_script_dir, ".."))
+
+sys.path.append(parent_dir)

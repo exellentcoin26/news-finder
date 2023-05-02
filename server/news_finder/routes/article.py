@@ -1,10 +1,16 @@
-from flask import Blueprint, Response, make_response, jsonify, request
+from flask import Blueprint, Response, request
+
 from http import HTTPStatus
 from typing import List, Dict
+
 import sys
 
 from news_finder.db import get_db
-from news_finder.utils.error_response import make_error_response, ResponseError
+from news_finder.response import (
+    make_response_from_error,
+    ErrorKind,
+    make_success_response,
+)
 
 article_bp = Blueprint("article", __name__, url_prefix="/article")
 
@@ -14,6 +20,8 @@ async def get_articles() -> Response:
     """
     Get a json with all the articles and their news source. set the `amount` and
     `offset` parameters to specify a range of articles to retrieve.
+
+    Articles are ordened by recency and versions that have an upadate are emitted.
 
     # Articles json structure:
 
@@ -47,10 +55,10 @@ async def get_articles() -> Response:
         amount = int(request.args.get("amount") or 50)
         offset = int(request.args.get("offset") or 0)
     except ValueError:
-        return make_error_response(
-            ResponseError.IncorrectParameters,
-            "Parameters to get request are not integer values",
+        return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
+            ErrorKind.IncorrectParameters,
+            "Parameters to get request are not integer values",
         )
 
     db = await get_db()
@@ -59,15 +67,21 @@ async def get_articles() -> Response:
         articles = await db.newsarticles.find_many(
             take=amount,
             skip=offset,
-            include={"source": True},
+            include={
+                "source": True,
+                "similar_articles": {
+                    "include": {"similar": {"include": {"source": True}}}
+                },
+            },
             # hardcode order for now
             # TODO: Remove this hardcode
             order={"publication_date": "desc"},
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
-        return make_error_response(
-            ResponseError.ServerError, "", HTTPStatus.INTERNAL_SERVER_ERROR
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
 
     response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
@@ -75,6 +89,34 @@ async def get_articles() -> Response:
         assert (
             article.source is not None
         ), "article should always have a source associated with it"
+
+        # Remove old versions that have been updated
+        if article.similar_articles is not None:
+            # article id -> datatime timestamp
+            similar_article_sources: Dict[int, float] = {}
+
+            for sim in article.similar_articles:
+                assert (
+                    sim.similar is not None
+                ), "similar for similar articles cannot be none"
+                assert (
+                    sim.similar.source is not None
+                ), "similar.similar_source for similar article cannot be none"
+
+                if sim.similar.publication_date is None:
+                    continue
+
+                similar_article_sources[sim.similar.source.id] = max(
+                    similar_article_sources.get(sim.similar.source_id, 0),
+                    sim.similar.publication_date.timestamp(),
+                )
+
+            if article.publication_date is not None:
+                if (
+                    similar_article_sources.get(article.source_id, 0)
+                    > article.publication_date.timestamp()
+                ):
+                    continue
 
         news_source = article.source.name
 
@@ -90,4 +132,4 @@ async def get_articles() -> Response:
             }
         )
 
-    return make_response(jsonify(response), HTTPStatus.OK)
+    return make_success_response(HTTPStatus.OK, response)

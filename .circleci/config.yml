@@ -23,7 +23,7 @@ jobs:
             cd db
             prisma validate
 
-  pyright:
+  pyright-server:
     resource_class: small
     docker:
       - image: python:3
@@ -38,11 +38,33 @@ jobs:
           name: Generate Prisma definitions
           command: |
             cd db
-            prisma generate --generator server
+            prisma generate --generator python
       - run:
           name: Run pyright
           command: |
             cd server
+            pyright .
+
+  pyright-similaity-checker:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: Install pip packages
+          command: |
+            cd similarity-checker
+            pip3 install .
+      - run:
+          name: Generate Prisma definitions
+          command: |
+            cd db
+            prisma generate --generator python
+      - run:
+          name: Run pyright
+          command: |
+            cd similarity-checker
             pyright .
 
   pytest:
@@ -67,7 +89,7 @@ jobs:
           name: Generate Prisma definitions
           command: |
             cd db
-            prisma generate --generator server
+            prisma generate --generator python
       - run:
           name: Load tables to database
           command: |
@@ -172,12 +194,15 @@ workflows:
   main:
     jobs:
       - prisma
-      - pyright:
+      - pyright-server:
+          requires:
+            - prisma
+      - pyright-similaity-checker:
           requires:
             - prisma
       - pytest:
           requires:
-            - pyright
+            - pyright-server
 
       - tsc
       - eslint:
@@ -194,5 +219,6 @@ workflows:
               only: main
           requires:
             - pytest
+            - pyright-similaity-checker
             - eslint
             - cargo
