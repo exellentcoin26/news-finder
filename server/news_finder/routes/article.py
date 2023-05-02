@@ -1,6 +1,8 @@
 from flask import Blueprint, Response, request
+
 from http import HTTPStatus
 from typing import List, Dict
+
 import sys
 
 from news_finder.db import get_db
@@ -18,6 +20,8 @@ async def get_articles() -> Response:
     """
     Get a json with all the articles and their news source. set the `amount` and
     `offset` parameters to specify a range of articles to retrieve.
+
+    Articles are ordened by recency and versions that have an upadate are emitted.
 
     # Articles json structure:
 
@@ -63,7 +67,12 @@ async def get_articles() -> Response:
         articles = await db.newsarticles.find_many(
             take=amount,
             skip=offset,
-            include={"source": True},
+            include={
+                "source": True,
+                "similar_articles": {
+                    "include": {"similar": {"include": {"source": True}}}
+                },
+            },
             # hardcode order for now
             # TODO: Remove this hardcode
             order={"publication_date": "desc"},
@@ -80,6 +89,34 @@ async def get_articles() -> Response:
         assert (
             article.source is not None
         ), "article should always have a source associated with it"
+
+        # Remove old versions that have been updated
+        if article.similar_articles is not None:
+            # article id -> datatime timestamp
+            similar_article_sources: Dict[int, float] = {}
+
+            for sim in article.similar_articles:
+                assert (
+                    sim.similar is not None
+                ), "similar for similar articles cannot be none"
+                assert (
+                    sim.similar.source is not None
+                ), "similar.similar_source for similar article cannot be none"
+
+                if sim.similar.publication_date is None:
+                    continue
+
+                similar_article_sources[sim.similar.source.id] = max(
+                    similar_article_sources.get(sim.similar.source_id, 0),
+                    sim.similar.publication_date.timestamp(),
+                )
+
+            if article.publication_date is not None:
+                if (
+                    similar_article_sources.get(article.source_id, 0)
+                    > article.publication_date.timestamp()
+                ):
+                    continue
 
         news_source = article.source.name
 

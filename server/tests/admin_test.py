@@ -1,9 +1,4 @@
-from tests import (
-    compare_json,  # pyright: ignore
-    client,  # pyright: ignore
-    database_configure,  # pyright: ignore
-    database_clear,  # pyright: ignore
-)
+from .utils import compare_json
 from flask import Flask
 from http import HTTPStatus
 
