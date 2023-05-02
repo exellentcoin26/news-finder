@@ -4,7 +4,8 @@ import {useEffect, useState} from "react";
 import {ArticleApiResponse, ArticleEntry} from '../interfaces/api/article';
 
 const getSimilarArticlesFromServer = async (
-    link: string
+    link: string,
+    errorHandler: () => void,
 ):Promise<ArticleEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
@@ -58,11 +59,16 @@ export const Article = ({
     article_link: string;
 }) => {
     const [articles, setArticles] = useState<ArticleEntry[]>([]);
+    const [hasErrored, setHasErrored] = useState(false);
+
+    const handleArticleErrors = () => {
+        setHasErrored(true);
+    };
 
     useEffect(() => {
         (async () => {
             try {
-                const articles = await getSimilarArticlesFromServer(article_link);
+                const articles = await getSimilarArticlesFromServer(article_link, handleArticleErrors);
                 setArticles(articles);
             } catch (error) {
                 console.error(error);

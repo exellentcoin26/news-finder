@@ -3,8 +3,6 @@ from http import HTTPStatus
 from typing import List, Dict
 import sys
 
-from jsonschema import validate, SchemaError, ValidationError
-
 from news_finder.db import get_db
 from news_finder.response import (
     make_response_from_error,
@@ -107,16 +105,17 @@ async def get_similar_articles() -> Response:
     db = await get_db()
 
     try:
-        current_article = await db.newsarticles.find_first(
+        current_article = await db.newsarticles.find_unique(
             where={
-                "url":article_link
-            }
+                "url":article_link,
+            },
         )
-        similar = await db.similararticles.find_many(
-            where={
-                "id1":current_article.id
-            }
-        )
+        if current_article is not None:
+            similar = await db.similararticles.find_many(
+                where={
+                    "id1":current_article.id,
+                }
+            )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_response_from_error(
@@ -131,7 +130,7 @@ async def get_similar_articles() -> Response:
 
         response["similar"].append(
             {
-                "source": similar_article.news_source,
+                "source": similar_article.source,
                 "article": {
                     "title": similar_article.title,
                     "description": similar_article.description,
