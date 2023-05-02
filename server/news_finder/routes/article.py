@@ -122,11 +122,14 @@ async def get_similar_articles() -> Response:
     db = await get_db()
 
     try:
-        current_article = await db.newsarticles.find_first(
-            where={"url":article_link},
-        )
-        similar = await db.similararticles.find_many(
-            where={"id1":current_article.id}
+        similar = await db.newsarticles.find_first(
+            where={
+                'similar': {
+                    'is': {
+                        'url': article_link
+                    }
+                }
+            }
         )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
