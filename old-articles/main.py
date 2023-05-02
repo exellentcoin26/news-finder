@@ -3,7 +3,6 @@ import asyncio
 import sys
 from datetime import date
 
-
 import schedule
 from prisma import Prisma
 
@@ -36,7 +35,7 @@ def run():
     asyncio.get_event_loop().create_task(delete_old_articles())
 
 
-def delete_old_articles():
+async def delete_old_articles():
     global is_running
 
     if is_running:
