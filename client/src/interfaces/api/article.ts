@@ -13,7 +13,7 @@ export interface ArticleSourceEntry {
 }
 
 export interface ArticlePayload {
-    articles: ArticleSourceEntry[]
+    articles: ArticleSourceEntry[];
 }
 
 export type ArticleApiResponse = ApiResponse<ArticlePayload>;

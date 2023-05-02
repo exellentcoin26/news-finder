@@ -1,12 +1,22 @@
-import {Card, Row, Col, Popover, OverlayTrigger, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {
+    Card,
+    Row,
+    Col,
+    Popover,
+    OverlayTrigger,
+    ListGroup,
+    ListGroupItem,
+} from 'react-bootstrap';
 import '../styles/Article.css';
-import {useEffect, useState} from "react";
-import {ArticleApiResponse, ArticleEntry, ArticleSourceEntry} from '../interfaces/api/article';
+import { useEffect, useState } from 'react';
+import {
+    ArticleApiResponse,
+    ArticleSourceEntry,
+} from '../interfaces/api/article';
 
 const getSimilarArticlesFromServer = async (
     link: string,
-    errorHandler: () => void,
-):Promise<ArticleSourceEntry[]> => {
+): Promise<ArticleSourceEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
 
@@ -14,10 +24,10 @@ const getSimilarArticlesFromServer = async (
         try {
             return await fetch(
                 serverUrl +
-                '/article/similar?' +
-                new URLSearchParams({
-                    url: link,
-                }),
+                    '/article/similar?' +
+                    new URLSearchParams({
+                        url: link,
+                    }),
             );
         } catch (e) {
             console.error(e);
@@ -44,8 +54,7 @@ const getSimilarArticlesFromServer = async (
     return articleApiResponse.data.articles.map((articleSource) => {
         return articleSource;
     });
-
-}
+};
 
 export const Article = ({
     title,
@@ -59,16 +68,13 @@ export const Article = ({
     article_link: string;
 }) => {
     const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
-    const [hasErrored, setHasErrored] = useState(false);
-
-    const handleArticleErrors = () => {
-        setHasErrored(true);
-    };
 
     useEffect(() => {
         (async () => {
             try {
-                const articles = await getSimilarArticlesFromServer(article_link, handleArticleErrors);
+                const articles = await getSimilarArticlesFromServer(
+                    article_link,
+                );
                 setArticles(articles);
             } catch (error) {
                 console.error(error);
@@ -77,58 +83,70 @@ export const Article = ({
     }, []);
 
     return (
-            <Card className={'article-card'}>
-                <Row md={1} className={'h-100'}>
-                    <Col className={'article-image'}>
-                        <Card.Img
-                            src={img_src ? img_src : '/img/no-image.png'}
-                            className={'h-100'}
-                            style={
-                                img_src
-                                    ? { objectFit: 'cover' }
-                                    : { objectFit: 'contain' }
-                            }
-                        />
-                    </Col>
-                    <Col className={'h-100 '}>
-                        <Card.Body
-                            className={'article-body'}
-                            style={{
-                                overflow: 'hidden',
-                            }}
+        <Card className={'article-card'}>
+            <Row md={1} className={'h-100'}>
+                <Col className={'article-image'}>
+                    <Card.Img
+                        src={img_src ? img_src : '/img/no-image.png'}
+                        className={'h-100'}
+                        style={
+                            img_src
+                                ? { objectFit: 'cover' }
+                                : { objectFit: 'contain' }
+                        }
+                    />
+                </Col>
+                <Col className={'h-100 '}>
+                    <Card.Body
+                        className={'article-body'}
+                        style={{
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <Card.Title>{title}</Card.Title>
+                        <Card.Text>{description}</Card.Text>
+                        <Card.Link
+                            href={article_link}
+                            target="_blank"
+                            rel="noreferrer"
                         >
-                            <Card.Title>{title}</Card.Title>
-                            <Card.Text>{description}</Card.Text>
-                            <Card.Link href={article_link} target="_blank" rel="noreferrer"> Read full article </Card.Link>
-                            <OverlayTrigger
-                                placement="right"
-                                trigger="click"
-                                overlay={(
-                                    <Popover>
-                                        {articles.length == 0 ? (
-                                            <> No other news sources </>
-                                        ) : (articles.map(({source,article}, index) => {
-                                            return (
-                                                <ListGroup
-                                                    key={index}
-                                                >
-                                                    <ListGroupItem
-                                                        href={article.link}
-                                                    >
-                                                        <p> {source} </p>
-                                                    </ListGroupItem>
-                                                </ListGroup>
-                                            );
-                                        })
-                                        )}
-                                    </Popover>
-                                )}>
-                                <button className="similar-articles-button"> show similar </button>
-                            </OverlayTrigger>
-                        </Card.Body>
-                    </Col>
-                </Row>
-            </Card>
+                            {' '}
+                            Read full article{' '}
+                        </Card.Link>
+                        <OverlayTrigger
+                            placement="right"
+                            trigger="click"
+                            overlay={
+                                <Popover>
+                                    {articles.length == 0 ? (
+                                        <> No other news sources </>
+                                    ) : (
+                                        articles.map(
+                                            ({ source, article }, index) => {
+                                                return (
+                                                    <ListGroup key={index}>
+                                                        <ListGroupItem
+                                                            href={article.link}
+                                                        >
+                                                            <p> {source} </p>
+                                                        </ListGroupItem>
+                                                    </ListGroup>
+                                                );
+                                            },
+                                        )
+                                    )}
+                                </Popover>
+                            }
+                        >
+                            <button className="similar-articles-button">
+                                {' '}
+                                show similar{' '}
+                            </button>
+                        </OverlayTrigger>
+                    </Card.Body>
+                </Col>
+            </Row>
+        </Card>
     );
 };
 
@@ -139,4 +157,3 @@ export const ArticlePlaceholder = () => {
 export const NoArticlesToShow = () => {
     return <h1>No articles in database.</h1>;
 };
-
