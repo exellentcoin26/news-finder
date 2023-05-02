@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:vrtns="http://base.vrt.be" xml:lang="nl">
+	<title type="text">VRT NWS: nieuws</title>
+	<logo>https://images.vrt.be/w960hx/logos/vrtnws_logo_2022_wbg.png</logo>
+	<id>https://www.vrt.be/vrtnws/nl/</id>
+	<updated>2023-04-19T11:33:05.599Z</updated>
+	<author>
+		<name>VRT NWS</name>
+	</author>
+	<link href="https://www.vrt.be/vrtnws/nl.rss.articles.xml" rel="self" type="application/atom+xml" />
+	<link href="https://www.vrt.be/vrtnws/nl/" rel="alternate" type="text/html" />
+	<entry>
+		<title type="text">Vlaams Parlement draait omzeiling van het pensioenplafond terug</title>
+		<id>https://vrtnws.be/p.vLNOolO8x</id>
+		<published>2023-04-19T11:13:51.000Z</published>
+		<updated>2023-04-19T11:13:51.000Z</updated>
+		<summary type="text">De regeling waarbij Vlaamse Parlementsleden hun pensioen tot 20 procent boven het wettelijk plafond konden opwaarderen wordt geschrapt. Dat is beslist door het Bureau van het Vlaams Parlement, dat verantwoordelijk is voor het administratieve en financiële bestuur en ook bevoegd is voor personeelsbeleid. De beslissing wordt vanmiddag nog bekrachtigd tijdens de plenaire zitting van het Vlaams Parlement.</summary>
+		<vrtns:nstag xmlns="">Politiek</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/vlaams-parlement-draait-omzeiling-van-het-pensioenplafond-terug.rss.xml" rel="self" title="Vlaams Parlement draait omzeiling van het pensioenplafond terug" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.vLNOolO8x" rel="alternate" title="Vlaams Parlement draait omzeiling van het pensioenplafond terug" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/21bab241-de95-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Is een schikking van ruim 700 miljoen euro veel geld voor Fox News? En geloven de Amerikanen de nieuwszender nog? </title>
+		<id>https://vrtnws.be/p.5w4vdw1jd</id>
+		<published>2023-04-19T10:58:55.000Z</published>
+		<updated>2023-04-19T10:58:55.000Z</updated>
+		<summary type="text">718,48 miljoen euro. Dat bedrag gaat Fox News betalen aan Dominion, een Canadees bedrijf dat stemmachines maakt. De twee partijen hebben daarover een minnelijke schikking gesloten. Het is een van de grootste bedragen ooit die in zo'n overeenkomst worden neergeteld, maar is het veel geld voor de nieuwszender? En wat denkt de Amerikaanse nieuwsconsument over de hele zaak?</summary>
+		<vrtns:nstag xmlns="">Media</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/verenigde-staten-vs-us-dominion-fox-news.rss.xml" rel="self" title="Is een schikking van ruim 700 miljoen euro veel geld voor Fox News? En geloven de Amerikanen de nieuwszender nog? " type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.5w4vdw1jd" rel="alternate" title="Is een schikking van ruim 700 miljoen euro veel geld voor Fox News? En geloven de Amerikanen de nieuwszender nog? " type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/026325db-de9c-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Wat met de blindengeleidehonden nu de dopjes aan plastic flessen vasthangen?</title>
+		<id>https://vrtnws.be/p.Gv71OaoN6</id>
+		<published>2023-04-19T10:53:20.000Z</published>
+		<updated>2023-04-19T10:53:20.000Z</updated>
+		<summary type="text">Het wordt moeilijker om dopjes van frisdrank in te zamelen nu die steeds vaker vasthangen aan de fles. Heeft dit gevolgen voor de financiering van de opleiding van geleidehonden? Het Belgisch Centrum voor Geleidehonden verwacht voorlopig geen grote problemen: "We zamelen sinds kort veel meer soorten dopjes in."</summary>
+		<vrtns:nstag xmlns="">Consument</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio,system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/wat-met-de-blindgeleiden-honden-nu-de-dopjes-aan-plastic-flessen.rss.xml" rel="self" title="Wat met de blindengeleidehonden nu de dopjes aan plastic flessen vasthangen?" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.Gv71OaoN6" rel="alternate" title="Wat met de blindengeleidehonden nu de dopjes aan plastic flessen vasthangen?" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/719d7dd4-de9a-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Sportschool Hasselt opent meldpunt voor leerkrachten en leerlingen na WhatsApp-schandaal in school</title>
+		<id>https://vrtnws.be/p.QAjmKya4o</id>
+		<published>2023-04-19T10:29:30.000Z</published>
+		<updated>2023-04-19T10:29:30.000Z</updated>
+		<summary type="text">De Sportschool in Hasselt gaat een meldpunt openen nadat duidelijk werd dat een aantal leerkrachten in een gesloten WhatsAppgroep discriminerende, racistische en homofobe uitspraken maakten. Het ging om opmerkingen over collega's maar ook over leerlingen. Heel wat leerkrachten en leerlingen zitten nu met vragen, klinkt het bij de directie.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/sportschool-hasselt-opent-meldpunt-voor-leerkrachten-en-leerling.rss.xml" rel="self" title="Sportschool Hasselt opent meldpunt voor leerkrachten en leerlingen na WhatsApp-schandaal in school" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.QAjmKya4o" rel="alternate" title="Sportschool Hasselt opent meldpunt voor leerkrachten en leerlingen na WhatsApp-schandaal in school" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/d548b602-de9c-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Twee veroordeelde terroristen getuigen op proces over aanslagen: "Was bang dat Ibrahim El Bakraoui mijn familie iets zou aandoen"</title>
+		<id>https://vrtnws.be/p.3BLb1MaOe</id>
+		<published>2023-04-19T10:27:40.000Z</published>
+		<updated>2023-04-19T10:27:40.000Z</updated>
+		<summary type="text">Op het assisenproces over de aanslagen van 22 maart 2016 in Zaventem en Brussel getuigen vandaag 2 mannen die al veroordeeld zijn voor hun rol bij de aanslagen in Parijs, enkele maanden eerder. Mohammed Bakkali en Yassine Atar zouden niks te maken hebben met de aanslagen in ons land, maar worden verhoord als getuige.</summary>
+		<vrtns:nstag xmlns="">Justitie</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/getuigenis-terroristen.rss.xml" rel="self" title="Twee veroordeelde terroristen getuigen op proces over aanslagen: &quot;Was bang dat Ibrahim El Bakraoui mijn familie iets zou aandoen&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.3BLb1MaOe" rel="alternate" title="Twee veroordeelde terroristen getuigen op proces over aanslagen: &quot;Was bang dat Ibrahim El Bakraoui mijn familie iets zou aandoen&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2022/12/09/e22a2b38-77df-11ed-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Op (moeizame) huizenjacht in Brussel: "Appartement in kelder kost in Elsene 600.000 euro" </title>
+		<id>https://vrtnws.be/p.oLvRD9RQO</id>
+		<published>2023-04-19T10:13:00.000Z</published>
+		<updated>2023-04-19T10:13:00.000Z</updated>
+		<summary type="text">Een betaalbare woning in Brussel vinden is niet evident. Wie geen half miljoen te leen heeft, zoekt beter geen huis in het centrum of zuiden van Brussel. Veel kopers gaan voor kleiner of wijken uit naar het noordwesten van de stad.</summary>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/waar-kan-je-nog-kopen-in-brussel-staar-je-niet-blind-op-de-loca.rss.xml" rel="self" title="Op (moeizame) huizenjacht in Brussel: &quot;Appartement in kelder kost in Elsene 600.000 euro&quot; " type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.oLvRD9RQO" rel="alternate" title="Op (moeizame) huizenjacht in Brussel: &quot;Appartement in kelder kost in Elsene 600.000 euro&quot; " type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/f9fd5a73-de6f-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Contract opzeggen wanneer je wil: van verzekeraar wisselen wordt veel eenvoudiger</title>
+		<id>https://vrtnws.be/p.8eYNqoL4d</id>
+		<published>2023-04-19T09:37:23.000Z</published>
+		<updated>2023-04-19T09:37:23.000Z</updated>
+		<summary type="text">De Kamercommissie Economie van het federale parlement heeft een wet goedgekeurd die het veel eenvoudiger maakt om van verzekeraar te wisselen. Nu moet dat via een aangetekende zending en minstens drie maanden voor de verzekeringsmaatschappij het contract zelf stilzwijgend verlengt. Die termijn vervalt en opzeggen kan binnenkort ook online.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/parlement-stemt-nieuwe-wet-van-verzekeraar-wisselen-wordt-veel.rss.xml" rel="self" title="Contract opzeggen wanneer je wil: van verzekeraar wisselen wordt veel eenvoudiger" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.8eYNqoL4d" rel="alternate" title="Contract opzeggen wanneer je wil: van verzekeraar wisselen wordt veel eenvoudiger" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/03/24/066b4449-ca54-11ed-91d7-02b7b76bf47f.png" rel="enclosure" type="image/png" />
+	</entry>
+	<entry>
+		<title type="text">Dominiek Dendooven van In Flanders Fields Museum in Ieper is Officier in de Orde van Leopold</title>
+		<id>https://vrtnws.be/p.ewJ9LAMnY</id>
+		<published>2023-04-19T09:35:13.000Z</published>
+		<updated>2023-04-19T09:35:13.000Z</updated>
+		<summary type="text">Historicus Dominiek Dendooven van In Flanders Fields Museum uit Ieper mag zich voortaan Officier in de Orde van Leopold noemen. Dat is de hoogste Belgische onderscheiding. Dendooven krijgt de titel voor zijn wetenschappelijk werk rond de Indiase soldaten tijdens WO I. Hij kreeg de medaille van de Leopoldsorde onlangs uitgereikt in India.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/dominiek-dendooven-van-in-flanders-fields-in-ieper-is-officier-i.rss.xml" rel="self" title="Dominiek Dendooven van In Flanders Fields Museum in Ieper is Officier in de Orde van Leopold" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.ewJ9LAMnY" rel="alternate" title="Dominiek Dendooven van In Flanders Fields Museum in Ieper is Officier in de Orde van Leopold" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/cd683a2a-de90-11ed-91d7-02b7b76bf47f.png" rel="enclosure" type="image/png" />
+	</entry>
+	<entry>
+		<title type="text">Verkeershinder op E40 door brandend voertuig is voorbij</title>
+		<id>https://vrtnws.be/p.oLvRDw0R6</id>
+		<published>2023-04-19T04:54:18.000Z</published>
+		<updated>2023-04-19T09:32:00.000Z</updated>
+		<summary type="text">De verkeershinder op de E40 richting Oostende door een brandend voertuig is voorbij. Rond halfelf werd de rechter- en middenrijstrook op de E40 weer vrijgemaakt en kon de kilometerslange file langzaam oplossen. Tegen 11 uur reed het verkeer er weer normaal. De hinder ontstond rond 6 uur vanochtend toen een oplegger met bouwmateriaal brandend op de pechstrook stond.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/brandende-vrachtwagen-op-e40-zorgt-voor-moeilijke-ochtendspits.rss.xml" rel="self" title="Verkeershinder op E40 door brandend voertuig is voorbij" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.oLvRDw0R6" rel="alternate" title="Verkeershinder op E40 door brandend voertuig is voorbij" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/9bba81ac-de73-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Wat kan je tijdens je leven al doen om je nabestaanden te ontzorgen?</title>
+		<id>https://vrtnws.be/p.11ekwZqV9</id>
+		<published>2023-04-19T09:27:47.000Z</published>
+		<updated>2023-04-19T09:27:47.000Z</updated>
+		<summary type="text">"Als je partner overlijdt, heb je geen recht op rouwen door de grote berg paperassen die op je afkomt." Dat melden verschillende luisteraars van "De Inspecteur" Radio2. Volgens notaris Bart Van Opstal kan je op voorhand een aantal zaken regelen om je nabestaanden te ontzorgen.</summary>
+		<vrtns:nstag xmlns="">Consument</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio,system:vrtnieuws/brands/radio-2,system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/je-kan-zelf-al-veel-regelen-zodat-je-nabestaanden-minder-kopzorg.rss.xml" rel="self" title="Wat kan je tijdens je leven al doen om je nabestaanden te ontzorgen?" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.11ekwZqV9" rel="alternate" title="Wat kan je tijdens je leven al doen om je nabestaanden te ontzorgen?" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2021/06/15/1a33fe78-cdbd-11eb-b07d-02b7b76bf47f.png" rel="enclosure" type="image/png" />
+	</entry>
+	<entry>
+		<title type="text">8 leerkrachten Hasseltse Sportschool geschorst voor discriminerende en racistische uitlatingen, "overdreven reactie" volgens advocaat</title>
+		<id>https://vrtnws.be/p.XE0q9EMBV</id>
+		<published>2023-04-18T17:30:44.000Z</published>
+		<updated>2023-04-19T09:27:00.000Z</updated>
+		<summary type="text">De acht geschorste leerkrachten van de Sportschool in Hasselt vinden hun schorsing onterecht. Dat zegt hun advocaat. De Sportschool in Hasselt schorste de leerkrachten preventief nadat aan het licht was gekomen dat ze discriminerende, racistische en homofobe uitspraken hebben gedaan over leerlingen en collega-leerkrachten in een besloten whatsappgroep. De school is een onderzoek gestart.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/hasseltse-sportschool-schorst-acht-leerkrachten-voor-racistische.rss.xml" rel="self" title="8 leerkrachten Hasseltse Sportschool geschorst voor discriminerende en racistische uitlatingen, &quot;overdreven reactie&quot; volgens advocaat" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.XE0q9EMBV" rel="alternate" title="8 leerkrachten Hasseltse Sportschool geschorst voor discriminerende en racistische uitlatingen, &quot;overdreven reactie&quot; volgens advocaat" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/4d77abc9-de0e-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Gent roept op om strandbloemen mee te brengen naar wake voor overleden jongetje Raul</title>
+		<id>https://vrtnws.be/p.lOGeJwEKV</id>
+		<published>2023-04-19T09:21:03.000Z</published>
+		<updated>2023-04-19T09:21:03.000Z</updated>
+		<summary type="text">De stad Gent roept op om vanavond naar het Houtdok te komen met zelfgemaakte strandbloemen uit crêpepapier. De bloemen zullen achtergelaten worden op het strand, als eerbetoon aan het jongetje dat er vorige week dood werd teruggevonden.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/gent-roept-inwoners-op-om-strandbloemen-neer-te-leggen-om-overle.rss.xml" rel="self" title="Gent roept op om strandbloemen mee te brengen naar wake voor overleden jongetje Raul" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.lOGeJwEKV" rel="alternate" title="Gent roept op om strandbloemen mee te brengen naar wake voor overleden jongetje Raul" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/3fddae0e-de91-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Bakkersfamilie uit Ekeren schenkt vooroorlogs archief, met onder meer houten trog, aan district en poldermuseum in Lillo</title>
+		<id>https://vrtnws.be/p.ZW1N5m3wW</id>
+		<published>2023-04-19T09:09:49.000Z</published>
+		<updated>2023-04-19T09:09:49.000Z</updated>
+		<summary type="text">De Ekerse bakkersfamilie Verbist heeft haar vooroorlogs archief aan het district en het Poldermuseum in Lillo geschonken. Het was Maria Verbist die het 90 jaar lang bewaarde. Er zit onder meer een houten trog bij, van 2 meter lang, die door de Canadezen werd gebruikt om deeg te kneden tijdens de Bevrijding na de Tweede Wereldoorlog.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/bakkersfamilie-uit-ekeren-schenkt-archief-aan-district.rss.xml" rel="self" title="Bakkersfamilie uit Ekeren schenkt vooroorlogs archief, met onder meer houten trog, aan district en poldermuseum in Lillo" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.ZW1N5m3wW" rel="alternate" title="Bakkersfamilie uit Ekeren schenkt vooroorlogs archief, met onder meer houten trog, aan district en poldermuseum in Lillo" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/9e21d534-de84-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Taalapp in ZNA-ziekenhuizen wordt na 1 jaar uitgebreid: "Handig om te communiceren met anderstalige patiënten"</title>
+		<id>https://vrtnws.be/p.jGKMmpxvQ</id>
+		<published>2023-04-19T08:57:24.000Z</published>
+		<updated>2023-04-19T08:57:24.000Z</updated>
+		<summary type="text">De taalapp die de ziekenhuizen van het Ziekenhuis Netwerk Antwerpen (ZNA) een jaar geleden in gebruik namen om met anderstalige patienten te communiceren, blijkt een groot succes. Dat bevestigt de ziekenhuisgroep aan Radio2. Zowel patiënten als zorgverleners reageren enthousiast. In de app staan honderden voorgeprogrammeerde vragen in 13 talen, en de bedoeling is om dat aantal nog uit te breiden.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/taalapp-zna-ziekenhuizen-uitgebreid.rss.xml" rel="self" title="Taalapp in ZNA-ziekenhuizen wordt na 1 jaar uitgebreid: &quot;Handig om te communiceren met anderstalige patiënten&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.jGKMmpxvQ" rel="alternate" title="Taalapp in ZNA-ziekenhuizen wordt na 1 jaar uitgebreid: &quot;Handig om te communiceren met anderstalige patiënten&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2022/06/01/2491dcad-e18d-11ec-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">E313 richting Antwerpen even afgesloten door zwaar ongeval in Massenhoven: botsing tussen 2 auto's en tankwagen</title>
+		<id>https://vrtnws.be/p.6KlqjjOj3</id>
+		<published>2023-04-19T08:55:03.000Z</published>
+		<updated>2023-04-19T08:55:03.000Z</updated>
+		<summary type="text">De E313 richting Antwerpen is een tijdlang afgesloten geweest door een zwaar verkeersongeval in Massenhoven. Tijdens de ochtendfile zijn 2 auto's en een tankwagen op elkaar gebotst, waardoor die laatste diagonaal over de weg kwam te staan. Het ongeval zorgde voor een 7 kilometer lange file en volledig stilstaand verkeer.</summary>
+		<vrtns:nstag xmlns="">Mobiliteit</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/ongeval-e313.rss.xml" rel="self" title="E313 richting Antwerpen even afgesloten door zwaar ongeval in Massenhoven: botsing tussen 2 auto's en tankwagen" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.6KlqjjOj3" rel="alternate" title="E313 richting Antwerpen even afgesloten door zwaar ongeval in Massenhoven: botsing tussen 2 auto's en tankwagen" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/02a09093-de8f-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Vermiste Belgische EU-ambtenaar blijkt neergeschoten in Soedan: "Hij is gewond maar niet in levensgevaar"</title>
+		<id>https://vrtnws.be/p.APOy17ynE</id>
+		<published>2023-04-19T06:15:08.000Z</published>
+		<updated>2023-04-19T08:35:00.000Z</updated>
+		<summary type="text">De Belg Wim Fransen, die aan het hoofd staat van de humanitaire missie van de Europese Unie in Soedan, is neergeschoten in de hoofdstad Khartoem. Hij raakte gewond, maar is niet in levensgevaar. Dat meldt de krant de New York Times op basis van meerdere bronnen. Het gewapende conflict tussen het leger en de paramilitairen is nu al vijf dagen aan de gang.</summary>
+		<vrtns:nstag xmlns="">Afrika</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio,system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/belgische-hoge-eu-ambtenaar-neergeschoten-in-khartoem-gewond-ma.rss.xml" rel="self" title="Vermiste Belgische EU-ambtenaar blijkt neergeschoten in Soedan: &quot;Hij is gewond maar niet in levensgevaar&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.APOy17ynE" rel="alternate" title="Vermiste Belgische EU-ambtenaar blijkt neergeschoten in Soedan: &quot;Hij is gewond maar niet in levensgevaar&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/33b9d88c-de79-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Colruyt Group kondigt herstructurering aan bij DreamLand en DreamBaby: 192 jobs op de helling, zes winkels sluiten</title>
+		<id>https://vrtnws.be/p.APOy1Wmoy</id>
+		<published>2023-04-19T06:42:47.000Z</published>
+		<updated>2023-04-19T08:30:00.000Z</updated>
+		<summary type="text">Colruyt Group voert een herstructurering door bij speelgoedwinkelketen DreamLand en babywinkelketen DreamBaby. Zes winkels gaan dicht, 192 jobs dreigen te verdwijnen. Dat is vanochtend bekendgemaakt op een bijzondere ondernemingsraad. Colruyt Group verkoopt ook driekwart van DreamLand aan de concurrent ToyChamp. Alle DreamLand-winkels blijven na de aankondiging vandaag gesloten.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/overname-dreamland.rss.xml" rel="self" title="Colruyt Group kondigt herstructurering aan bij DreamLand en DreamBaby: 192 jobs op de helling, zes winkels sluiten" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.APOy1Wmoy" rel="alternate" title="Colruyt Group kondigt herstructurering aan bij DreamLand en DreamBaby: 192 jobs op de helling, zes winkels sluiten" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/0e5eff53-de9a-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Administratieve rompslomp na overlijden: met deze tips wordt het een beetje makkelijker</title>
+		<id>https://vrtnws.be/p.DY3lva9pw</id>
+		<published>2023-04-19T08:06:53.000Z</published>
+		<updated>2023-04-19T08:06:53.000Z</updated>
+		<summary type="text">Een overlijden is niet alleen emotioneel zeer belastend. Je moet naast het verdriet vaak ook een hoop administratieve zaken regelen. Denk maar aan contracten die op een andere naam moeten worden gezet, of die volledig moeten worden stopgezet. De Inspecteur lijst de belangrijkste contracten op die je moet aanpassen.</summary>
+		<vrtns:nstag xmlns="">Consument</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio,system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/contracten-na-overlijden.rss.xml" rel="self" title="Administratieve rompslomp na overlijden: met deze tips wordt het een beetje makkelijker" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.DY3lva9pw" rel="alternate" title="Administratieve rompslomp na overlijden: met deze tips wordt het een beetje makkelijker" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/058aa946-ddf6-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">80 jaar geleden vond enige succesvolle onderschepping van jodentransport plaats in Boortmeerbeek</title>
+		<id>https://vrtnws.be/p.nwBL0XGEZ</id>
+		<published>2023-04-19T07:58:09.000Z</published>
+		<updated>2023-04-19T07:58:09.000Z</updated>
+		<summary type="text">Tachtig jaar geleden heeft de enige succesvolle bevrijding van een jodentransport naar Auschwitz plaatsgevonden in Boortmeerbeek. Op 19 april 1943 deed Youra Livchitz samen met zijn oude schoolkameraden Jean Franklemon en Robert Maistriau een konvooi met 1.631 gedeporteerden stoppen. Zo konden 121 mensen ontsnappen.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/80-jaar-geleden-vond-enige-succesvolle-bevrijding-van-jodentrans.rss.xml" rel="self" title="80 jaar geleden vond enige succesvolle onderschepping van jodentransport plaats in Boortmeerbeek" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.nwBL0XGEZ" rel="alternate" title="80 jaar geleden vond enige succesvolle onderschepping van jodentransport plaats in Boortmeerbeek" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/ea29635a-de89-11ed-91d7-02b7b76bf47f.png" rel="enclosure" type="image/png" />
+	</entry>
+	<entry>
+		<title type="text">Directeur Zilvermeer Mol komt tijdelijk ook aan het roer van De Warande in Turnhout</title>
+		<id>https://vrtnws.be/p.lOGe96JXE</id>
+		<published>2023-04-19T07:28:18.000Z</published>
+		<updated>2023-04-19T07:28:18.000Z</updated>
+		<summary type="text">Igor Geubbelmans, directeur van recreatiedomein Zilvermeer in Mol, komt tijdelijk ook aan het roer van cultuurhuis De Warande in Turnhout. Het provinciebestuur stelt hem aan, omdat de man die verantwoordelijk is voor de dagelijkse leiding bij De Warande, ziek is. De afgelopen weken waren ook wel twijfels gerezen over zijn functioneren, maar het provinciebestuur hield zijn vertrouwen en zegt dat er nog altijd geen klachten over hem kwamen.</summary>
+		<vrtns:nstag xmlns="">Cultuur &amp; Media</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/nieuwe-tijdelijke-directeur-de-warande-in-turnhout.rss.xml" rel="self" title="Directeur Zilvermeer Mol komt tijdelijk ook aan het roer van De Warande in Turnhout" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.lOGe96JXE" rel="alternate" title="Directeur Zilvermeer Mol komt tijdelijk ook aan het roer van De Warande in Turnhout" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2020/08/02/5316d49a-d4dc-11ea-aae0-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Staalbouwbedrijf ASK Romein in Malle vraagt faillissement aan: 140-tal jobs bedreigd</title>
+		<id>https://vrtnws.be/p.43RQ5pQN6</id>
+		<published>2023-04-19T07:08:46.000Z</published>
+		<updated>2023-04-19T07:08:46.000Z</updated>
+		<summary type="text">In Malle dreigen zo'n 140 werknemers van staalbouwbedrijf ASK Romein hun job te verliezen nadat de vestiging het faillissement heeft aangevraagd. Dat schrijft Gazet van Antwerpen. Vakbond ACV BIE hoopt nog op een overname. ASK Romein heeft onder andere de staalconstructies van het dak van het Antwerpse Bosuilstadion en het Mechelse AFAS Stadion gebouwd.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/staalbouwbedrijf-ask-romein-in-malle-vraagt-faillissement-aan.rss.xml" rel="self" title="Staalbouwbedrijf ASK Romein in Malle vraagt faillissement aan: 140-tal jobs bedreigd" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.43RQ5pQN6" rel="alternate" title="Staalbouwbedrijf ASK Romein in Malle vraagt faillissement aan: 140-tal jobs bedreigd" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/13e825dd-de7e-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Opnieuw bewijzen voor Russische spionage in de Noordzee: "Zijn in staat om kritieke infrastructuur te saboteren"</title>
+		<id>https://vrtnws.be/p.Nvj4m1jjO</id>
+		<published>2023-04-19T07:03:01.000Z</published>
+		<updated>2023-04-19T07:03:01.000Z</updated>
+		<summary type="text">Rusland is in staat om windmolenparken en communicatiekabels in de Noordzee te saboteren. Dat blijkt uit een onderzoek van verschillende Noord-Europese openbare omroepen dat vanavond wordt uitgezonden. Daarin is te zien hoe Russische schepen vermomd als vissersboot of onderzoeksschip via onderwatercamera's informatie verzamelen, die Rusland "zou kunnen gebruiken in geval van een totale oorlog met het Westen".</summary>
+		<vrtns:nstag xmlns="">Europa</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/spionage-russische-schepen.rss.xml" rel="self" title="Opnieuw bewijzen voor Russische spionage in de Noordzee: &quot;Zijn in staat om kritieke infrastructuur te saboteren&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.Nvj4m1jjO" rel="alternate" title="Opnieuw bewijzen voor Russische spionage in de Noordzee: &quot;Zijn in staat om kritieke infrastructuur te saboteren&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/06270120-de76-11ed-91d7-02b7b76bf47f.png" rel="enclosure" type="image/png" />
+	</entry>
+	<entry>
+		<title type="text">Krijgt pensioensaga in de Kamer een Vlaams vervolg? "Vlaams Parlement omzeilt pensioenplafond al 10 jaar langer" </title>
+		<id>https://vrtnws.be/p.oLvRDRWe8</id>
+		<published>2023-04-19T06:26:18.000Z</published>
+		<updated>2023-04-19T06:26:18.000Z</updated>
+		<summary type="text">De pensioensaga in de Kamer dreigt uit te breiden naar het Vlaams Parlement. Volgens oppositiepartij PVDA bestaat er in het Vlaams Parlement al sinds 2004 een regeling om pensioenen tot 20 procent boven het plafond uit te betalen. "'Wat we zelf graaien, graaien we beter' moeten ze in het Vlaams Parlement gedacht hebben", zegt PVDA-fractieleider Jos D'Haese.</summary>
+		<vrtns:nstag xmlns="">Politiek</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/jos-d-haese-onthulling-vlaams-parlement-pensioenen.rss.xml" rel="self" title="Krijgt pensioensaga in de Kamer een Vlaams vervolg? &quot;Vlaams Parlement omzeilt pensioenplafond al 10 jaar langer&quot; " type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.oLvRDRWe8" rel="alternate" title="Krijgt pensioensaga in de Kamer een Vlaams vervolg? &quot;Vlaams Parlement omzeilt pensioenplafond al 10 jaar langer&quot; " type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/397843f5-de7b-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Arbeider geëlektrocuteerd in Berlaar tijdens installatie digitale energiemeter: niet in levensgevaar</title>
+		<id>https://vrtnws.be/p.5w4v5kLVJ</id>
+		<published>2023-04-19T05:55:13.000Z</published>
+		<updated>2023-04-19T05:55:13.000Z</updated>
+		<summary type="text">In Berlaar is een arbeider zwaargewond geraakt bij het plaatsen van een digitale energiemeter. De man raakte geëlektrocuteerd maar is niet in levensgevaar.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/arbeider-zwaargewond-installatie-digitale-meter.rss.xml" rel="self" title="Arbeider geëlektrocuteerd in Berlaar tijdens installatie digitale energiemeter: niet in levensgevaar" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.5w4v5kLVJ" rel="alternate" title="Arbeider geëlektrocuteerd in Berlaar tijdens installatie digitale energiemeter: niet in levensgevaar" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2021/02/21/038ff07d-7407-11eb-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Graffitispuiters in Elsene viseren huizen met "grote tuinen en Porsches voor de deur"</title>
+		<id>https://vrtnws.be/p.lOGePQRPW</id>
+		<published>2023-04-19T05:55:00.000Z</published>
+		<updated>2023-04-19T05:55:00.000Z</updated>
+		<summary type="text">Graffitispuiters hebben op meerdere gevels in de Molièrewijk in Elsene graffiti aangebracht. Op beelden is te zien hoe verschillende gevels werden beklad met slogans als "rijk en achterlijk" en "rijken zijn dieven." Ook het kraaksymbool, een cirkel met een pijl door, kwam een aantal keer voor. De politie van Elsene reageert dat het te vroeg is om conclusies te trekken over wie erachter zit.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/graffitispuiters-viseren-in-elsene-huizen-met-grote-tuinen-en-p.rss.xml" rel="self" title="Graffitispuiters in Elsene viseren huizen met &quot;grote tuinen en Porsches voor de deur&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.lOGePQRPW" rel="alternate" title="Graffitispuiters in Elsene viseren huizen met &quot;grote tuinen en Porsches voor de deur&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/81e6eff3-de32-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Schotse ultramarathonloopster gediskwalificeerd omdat ze 4 kilometer de auto nam</title>
+		<id>https://vrtnws.be/p.DY3l6yVVX</id>
+		<published>2023-04-19T05:22:58.000Z</published>
+		<updated>2023-04-19T05:22:58.000Z</updated>
+		<summary type="text">De Schotse ultramarathonloopster Joasia Zakrzewski is gediskwalificeerd, omdat ze een auto gebruikte tijdens een wedstrijd. "Een loper had een onsportief voordeel op de route", laat de organisatie weten. Gps-data toonden aan dat Zakrzewski 4 kilometer overbrugde met een voertuig.</summary>
+		<vrtns:nstag xmlns="">Verenigd Koninkrijk</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/gps-verraadt-dat-ultramarathonloopster-in-auto-stapte.rss.xml" rel="self" title="Schotse ultramarathonloopster gediskwalificeerd omdat ze 4 kilometer de auto nam" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.DY3l6yVVX" rel="alternate" title="Schotse ultramarathonloopster gediskwalificeerd omdat ze 4 kilometer de auto nam" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/a4131981-de6d-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Rechter verplicht KU Leuven om lezing van Oostenrijker met  nazi-sympathieën te laten doorgaan</title>
+		<id>https://vrtnws.be/p.LN9LEYoRk</id>
+		<published>2023-04-19T04:39:49.000Z</published>
+		<updated>2023-04-19T04:39:49.000Z</updated>
+		<summary type="text">De lezing van Martin Sellner, boegbeeld van de uiterst rechtse protestbeweging Generation Identity in Oostenrijk, mag doorgaan in één van de aula's van de Leuvense universiteit. Dat heeft een rechter in kortgeding beslist. De KU Leuven had twee weken geleden de lezing verboden om veiligheidsredenen.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/19/rechter-verplicht-ku-leuven-om-lezing-van-oostenrijker-met-nazi.rss.xml" rel="self" title="Rechter verplicht KU Leuven om lezing van Oostenrijker met  nazi-sympathieën te laten doorgaan" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.LN9LEYoRk" rel="alternate" title="Rechter verplicht KU Leuven om lezing van Oostenrijker met  nazi-sympathieën te laten doorgaan" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/5ee73f07-de70-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Gentse schepen van Onderwijs roept op tot sereniteit in zaak Raul: "Verklaringen hakken er echt in"</title>
+		<id>https://vrtnws.be/p.5w4vXapKl</id>
+		<published>2023-04-19T04:30:00.000Z</published>
+		<updated>2023-04-19T04:30:00.000Z</updated>
+		<summary type="text">De Gentse schepen van Onderwijs Evita Willaert (Groen) roept op om de sereniteit in het onderzoek rond de dood van Raul te bewaren. Ze reageert zo op verklaringen in de media over de school en leerkrachten. "Bij hen komt het enorm binnen, dit raakt hen in hun ziel. Ze spreken niet omdat het onderzoek loopt, ik vraag begrip. Het rouwproces is net begonnen."</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio,system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/gents-schepen-van-onderwijs-roept-op-om-sereniteit-in-zaak-raul.rss.xml" rel="self" title="Gentse schepen van Onderwijs roept op tot sereniteit in zaak Raul: &quot;Verklaringen hakken er echt in&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.5w4vXapKl" rel="alternate" title="Gentse schepen van Onderwijs roept op tot sereniteit in zaak Raul: &quot;Verklaringen hakken er echt in&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/c59f2c3d-de26-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Aankoop 2 nieuwe drones garandeert kwaliteit van drone-opleiding aan Limburgse veiligheidsschool</title>
+		<id>https://vrtnws.be/p.LN9LmlAWM</id>
+		<published>2023-04-19T04:00:33.000Z</published>
+		<updated>2023-04-19T04:00:33.000Z</updated>
+		<summary type="text">Het provinciebestuur van Limburg heeft geïnvesteerd in de aankoop van twee nieuwe drones voor de drone-opleiding aan de Limburgse veiligheidsschool PLOT in Genk. De drones worden onder meer ingezet bij crowd control tijdens voetbalwedstrijden of voor het inschatten van branden.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/aankoop-twee-nieuwe-drones-garandeert-kwaliteit-van-drone-opleid.rss.xml" rel="self" title="Aankoop 2 nieuwe drones garandeert kwaliteit van drone-opleiding aan Limburgse veiligheidsschool" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.LN9LmlAWM" rel="alternate" title="Aankoop 2 nieuwe drones garandeert kwaliteit van drone-opleiding aan Limburgse veiligheidsschool" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/57251aa4-de07-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Fusieplan tussen Boortmeerbeek en Mechelen is 1 jaar oud, lokale CD&amp;V pleit voor samenwerking in plaats van fusies</title>
+		<id>https://vrtnws.be/p.xZKJbjO70</id>
+		<published>2023-04-19T03:46:40.000Z</published>
+		<updated>2023-04-19T03:46:40.000Z</updated>
+		<summary type="text">Precies 1 jaar geleden, op 19 april 2022, maakten de betrokken burgemeesters officieel de fusieplannen bekend tussen Boortmeerbeek en Mechelen. De plannen werden echter snel afgevoerd, na protest van de oppositie en vooral van de bevolking van Boortmeerbeek. Eén jaar later wordt er niet meer luidop over fusieplannen nagedacht. Oppositiepartij CD&amp;V in Boortmeerbeek is tegen een mogelijke fusie met wie dan ook en ziet meer heil in samenwerking met de buurgemeenten.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/fusie-boortmeerbeek-mechelen-1-jaar-geleden.rss.xml" rel="self" title="Fusieplan tussen Boortmeerbeek en Mechelen is 1 jaar oud, lokale CD&amp;V pleit voor samenwerking in plaats van fusies" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.xZKJbjO70" rel="alternate" title="Fusieplan tussen Boortmeerbeek en Mechelen is 1 jaar oud, lokale CD&amp;V pleit voor samenwerking in plaats van fusies" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2022/04/29/cbed5299-c7ec-11ec-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">"Prins op overschot" (afl. 1): hoe Laurent onderkoeld op E40 ronddoolde en warmte vond bij gastgezin in Wilrijk</title>
+		<id>https://vrtnws.be/p.3BLlA4Jeb</id>
+		<published>2023-04-19T03:28:00.000Z</published>
+		<updated>2023-04-19T03:28:00.000Z</updated>
+		<summary type="text">Vanavond start op Canvas de 4-delige documentaire "Laurent: prins op overschot" waarbij de maker probeert in het hoofd te kijken van de jongste telg van koning Albert en koningin Paola. In de eerste aflevering wordt duidelijk dat het paleis geen weg wist met de prins en er een traumatisch brokkenparcours van maakte. Maar het is ook de eerste keer dat we een ander beeld krijgen van Paola: ze probeert er als moeder te zijn voor Laurent en hem een warme thuis te bieden, ook al is het op een ander.</summary>
+		<vrtns:nstag xmlns="">Media</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/14/laurent-prins-op-overschot-aflevering-1.rss.xml" rel="self" title="&quot;Prins op overschot&quot; (afl. 1): hoe Laurent onderkoeld op E40 ronddoolde en warmte vond bij gastgezin in Wilrijk" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.3BLlA4Jeb" rel="alternate" title="&quot;Prins op overschot&quot; (afl. 1): hoe Laurent onderkoeld op E40 ronddoolde en warmte vond bij gastgezin in Wilrijk" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/14/80e33a9e-dabe-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Prins Laurent over docu over zijn leven: "Ja, ik heb veel ergs meegemaakt, maar u moet niet verwachten dat ik triest ben"</title>
+		<id>https://vrtnws.be/p.lOGeEOqDB</id>
+		<published>2023-04-19T03:13:46.000Z</published>
+		<updated>2023-04-19T03:13:46.000Z</updated>
+		<summary type="text">Hoe prins Laurent zélf naar zijn leven kijkt, komen we in de documentaire-reeks over hem die u vanaf vanavond kan bekijken op Canvas en VRT MAX, niet te weten. Als we hem opbellen en vragen naar hoe hij zelf terugblikt, is hij eerst ook redelijk kort. "Ik kijk niet in een achteruitkijkspiegel, ik kijk voor mij." Tot hij na verloop van tijd toch loskomt. “Ik heb inderdaad veel ergs meegemaakt in mijn leven. Maar u moet niet verwachten dat ik daar triestig over ben.” En er volgt nog. "Ik zeg dit alleen aan u."</summary>
+		<vrtns:nstag xmlns="">Royalty</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/prins-laurent-reageert-over-zijn-leven-ik-heb-nooit-mogen-besli.rss.xml" rel="self" title="Prins Laurent over docu over zijn leven: &quot;Ja, ik heb veel ergs meegemaakt, maar u moet niet verwachten dat ik triest ben&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.lOGeEOqDB" rel="alternate" title="Prins Laurent over docu over zijn leven: &quot;Ja, ik heb veel ergs meegemaakt, maar u moet niet verwachten dat ik triest ben&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/f0ba323c-ddef-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Renovatie Brusselse Leonardtunnel van start, twee jaar verkeershinder blijft beperkt tot de nachten</title>
+		<id>https://vrtnws.be/p.LN9LMdD4E</id>
+		<published>2023-04-19T00:11:10.000Z</published>
+		<updated>2023-04-19T00:11:10.000Z</updated>
+		<summary type="text">De grootschalige renovatie van de Leonardtunnel in Tervuren is vannacht van start gegaan. Begin 2025 zou de renovatie klaar moeten zijn. Vlaams minister voor Mobiliteit en Openbare Werken Lydia Peeters (Open Vld) woonde de start van de werken bij.</summary>
+		<vrtns:nstag xmlns="">Mobiliteit</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/renovatie-brusselse-leonardtunnel-van-start-twee-jaar-verkeersh.rss.xml" rel="self" title="Renovatie Brusselse Leonardtunnel van start, twee jaar verkeershinder blijft beperkt tot de nachten" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.LN9LMdD4E" rel="alternate" title="Renovatie Brusselse Leonardtunnel van start, twee jaar verkeershinder blijft beperkt tot de nachten" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/19/5d696aaa-de46-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Drie mensen levensgevaarlijk gewond na steekpartij in Duits fitnesscentrum, minstens één dader op de vlucht</title>
+		<id>https://vrtnws.be/p.w7vbmL56p</id>
+		<published>2023-04-18T21:03:42.000Z</published>
+		<updated>2023-04-18T21:03:42.000Z</updated>
+		<summary type="text">Bij een steekpartij in een fitnesscentrum in Duisburg, in het westen van Duitsland, zijn vier mensen gewond geraakt. Drie van hen zijn in levensgevaar, het vierde slachtoffer is zwaargewond. De politie is op dit moment op zoek naar "minstens één dader".</summary>
+		<vrtns:nstag xmlns="">Duitsland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/steekpartij-duitsland-duisburg.rss.xml" rel="self" title="Drie mensen levensgevaarlijk gewond na steekpartij in Duits fitnesscentrum, minstens één dader op de vlucht" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.w7vbmL56p" rel="alternate" title="Drie mensen levensgevaarlijk gewond na steekpartij in Duits fitnesscentrum, minstens één dader op de vlucht" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/58991c9f-de2c-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Fox News treft schikking voor 787 miljoen dollar met Dominion in rechtszaak over verkiezingsleugens</title>
+		<id>https://vrtnws.be/p.kQ7dk5EWB</id>
+		<published>2023-04-18T20:20:35.000Z</published>
+		<updated>2023-04-18T20:20:35.000Z</updated>
+		<summary type="text">Stemcomputerfabrikant Dominion en Fox News hebben een schikking getroffen in een rechtszaak over laster na de presidentsverkiezingen van 2020. Dominion had de zender aangeklaagd omdat die onwaarheden zou hebben verspreid over fraude met stemcomputers van het bedrijf. Volgens een advocaat van Dominion zal Fox News 787,5 miljoen dollar (ongeveer 717 miljoen euro) moeten ophoesten, oorspronkelijk eiste het bedrijf nog meer dan het dubbele van dat bedrag.</summary>
+		<vrtns:nstag xmlns="">Verenigde Staten</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/dominion-rechtszaak-fox.rss.xml" rel="self" title="Fox News treft schikking voor 787 miljoen dollar met Dominion in rechtszaak over verkiezingsleugens" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.kQ7dk5EWB" rel="alternate" title="Fox News treft schikking voor 787 miljoen dollar met Dominion in rechtszaak over verkiezingsleugens" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/17/1c9d6d60-dd4e-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Bijzondere ondernemingsraad bij DreamLand en Dreambaby maakt vakbonden ongerust: "Vermoeden geen goed nieuws"</title>
+		<id>https://vrtnws.be/p.bDJp90LKK</id>
+		<published>2023-04-18T20:13:34.000Z</published>
+		<updated>2023-04-18T20:13:34.000Z</updated>
+		<summary type="text">Bij DreamLand en Dreambaby, twee winkelketens van de Colruyt Group, vindt morgenochtend een bijzondere ondernemingsraad plaats. De christelijke vakbond ACV Puls is ongerust. "Wij vermoeden absoluut dat het geen goed nieuws zal zijn", zegt vakbondsverantwoordelijke Koen Roosen.</summary>
+		<vrtns:nstag xmlns="">Economie</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/dreamland.rss.xml" rel="self" title="Bijzondere ondernemingsraad bij DreamLand en Dreambaby maakt vakbonden ongerust: &quot;Vermoeden geen goed nieuws&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.bDJp90LKK" rel="alternate" title="Bijzondere ondernemingsraad bij DreamLand en Dreambaby maakt vakbonden ongerust: &quot;Vermoeden geen goed nieuws&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/3be80128-de25-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Amerikaanse man van 84 die zwarte tiener Ralph Yarl neerschoot aan voordeur, zit in hechtenis</title>
+		<id>https://vrtnws.be/p.oLv5AR9Qa</id>
+		<published>2023-04-18T05:38:15.000Z</published>
+		<updated>2023-04-18T20:10:27.000Z</updated>
+		<summary type="text">De Amerikaanse man, die een zwarte tiener neerschoot toen hij per ongeluk aan de voordeur belde, zit in hechtenis. Dat hebben de Amerikaanse autoriteiten gemeld. Volgens de openbaar aanklager zit er een "raciale component" aan de zaak. De 16-jarige Ralph Yarl had zich van deur vergist en werd door de 84-jarige bewoner van het huis in het hoofd geschoten. Yarl raakte zwaargewond, maar heeft intussen het ziekenhuis mogen verlaten.</summary>
+		<vrtns:nstag xmlns="">Verenigde Staten</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/85-jarige-man-aangeklaagd-voor-neerschieten-tiener-aan-voordeur.rss.xml" rel="self" title="Amerikaanse man van 84 die zwarte tiener Ralph Yarl neerschoot aan voordeur, zit in hechtenis" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.oLv5AR9Qa" rel="alternate" title="Amerikaanse man van 84 die zwarte tiener Ralph Yarl neerschoot aan voordeur, zit in hechtenis" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/7ca289fe-ddfb-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Vlaamse ministers Weyts en Crevits protesteren in brief over verdeling artsenquota tussen Vlaamse en Franse Gemeenschap </title>
+		<id>https://vrtnws.be/p.kQ7dojKmA</id>
+		<published>2023-04-18T18:48:46.000Z</published>
+		<updated>2023-04-18T18:48:46.000Z</updated>
+		<summary type="text">In een brief aan federaal minister van Volksgezondheid Frank Vandenbroucke (Vooruit) hebben Vlaams ministers van Onderwijs Ben Weyts (N-VA) en van Welzijn en Volksgezondheid Hilde Crevits (CD&amp;V) hun bezwaren geuit over de federaal vastgelegde quota voor artsen en tandartsen. Ze vinden de regeling niet rechtvaardig.</summary>
+		<vrtns:nstag xmlns="">Politiek</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/artsenquota.rss.xml" rel="self" title="Vlaamse ministers Weyts en Crevits protesteren in brief over verdeling artsenquota tussen Vlaamse en Franse Gemeenschap " type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.kQ7dojKmA" rel="alternate" title="Vlaamse ministers Weyts en Crevits protesteren in brief over verdeling artsenquota tussen Vlaamse en Franse Gemeenschap " type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2019/11/02/a50a47b0-fd86-11e9-abcc-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Gevechten in Soedan houden aan, ondanks aangekondigd staakt-het-vuren</title>
+		<id>https://vrtnws.be/p.DY3kyxoqe</id>
+		<published>2023-04-18T11:43:52.000Z</published>
+		<updated>2023-04-18T18:30:35.000Z</updated>
+		<summary type="text">In Soedan wordt er in de hoofdstad Khartoem nog steeds gevochten, ondanks het akkoord over een staakt-het-vuren tussen de strijdende partijen eerder op de dag. De tijdelijke wapenstilstand zou 24 uur duren en zou om 18 uur ingaan. Er zijn al de hele dag hevige gevechten aan de gang tussen de rivaliserende troepen van het Soedanese leger en de paramilitaire groep Rapid Support Forces (RSF). Burgers zitten vast in hun huizen, zonder water, elektriciteit of toegang tot hulp.</summary>
+		<vrtns:nstag xmlns="">Afrika</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/geweld-gaat-onverminderd-voort-in-soedan-ook-amerikaans-konvooi.rss.xml" rel="self" title="Gevechten in Soedan houden aan, ondanks aangekondigd staakt-het-vuren" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.DY3kyxoqe" rel="alternate" title="Gevechten in Soedan houden aan, ondanks aangekondigd staakt-het-vuren" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/8ab32203-de18-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Polen en Oekraïne bereiken akkoord over hernemen van graantransport</title>
+		<id>https://vrtnws.be/p.aD46Dx1My</id>
+		<published>2023-04-18T18:18:51.000Z</published>
+		<updated>2023-04-18T18:18:51.000Z</updated>
+		<summary type="text">Polen en Oekraïne hebben een akkoord gesloten over het hernemen van het transport van Oekraïens graan. Dat heeft de Poolse minister van Landbouw bekendgemaakt. Polen had een importverbod ingevoerd om zijn eigen landbouw te beschermen.</summary>
+		<vrtns:nstag xmlns="">Europa</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/polen-en-oekraine-bereiken-akkoord-over-hernemen-van-graantransp.rss.xml" rel="self" title="Polen en Oekraïne bereiken akkoord over hernemen van graantransport" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.aD46Dx1My" rel="alternate" title="Polen en Oekraïne bereiken akkoord over hernemen van graantransport" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/16/007fa9c4-dc34-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">EU bereikt miljardenakkoord om zelf meer microchips te produceren (en minder afhankelijk te zijn van Azië)</title>
+		<id>https://vrtnws.be/p.y3AvbWj4K</id>
+		<published>2023-04-18T18:10:11.000Z</published>
+		<updated>2023-04-18T18:10:11.000Z</updated>
+		<summary type="text">Onderhandelaars van het Europees Parlement en de lidstaten hebben een akkoord bereikt over de "European Chips Act", een grootschalig plan dat ervoor moet zorgen dat Europa minder afhankelijk wordt van chips uit andere werelddelen. Concreet wil de EU tegen 2030 verantwoordelijk zijn voor 20 procent van de wereldwijde chipproductie, dat is een verdubbeling ten opzicht van vandaag. Kostprijs voor het plan: 43 miljard euro.</summary>
+		<vrtns:nstag xmlns="">Europese Unie</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/eu-wil-aandeel-in-wereldwijde-productie-chips-verdubbelen.rss.xml" rel="self" title="EU bereikt miljardenakkoord om zelf meer microchips te produceren (en minder afhankelijk te zijn van Azië)" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.y3AvbWj4K" rel="alternate" title="EU bereikt miljardenakkoord om zelf meer microchips te produceren (en minder afhankelijk te zijn van Azië)" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2022/05/25/454512f3-dc03-11ec-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">In "Liefde voor muziek" nog even met Sarah, maar Portland staat woensdag in AB met nieuwe zangeres Nina</title>
+		<id>https://vrtnws.be/p.Nvj4lKj1G</id>
+		<published>2023-04-18T18:00:08.000Z</published>
+		<updated>2023-04-18T18:00:08.000Z</updated>
+		<summary type="text">De eerste uitverkochte AB-show woensdag wordt meteen een stevige vuurdoop voor Portland 2.0. Na het plotse vertrek van zangeres Sarah Pepels speelt de groep rond Jente Pironet (32) de nummers van hun nieuwe plaat “Departures” voortaan met Nina Kortekaas als zangeres. De start van een nieuw hoofdstuk, met als voorlopige hoogtepunten Rock Werchter én het buitenland dat lonkt.</summary>
+		<vrtns:nstag xmlns="">Muziek</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/portland-na-liefde-voor-muziek-met-nieuwe-zangeres-nina-kortekaa.rss.xml" rel="self" title="In &quot;Liefde voor muziek&quot; nog even met Sarah, maar Portland staat woensdag in AB met nieuwe zangeres Nina" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.Nvj4lKj1G" rel="alternate" title="In &quot;Liefde voor muziek&quot; nog even met Sarah, maar Portland staat woensdag in AB met nieuwe zangeres Nina" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/015e3485-ddea-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Afvalophaler Gent haalt 2.000 ton sluikstort en zwerfvuil op: "Voor tweede jaar op een rij daling"</title>
+		<id>https://vrtnws.be/p.Ov98VdBqN</id>
+		<published>2023-04-18T18:00:00.000Z</published>
+		<updated>2023-04-18T18:00:00.000Z</updated>
+		<summary type="text">Afvalophaler Ivago heeft in Gent vorig jaar 800 ton sluikstort en 1.200 ton zwerfvuil opgehaald. Dat is in beide categorieën minder dan de voorbije jaren. De stad krijgt wel vaker meldingen van sluikstort. Gentenaars lieten in 2022 ruim 40.000 keer weten dat ze sluikstort hadden opgemerkt.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/afvalophaler-in-gent-haalt-2-000-ton-sluikstort-en-zwerfvuil-op.rss.xml" rel="self" title="Afvalophaler Gent haalt 2.000 ton sluikstort en zwerfvuil op: &quot;Voor tweede jaar op een rij daling&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.Ov98VdBqN" rel="alternate" title="Afvalophaler Gent haalt 2.000 ton sluikstort en zwerfvuil op: &quot;Voor tweede jaar op een rij daling&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/01/18/8f84756d-9725-11ed-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Waarom ging geen alarm af toen Raul (9) niet meer naar school kwam? "Gebeurt regelmatig dat kind of gezin volledig van de radar verdwijnt"</title>
+		<id>https://vrtnws.be/p.nwBL5NDKD</id>
+		<published>2023-04-18T17:55:52.000Z</published>
+		<updated>2023-04-18T17:55:52.000Z</updated>
+		<summary type="text">Na de dood van het Roemeense jongetje Raul blijven er veel vragen onbeantwoord. Hoe komt het bijvoorbeeld dat er geen alarmbellen afgingen toen hij niet langer naar school ging? Omdat de jongen geen officiële verblijfplaats had, valt hij buiten de leerplichtcontrole. Scholen krijgen bovendien regelmatig te maken met nieuwkomers die plots verhuizen en dat niet altijd aan de school laten weten.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/leerplicht.rss.xml" rel="self" title="Waarom ging geen alarm af toen Raul (9) niet meer naar school kwam? &quot;Gebeurt regelmatig dat kind of gezin volledig van de radar verdwijnt&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.nwBL5NDKD" rel="alternate" title="Waarom ging geen alarm af toen Raul (9) niet meer naar school kwam? &quot;Gebeurt regelmatig dat kind of gezin volledig van de radar verdwijnt&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2021/01/27/0fceec87-6063-11eb-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Archeologen ontdekken Romeins grafveld en heiligdom in Elewijt: "Zeldzame vondst"</title>
+		<id>https://vrtnws.be/p.Raj3OLQ50</id>
+		<published>2023-04-18T17:54:23.000Z</published>
+		<updated>2023-04-18T17:54:23.000Z</updated>
+		<summary type="text">In Elewijt bij Zemst zijn tijdens archeologisch bodemonderzoek een Romeins grafveld en een heiligdom blootgelegd. Die lagen verborgen onder de inmiddels afgebroken wielerpiste. De vondst is uniek voor Zemst en relatief zeldzaam voor Vlaanderen.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/archeologen-ontdekken-romeins-grafveld-en-heiligdom-in-elewijt.rss.xml" rel="self" title="Archeologen ontdekken Romeins grafveld en heiligdom in Elewijt: &quot;Zeldzame vondst&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.Raj3OLQ50" rel="alternate" title="Archeologen ontdekken Romeins grafveld en heiligdom in Elewijt: &quot;Zeldzame vondst&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/4e36998d-de0f-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Ook Europese scheepvaart moet nu betalen voor zijn uitstoot</title>
+		<id>https://vrtnws.be/p.aD46Dme5a</id>
+		<published>2023-04-18T17:20:44.000Z</published>
+		<updated>2023-04-18T17:20:44.000Z</updated>
+		<summary type="text">Ook de scheepvaartsector zal nu uitstootrechten moeten kopen voor de broeikasgassen die hij uitstoot. Dat is een van de gevolgen van de uitbreiding van het Europese emissiehandelsysteem die vandaag gestemd werd. In de sector wordt de beslissing positief ontvangen, maar er is wel nog werk aan de winkel om de scheepvaart duurzamer te maken. Producten zullen er voor de consument dan weer niet zo veel duurder door worden.</summary>
+		<vrtns:nstag xmlns="">Milieu &amp; Klimaat</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/ook-europese-scheepvaart-moet-nu-betalen-voor-zijn-uitstoot-beta.rss.xml" rel="self" title="Ook Europese scheepvaart moet nu betalen voor zijn uitstoot" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.aD46Dme5a" rel="alternate" title="Ook Europese scheepvaart moet nu betalen voor zijn uitstoot" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/81303571-de0b-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Hoe twee machtsgeile generaals Soedan in chaos hebben gestort</title>
+		<id>https://vrtnws.be/p.VLjJqNW71</id>
+		<published>2023-04-18T17:03:39.000Z</published>
+		<updated>2023-04-18T17:03:39.000Z</updated>
+		<summary type="text">Een voormalig kamelenhandelaar en een simpele soldaat schopten het tot leiders van Soedan, maar in hun zoektocht naar macht storten ze het land in chaos. Wie zijn Mohamed Haldan Dagalo en Abdel Fattah al-Burhan, de twee machtsgeile generaals die elkaar bevechten in het Oost-Afrikaanse land?</summary>
+		<vrtns:nstag xmlns="">Afrika</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="" />
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/soedan-rsf-mohamed-hamdan-dagalo-generaal-general-abdel-fattah-a.rss.xml" rel="self" title="Hoe twee machtsgeile generaals Soedan in chaos hebben gestort" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.VLjJqNW71" rel="alternate" title="Hoe twee machtsgeile generaals Soedan in chaos hebben gestort" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/d84ef514-de01-11ed-91d7-02b7b76bf47f.png" rel="enclosure" type="image/png" />
+	</entry>
+	<entry>
+		<title type="text">Illegaal sigarettenfabriekje ontdekt in Pelt</title>
+		<id>https://vrtnws.be/p.ZW1NWQP9m</id>
+		<published>2023-04-18T17:00:41.000Z</published>
+		<updated>2023-04-18T17:00:41.000Z</updated>
+		<summary type="text">In Pelt heeft de politie een illegale sigarettenfabriek ontdekt in een bedrijfshal. Vier mannen gingen meteen op de vlucht, de politie kon er drie inrekenen. In de bedrijfshal lag meer dan 10 kuub tabak en een grote installatie voor de illegale aanmaak van sigaretten. De Dienst Douane en Accijnzen onderzoekt de zaak verder.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/brands/radio-2</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/illegaal-sigarettenfabriekje-ontdekt-in-overpelt.rss.xml" rel="self" title="Illegaal sigarettenfabriekje ontdekt in Pelt" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.ZW1NWQP9m" rel="alternate" title="Illegaal sigarettenfabriekje ontdekt in Pelt" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2022/09/29/a7ed6bfd-3ff7-11ed-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Chocolatier Dominique Persoone teleurgesteld dat Marcolini in Aziatische handen komt: "Doet pijn om te zien"</title>
+		<id>https://vrtnws.be/p.7n0xL3da3</id>
+		<published>2023-04-18T16:47:25.000Z</published>
+		<updated>2023-04-18T16:47:25.000Z</updated>
+		<summary type="text">Chocolatier Dominique Persoone (The Chocolate Line) vindt het jammer dat de Brusselse Chocolatier Marcolini overgenomen wordt door een Zuid-Koreaanse investeerder. "Dat is niet tof om te horen. Ik maak me zorgen dat de echte Belgische chocolade beetje bij beetje begint te verdwijnen", zegt hij in "De wereld vandaag" op Radio 1.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/audio</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/chocolatier-dominique-persoone-teleurgesteld-dat-marcolini-in-az.rss.xml" rel="self" title="Chocolatier Dominique Persoone teleurgesteld dat Marcolini in Aziatische handen komt: &quot;Doet pijn om te zien&quot;" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.7n0xL3da3" rel="alternate" title="Chocolatier Dominique Persoone teleurgesteld dat Marcolini in Aziatische handen komt: &quot;Doet pijn om te zien&quot;" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2021/07/30/be979706-f12d-11eb-b07d-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+	<entry>
+		<title type="text">Bemiddelaar kan tij niet keren: onderhandelingen tussen directie Delhaize en vakbonden zitten muurvast</title>
+		<id>https://vrtnws.be/p.931jWGlox</id>
+		<published>2023-04-18T16:34:04.000Z</published>
+		<updated>2023-04-18T16:34:04.000Z</updated>
+		<summary type="text">De onderhandelingen tussen de vakbonden en de directie van Delhaize hebben - ondanks de tussenkomst van een bemiddelaar - niets opgeleverd. Dat zeggen de vakbonden tijdens een persconferentie. De protestacties zullen verder worden gezet en wellicht nog worden opgevoerd.</summary>
+		<vrtns:nstag xmlns="">Binnenland</vrtns:nstag>
+		<vrtns:nslabeltag xmlns="">system:vrtnieuws/labels/video</vrtns:nslabeltag>
+		<link href="https://www.vrt.be/vrtnws/nl/2023/04/18/delhaize-onderhandelingen.rss.xml" rel="self" title="Bemiddelaar kan tij niet keren: onderhandelingen tussen directie Delhaize en vakbonden zitten muurvast" type="application/atom+xml" />
+		<link href="https://vrtnws.be/p.931jWGlox" rel="alternate" title="Bemiddelaar kan tij niet keren: onderhandelingen tussen directie Delhaize en vakbonden zitten muurvast" type="text/html" />
+		<link href="https://images.vrt.be/vrtnws_share/2023/04/18/bd9b36b7-de02-11ed-91d7-02b7b76bf47f.jpg" rel="enclosure" type="image/jpeg" />
+	</entry>
+</feed>

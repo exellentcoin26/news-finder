@@ -1,19 +1,21 @@
-from flask import Blueprint, Response, request
-from flask_cors import CORS
-from prisma.errors import UniqueViolationError, RecordNotFoundError
-from jsonschema import validate, SchemaError, ValidationError
-from uuid import uuid4
+import sys
 from http import HTTPStatus
+from typing import List
+from uuid import uuid4
+
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError, VerifyMismatchError, InvalidHash
-
-import sys
-
+from flask import Blueprint, Response, request
+from flask_cors import CORS
+from jsonschema import validate, SchemaError, ValidationError
+from prisma.errors import UniqueViolationError, RecordNotFoundError
 
 from news_finder.db import get_db
 from news_finder.response import (
     make_response_from_error,
+    make_response_from_errors,
     ErrorKind,
+    Error,
     make_success_response,
 )
 
@@ -62,11 +64,11 @@ async def register_user() -> Response:
         "properties": {
             "username": {
                 "description": "The username of the user to be created",
-                "type": "string",
+                "type": "string"
             },
             "password": {
                 "description": "The password of the user to be created",
-                "type": "string",
+                "type": "string"
             },
         },
         "required": ["username", "password"],
@@ -87,7 +89,18 @@ async def register_user() -> Response:
     ph = PasswordHasher()
 
     username = data["username"].lower()
-    hashed_password = ph.hash(data["password"])
+    password = data["password"]
+
+    errors: List[Error] = []
+    if len(username) == 0:
+        error_username = Error(ErrorKind.UsernameToShort, "Username cannot be empty")
+        errors.append(error_username)
+    if len(password) == 0:
+        error_password = Error(ErrorKind.PasswordToShort, "Password cannot be empty")
+        errors.append(error_password)
+    if len(errors) != 0:
+        return make_response_from_errors(HTTPStatus.BAD_REQUEST, errors)
+    hashed_password = ph.hash(password)
 
     db = await get_db()
 
@@ -238,6 +251,19 @@ async def login_user() -> Response:
         raise e
 
     db = await get_db()
+
+    username = data["username"].lower()
+    password = data["password"]
+
+    errors: List[Error] = []
+    if len(username) == 0:
+        error_username = Error(ErrorKind.UsernameToShort, "Username cannot be empty")
+        errors.append(error_username)
+    if len(password) == 0:
+        error_password = Error(ErrorKind.PasswordToShort, "Password cannot be empty")
+        errors.append(error_password)
+    if len(errors) != 0:
+        return make_response_from_errors(HTTPStatus.BAD_REQUEST, errors)
 
     try:
         user = await db.users.find_first(where={"username": data["username"].lower()})

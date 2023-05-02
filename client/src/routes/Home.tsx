@@ -2,7 +2,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
 import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
-
 import {
     Article,
     ArticlePlaceholder,
@@ -72,7 +71,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const fetchArticles = async () => {
+        (async () => {
             try {
                 const articles = await getArticlesFromServer(
                     50,
@@ -85,9 +84,7 @@ const Home = () => {
             } finally {
                 setIsLoading(false);
             }
-        };
-
-        fetchArticles();
+        })();
     }, []);
 
     return (
