@@ -96,3 +96,61 @@ async def get_articles() -> Response:
         )
 
     return make_success_response(HTTPStatus.OK, response)
+
+@article_bp.get("/similar")
+async def get_similar_articles() -> Response:
+    data = request.get_json(silent=True)
+    if not data:
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.InvalidJson,
+        )
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "link": {
+                "description": "The link of the article which we want to show similar articles of",
+                "type": "string"
+            }
+        },
+        "required": ["link"],
+    }
+
+    article_link = data["link"]
+
+    db = await get_db()
+
+    try:
+        current_article = await db.newsarticles.find_first(
+            where={"url":article_link},
+        )
+        similar = await db.similararticles.find_many(
+            where={"id1":current_article.id}
+        )
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
+        )
+
+    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"similar": []}
+    for pair in similar:
+
+        similar_article = pair.similar
+
+        response["similar"].append(
+            {
+                "source": similar_article.news_source,
+                "article": {
+                    "title": similar_article.title,
+                    "description": similar_article.description,
+                    "photo": similar_article.photo,
+                    "link": similar_article.url,
+                },
+            }
+        )
+
+
+    return make_success_response(HTTPStatus.OK, response)
