@@ -111,11 +111,22 @@ prisma db push --schema ../db/schema.prisma
 python3 news_finder/seeding.py
 ```
 
+##### 4. Creating env files
+
+A .env file is needed with `DATABASE_URL` set to some postgres database link.
+
+##### 5. Starting the server
+
+```bash
+./news_finder/main.py
+```
+
 #### Sidenote
 
 When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleared if this is done the other way around.
 
 ### Testing
+
 The steps to setup the testing framework for the server are described [here](server/tests/README.md).
 
 ### Client
