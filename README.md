@@ -27,6 +27,11 @@ News aggregator application made for the `Project databases 2023` course at the 
 |   |-- res - Text files with stop words for languages
 |   |-- articles - Example articles used in development
 |
+|-- seeding (Python) - Scripts for seeding the database with example data
+|   |-- clear.py - Clears all tables in the database
+|   |-- rss-feeds.py - List of rss feeds used by the rss scraper
+|   |-- user.py - Example admin users
+|
 |-- ...
 ```
 
