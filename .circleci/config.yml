@@ -245,5 +245,6 @@ workflows:
           requires:
             - pytest
             - pyright-similaity-checker
+            - pyright-delete-old
             - eslint
             - cargo
