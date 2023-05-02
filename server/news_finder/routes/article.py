@@ -100,7 +100,7 @@ async def get_articles() -> Response:
 @article_bp.get("/similar/")
 async def get_similar_articles() -> Response:
 
-    article_link = request.args.get("url")
+    article_link = str(request.args.get("url"))
 
     db = await get_db()
 
@@ -110,12 +110,11 @@ async def get_similar_articles() -> Response:
                 "url":article_link,
             },
         )
-        if current_article is not None:
-            similar = await db.similararticles.find_many(
-                where={
-                    "id1":current_article.id,
-                }
-            )
+        similar_articles = await db.similararticles.find_many(
+            where={
+                "id1":current_article.id,
+            }
+        )
     except Exception as e:
         print(e.with_traceback(None), file=sys.stderr)
         return make_response_from_error(
@@ -124,9 +123,21 @@ async def get_similar_articles() -> Response:
         )
 
     response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"similar": []}
-    for pair in similar:
+    for pair in similar_articles:
 
-        similar_article = pair.similar
+        assert (
+                pair.similar is not None
+        ), "article should always have a source associated with it"
+
+        similar_article = await db.newsarticles.find_unique(
+            where={
+                "id":pair.similar.id,
+            },
+        )
+
+        assert (
+                similar_article.source is not None
+        ), "article should always have a source associated with it"
 
         response["similar"].append(
             {
