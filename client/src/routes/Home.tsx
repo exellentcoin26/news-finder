@@ -23,7 +23,7 @@ const getArticlesFromServer = async (
         try {
             return await fetch(
                 serverUrl +
-                    '/article?' +
+                    '/article/?' +
                     new URLSearchParams({
                         amount: amount.toString(),
                         offset: offset.toString(),
