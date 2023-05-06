@@ -22,7 +22,11 @@ def test_add_rss(client: Flask.testing):
     expected = """{
         "data": {
             "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
             ]
         },
         "errors": [],
@@ -58,9 +62,21 @@ def test_add_multiple_rss(client: Flask.testing):
     expected = """{
         "data": {
             "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"},
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_buitenland.xml"},
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_wetenschap.xml"}
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                },
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_buitenland.xml",
+                    "name": "vrt-buitenland"
+                },
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_wetenschap.xml",
+                    "name": "vrt-wetenschap"
+                }
             ]
         },
         "errors": [],
@@ -131,7 +147,11 @@ def test_add_duplicate_rss(client: Flask.testing):
     expected = """{
         "data": {
             "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
             ]
         },
         "errors": [],
@@ -160,7 +180,11 @@ def test_delete_rss(client: Flask.testing):
     expected = """{
         "data": {
             "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
             ]
         },
         "errors": [],

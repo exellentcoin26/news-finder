@@ -5,6 +5,8 @@ from jsonschema import SchemaError, validate, ValidationError
 from prisma.errors import UniqueViolationError
 from typing import Dict, List, Tuple
 
+from prisma.models import RssEntries
+
 from news_finder.db import get_db
 from news_finder.response import (
     make_response_from_error,
@@ -70,34 +72,40 @@ async def get_rss_feeds() -> Response:
                 HTTPStatus.BAD_REQUEST, ErrorKind.NewsSourceNotFound
             )
 
-        urls: List[str] = []
+        rss_feeds: List[Dict[str, str]] = []
         for rss_entry in source.rss:
-            urls.append(rss_entry.feed)
+            rss_feeds.append(
+                {"source": source.name, "feed": rss_entry.feed, "name": rss_entry.name}
+            )
 
-        response_source: Dict[str, List[str]] = {"feeds": urls}
+        response_source: Dict[str, List[Dict[str, str]]] = {"feeds": rss_feeds}
 
         return make_success_response(HTTPStatus.OK, response_source)
+    else:
+        try:
+            feeds: List[RssEntries] = await db.rssentries.find_many(
+                include={"source": True}
+            )
+        except Exception as e:
+            print(e.with_traceback(None), file=sys.stderr)
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.ServerError,
+            )
 
-    try:
-        feeds = await db.rssentries.find_many(include={"source": True})
-    except Exception as e:
-        print(e.with_traceback(None), file=sys.stderr)
-        return make_response_from_error(
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-            ErrorKind.ServerError,
-        )
+        response: dict[str, list[dict[str, str]]] = {"feeds": []}
+        for feed in feeds:
+            assert (
+                feed.source is not None
+            ), "feed should always have a source associated with it"
 
-    response: dict[str, list[dict[str, str]]] = {"feeds": []}
-    for feed in feeds:
-        assert (
-            feed.source is not None
-        ), "feed should always have a source associated with it"
+            news_source = feed.source.name
 
-        news_source = feed.source.name
+            response["feeds"].append(
+                {"source": news_source, "feed": feed.feed, "name": feed.name}
+            )
 
-        response["feeds"].append({"source": news_source, "feed": feed.feed})
-
-    return make_success_response(HTTPStatus.OK, response)
+        return make_success_response(HTTPStatus.OK, response)
 
 
 @rss_bp.post("/")
