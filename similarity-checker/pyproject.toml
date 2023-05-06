@@ -11,7 +11,8 @@ dependencies = [
     "asyncio==3.4.3",
     "prisma==0.8.2",
     "pyright==1.1.303",
-    "schedule==1.2.0"
+    "schedule==1.2.0",
+    "numpy==1.24",
 ]
 
 [tool.setuptools.packages.find]
