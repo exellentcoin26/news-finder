@@ -3,7 +3,7 @@ from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 from prisma.errors import UniqueViolationError
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from news_finder.db import get_db
 from news_finder.response import (
@@ -15,6 +15,18 @@ from news_finder.response import (
 import sys
 
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
+
+
+def parse_url(feed_url: str) -> Tuple[str, str]:
+    # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
+    # TODO: Fixme
+    url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
+    assert isinstance(url_components, ParseResult)
+
+    news_source = url_components.netloc
+    news_source_url = url_components.scheme + "://" + url_components.netloc
+
+    return news_source, news_source_url
 
 
 @rss_bp.get("/")
@@ -100,7 +112,10 @@ async def add_rss_feed() -> Response:
 
         {
             "feeds": [
-                "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+                {
+                    "name": "VRT Wereld nieuws",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+                },
                 ...
             ]
         }
@@ -112,7 +127,14 @@ async def add_rss_feed() -> Response:
             "feeds": {
                 "description": "list off rss feeds to be added",
                 "type": "array",
-                "items": {"type": "string"},
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "feed": {"type": "string"},
+                    },
+                    "required": ["name", "feed"],
+                },
             }
         },
         "required": ["feeds"],
@@ -138,10 +160,21 @@ async def add_rss_feed() -> Response:
     db = await get_db()
     b = db.batch_()
 
-    for rss_feed in data["feeds"]:
+    feeds = data["feeds"]
+    for rss_feed in feeds:
+        feed_name = rss_feed["name"]
+        feed_url = rss_feed["feed"]
+
+        if (
+            len(feeds) > 1
+            and await db.rssentries.find_first(where={"feed": feed_url}) is not None
+        ):
+            # ignore duplicates if batch insert is done
+            continue
+
         # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
         # TODO: Fixme
-        url_components: ParseResult = urlparse(rss_feed)  # pyright: ignore
+        url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
         assert isinstance(url_components, ParseResult)
 
         news_source = url_components.netloc
@@ -155,9 +188,9 @@ async def add_rss_feed() -> Response:
                 "create": {
                     "name": news_source,
                     "url": news_source_url,
-                    "rss": {"create": {"feed": rss_feed}},
+                    "rss": {"create": {"name": feed_name, "feed": feed_url}},
                 },
-                "update": {"rss": {"create": [{"feed": rss_feed}]}},
+                "update": {"rss": {"create": [{"name": feed_name, "feed": feed_url}]}},
             },
         )
 
