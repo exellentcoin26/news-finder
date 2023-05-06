@@ -8,9 +8,9 @@ import re
 import math
 import string
 from datetime import datetime
+import time
 from typing import List, Dict, Tuple, Set
 
-import schedule
 from prisma.models import NewsArticles
 from prisma import Prisma
 
@@ -30,46 +30,55 @@ is_running = False
 
 
 async def main():
-    schedule.every(2).seconds.do(run)  # type: ignore
-
-    while True:
-        schedule.run_pending()
-        next_run = schedule.next_run()
-        if next_run is None:
-            exit(0)
-
-        delta = next_run - datetime.now()
-
-        print(
-            f"Time until next run: {int(delta.total_seconds())} seconds",
-            file=sys.stderr,
-        )
-        await asyncio.sleep(3)
-
-
-def run():
-    asyncio.get_event_loop().create_task(run_similarity_checker())
-
-
-async def run_similarity_checker():
-    global is_running
-
-    if is_running:
-        print("Not running checker because last run has not finished", file=sys.stderr)
-        return
-
-    is_running = True
-
     db = Prisma()
     await db.connect()
 
-    raw_articles = await db.newsarticles.find_many(include={"source": True})
+    # interval in milliseconds
+    interval = 4.0e6
 
-    await calc_article_similarity(raw_articles, db)
+    delta = 0.0
+    last_time = datetime.now()
 
-    await db.disconnect()
+    while True:
+        now = datetime.now()
+        delta += (now - last_time).total_seconds() * 1e6 / interval
+        last_time = now
 
-    is_running = False
+        if delta >= 1:
+            delta -= 1
+
+            retry_count = 0
+            while not db.is_connected():
+                if retry_count >= 4:
+                    raise Exception(
+                        "Connecting to database failed 4 times. Aborting application!"
+                    )
+
+                try:
+                    await db.connect()
+                except Exception:
+                    retry_count += 1
+
+            should_check = await db.flags.find_unique(
+                where={"name": "articles_modified"}
+            )
+
+            if should_check is None:
+                await db.flags.create({"name": "articles_modified", "value": False})
+            elif should_check.value is False:
+                print(
+                    "Nothing modified. Not running similarity checker.", file=sys.stderr
+                )
+                time.sleep(2)
+                continue
+
+            raw_articles = await db.newsarticles.find_many(include={"source": True})
+
+            await calc_article_similarity(raw_articles, db)
+
+            await db.flags.update(
+                where={"name": "articles_modified"}, data={"value": False}
+            )
 
 
 async def calc_article_similarity(
@@ -124,9 +133,8 @@ async def calc_article_similarity(
             similarity = cosine_similarity_table[lhs_article_idx][rhs_article_idx]
             sys.stdout.write(
                 "\033[K"
-                + f"Article `{lhs_article_idx}` == Article `{rhs_article_idx}`: {similarity}".expandtabs(
-                    2
-                )
+                + f"Article `{lhs_article_idx}` == Article `{rhs_article_idx}`: "
+                + f"{similarity}".expandtabs(2)
                 + "\r"
             )
             if similarity > THRESHOLD:
