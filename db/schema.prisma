@@ -23,6 +23,12 @@ generator rss-scraper {
     output   = "../rss-scraper/src/prisma.rs"
 }
 
+// flags used by applications
+model Flags {
+    name  String  @id
+    value Boolean
+}
+
 // data models
 model Users {
     id         Int           @id @default(autoincrement())
