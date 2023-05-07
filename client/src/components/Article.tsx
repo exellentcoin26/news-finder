@@ -1,4 +1,4 @@
-import { Card, Row, ThemeProvider } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
 import {
@@ -7,6 +7,7 @@ import {
 } from '../interfaces/api/article';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import DropdownMenu from 'react-bootstrap/DropdownMenu';
 
 function MyComponent() {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
@@ -32,26 +33,22 @@ function MyComponent() {
                     title="source"
                     drop="up"
                     size="sm"
-                    variant="dark"
-                    style={{
-                        fontSize: '3px', // Increase font size to 16 pixels
-                        borderRadius: '5px', // Add border radius
-                        padding: '8px 12px', // Add padding
-                    }}
-                    menuVariant="light"
+                    menuVariant="dark"
                 >
-                    <Dropdown.Item className="drop-down-item-custom">
-                        Het NiewsBlad
-                    </Dropdown.Item>
-                    <Dropdown.Item className="drop-down-item-custom">
-                        De Gazet van Antwerpen
-                    </Dropdown.Item>
-                    <Dropdown.Item className="drop-down-item-custom">
-                        vrt
-                    </Dropdown.Item>
-                    <Dropdown.Item className="drop-down-item-custom">
-                        Het Laatste Nieuws
-                    </Dropdown.Item>
+                    <DropdownMenu>
+                        <Dropdown.Item className="drop-down-item-custom">
+                            Het NiewsBlad
+                        </Dropdown.Item>
+                        <Dropdown.Item className="drop-down-item-custom">
+                            De Gazet van Antwerpen
+                        </Dropdown.Item>
+                        <Dropdown.Item className="drop-down-item-custom">
+                            vrt
+                        </Dropdown.Item>
+                        <Dropdown.Item className="drop-down-item-custom">
+                            Het Laatste Nieuws
+                        </Dropdown.Item>
+                    </DropdownMenu>
                 </DropdownButton>
             ) : (
                 <div className="button-container">
@@ -121,7 +118,11 @@ export const Article = ({
     article_link: string;
 }) => {
     const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 
+    window.addEventListener('resize', () => {
+        setIsSmallScreen(window.innerWidth < 768);
+    });
     useEffect(() => {
         (async () => {
             try {
@@ -136,43 +137,74 @@ export const Article = ({
     }, []);
 
     return (
-        <Card className={'article-card'}>
-            <Row md={1} className={'h-50'}>
-                <a href={article_link}>
-                    <Row className={'article-image'}>
-                        <Card.Img
+        <div>
+            {isSmallScreen ? (
+                <Col className="article-card">
+                    <Col className="article-info">
+                        <Row className="title-article">{title}</Row>
+                        <Row className="article-body">{description}</Row>
+                        <Row className="article-extra">
+                            <Col className="clock-component-small">
+                                <img
+                                    src="/public/img/clock.png"
+                                    className="clock"
+                                ></img>
+                                <p className="clock-text-small">3 hours ago</p>
+                            </Col>
+                            <Col className="sources-component">
+                                <MyComponent></MyComponent>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col>
+                        <img
+                            className="article-image w-full object-fit"
                             src={img_src ? img_src : '/img/no-image.png'}
-                            className={'h-100'}
-                            style={
-                                img_src
-                                    ? { objectFit: 'cover' }
-                                    : { objectFit: 'contain' }
-                            }
-                        />
+                        ></img>
+                    </Col>
+                </Col>
+            ) : (
+                <Card className={'article-card'}>
+                    <Row>
+                        <a href={article_link}>
+                            <Row className={'article-image'}>
+                                <img
+                                    src={
+                                        img_src ? img_src : '/img/no-image.png'
+                                    }
+                                    style={
+                                        img_src
+                                            ? { objectFit: 'cover' }
+                                            : { objectFit: 'contain' }
+                                    }
+                                />
+                                <img />
+                            </Row>
+                        </a>
+                        <Row>
+                            <Card.Body className={'article-body'}>
+                                <Card.Title>{title}</Card.Title>
+                                <Card.Subtitle>
+                                    Het Gazet van Antwerpen
+                                </Card.Subtitle>
+                                <Card.Body style={{ height: 'auto' }}>
+                                    {description}
+                                </Card.Body>
+                                <div className="clock-component">
+                                    <img
+                                        src="/public/img/clock.png"
+                                        width={15}
+                                        className="clock"
+                                    ></img>
+                                    <p className="clock-text">3 hours ago</p>
+                                </div>
+                            </Card.Body>
+                        </Row>
                     </Row>
-                </a>
-
-                <Row className={'h-100 '}>
-                    <Card.Body className={'flex-grow-1'}>
-                        <Card.Title>{title}</Card.Title>
-                        <Card.Subtitle>Het Gazet van Antwerpen</Card.Subtitle>
-                        <Card.Body style={{ height: 'auto' }}>
-                            {description}
-                        </Card.Body>
-                        <div className="clock-component">
-                            <img
-                                src="/public/img/clock.png"
-                                width={15}
-                                className="clock"
-                            ></img>
-                            <p className="clock-text">3 hours ago</p>
-                        </div>
-                    </Card.Body>
-                </Row>
-            </Row>
-
-            <MyComponent />
-        </Card>
+                    <MyComponent></MyComponent>
+                </Card>
+            )}
+        </div>
     );
 };
 
