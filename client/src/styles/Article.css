@@ -1,24 +1,59 @@
 @media (max-width: 768px) {
     .article-card {
-        height: 10rem !important;
+        min-height: 10rem !important;
+        width: 100%;
     }
 
     .article-body {
         order: 1 !important;
         height: 100% !important;
-        max-width: 100% !important;
+        width: 100% !important;
+        position: relative;
+        z-index: 1;
     }
 
     .article-image {
+        position: relative;
+        top: 0px;
         order: 2 !important;
         height: 100% !important;
-        max-width: 35% !important;
+        width: 100% !important;
+
     }
+    .card-text {
+        font-size: 9px; /* smaller font size for small screens */
+    }
+    .card-title
+    {
+        font-size: 11px;
+    }
+    .button-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .button {
+        padding: 5px 15px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #FFFFFF;
+        border-radius: 5px;
+        border: none;
+        background-color: #0a1f44;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        margin-right: 10px;
+    }
+
+
 }
 
 @media (min-width: 768px) {
     .article-card {
-        height: 35rem !important;
+        min-height: 35rem !important;
+        margin-bottom: 20px;
     }
 
     .article-body {
@@ -27,25 +62,93 @@
     }
 
     .article-image {
-        height: 75% !important;
-        max-width: 100% !important;
+        max-height: 75% !important;
+        min-width: 100% !important;
+    }
+    .button {
+        font-size: 12px !important;
+        padding: 3px 10px !important;
+        margin-right: 5px !important;
+    }
+    .Drop-down-button-custom{
+        font-size: 2px !important;
+        color: #0a1f44;
+    }
+    .drop-down-item-custom{
+        font-size: 6px;
     }
 }
 
-.similar-articles-button {
-    font-family: Outfit, sans-serif;
-    background-color: transparent;
-    border: solid #0a1f44 thin;
-    padding: 4px 9px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    float: right;
-    color: #0a1f44;
+.button-container {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 20px;
+    left: 20px !important;
+    bottom: 0px !important;
 }
 
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 15px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #FFFFFF;
+    border-radius: 5px;
+    border: none;
+    background-color: #0a1f44;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-right: 10px;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* clock 1 */
+.clock {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 9px;
+    top: 153px;
+
+}
+
+/* Vector */
+.vector {
+    position: absolute;
+    left: 43.75%;
+    right: 28.19%;
+    top: 18.75%;
+    bottom: 28.16%;
+
+    background: #878787;
+
+}
+/* Vector */
+.vector1 {
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+
+    background: #878787;
+}
+
+.clock-text
+{
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    font-size: 13px;
+
+}
 

@@ -14,6 +14,41 @@ import {
     ArticleSourceEntry,
 } from '../interfaces/api/article';
 
+import React from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
+function MyComponent() {
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+    window.addEventListener('resize', () => {
+        setIsSmallScreen(window.innerWidth < 768);
+    });
+
+    return (
+        <div>
+            {isSmallScreen ? (
+                <DropdownButton
+                    title="source"
+                    className="Drop-down-button-custom"
+                >
+                    <Dropdown.Item className="drop-down-item-custom">
+                        Action
+                    </Dropdown.Item>
+                    <Dropdown.Item>Another action</Dropdown.Item>
+                    <Dropdown.Item>Something else</Dropdown.Item>
+                </DropdownButton>
+            ) : (
+                <div className="button-container">
+                    <button className="button">Het NiewsBlad</button>
+                    <button className="button">De Gazet van Antwerpen</button>
+                    <button className="button">vrt</button>
+                </div>
+            )}
+        </div>
+    );
+}
+
 const getSimilarArticlesFromServer = async (
     link: string,
 ): Promise<ArticleSourceEntry[]> => {
@@ -84,67 +119,36 @@ export const Article = ({
 
     return (
         <Card className={'article-card'}>
-            <Row md={1} className={'h-100'}>
-                <Col className={'article-image'}>
-                    <Card.Img
-                        src={img_src ? img_src : '/img/no-image.png'}
-                        className={'h-100'}
-                        style={
-                            img_src
-                                ? { objectFit: 'cover' }
-                                : { objectFit: 'contain' }
-                        }
-                    />
-                </Col>
-                <Col className={'h-100 '}>
+            <Row md={1} className={'h-50'}>
+                <a href={article_link}>
+                    <Row className={'article-image'}>
+                        <Card.Img
+                            src={img_src ? img_src : '/img/no-image.png'}
+                            className={'h-100'}
+                            style={
+                                img_src
+                                    ? { objectFit: 'cover' }
+                                    : { objectFit: 'contain' }
+                            }
+                        />
+                    </Row>
+                </a>
+
+                <Row className={'h-100 '}>
                     <Card.Body
-                        className={'article-body'}
+                        className={'flex-grow-1'}
                         style={{
                             overflow: 'hidden',
                         }}
                     >
                         <Card.Title>{title}</Card.Title>
-                        <Card.Text>{description}</Card.Text>
-                        <Card.Link
-                            href={article_link}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {' '}
-                            Read full article{' '}
-                        </Card.Link>
-                        <OverlayTrigger
-                            placement="right"
-                            trigger="click"
-                            overlay={
-                                <Popover>
-                                    {articles.length == 0 ? (
-                                        <> No other news sources </>
-                                    ) : (
-                                        articles.map(
-                                            ({ source, article }, index) => {
-                                                return (
-                                                    <ListGroup key={index}>
-                                                        <ListGroupItem
-                                                            href={article.link}
-                                                        >
-                                                            <p> {source} </p>
-                                                        </ListGroupItem>
-                                                    </ListGroup>
-                                                );
-                                            },
-                                        )
-                                    )}
-                                </Popover>
-                            }
-                        >
-                            <button className="similar-articles-button">
-                                {' '}
-                                show similar{' '}
-                            </button>
-                        </OverlayTrigger>
+                        <Card.Text style={{ height: 'auto' }}>
+                            {description}
+                        </Card.Text>
+                        <MyComponent />
+                        <div className="clock-text">3 hours ago</div>
                     </Card.Body>
-                </Col>
+                </Row>
             </Row>
         </Card>
     );
@@ -153,6 +157,14 @@ export const Article = ({
 export const ArticlePlaceholder = () => {
     return <h1>No articles loaded yet... Loading!</h1>;
 };
+
+export default function LoadingSpinner() {
+    return (
+        <div className="spinner-container">
+            <div className="loading-spinner"></div>
+        </div>
+    );
+}
 
 export const NoArticlesToShow = () => {
     return <h1>No articles in database.</h1>;
