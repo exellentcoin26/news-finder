@@ -1,20 +1,10 @@
-import {
-    Card,
-    Row,
-    Col,
-    Popover,
-    OverlayTrigger,
-    ListGroup,
-    ListGroupItem,
-} from 'react-bootstrap';
+import { Card, Row } from 'react-bootstrap';
 import '../styles/Article.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ArticleApiResponse,
     ArticleSourceEntry,
 } from '../interfaces/api/article';
-
-import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
