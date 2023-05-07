@@ -1,4 +1,4 @@
-import { Card, Row } from 'react-bootstrap';
+import { Card, Row, ThemeProvider } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
 import {
@@ -10,7 +10,17 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function MyComponent() {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
-
+    const [buttons, setButtons] = useState([
+        'Het Laatste Nieuws',
+        'vrt',
+        'Gazet van Antwerpen',
+        'Financial Times',
+        'New York Times',
+    ]);
+    const visibleButtons = buttons.slice(0, 4);
+    const hiddenButtons = buttons.slice(4);
+    const showLoadMore = hiddenButtons.length > 0;
+    const buttonCount = buttons.length;
     window.addEventListener('resize', () => {
         setIsSmallScreen(window.innerWidth < 768);
     });
@@ -45,14 +55,12 @@ function MyComponent() {
                 </DropdownButton>
             ) : (
                 <div className="button-container">
-                    <button className="button">Het NiewsBlad</button>
-                    <button className="button">De Gazet van Antwerpen</button>
-                    <button className="button">De Gazet van Antwerpen</button>
-                    <button className="button">De Gazet van Antwerpen</button>
-                    <button className="button">De Gazet van Antwerpen</button>
-                    <button className="button">De Gazet van Antwerpen</button>
-                    <button className="button">De Gazet van Antwerpen</button>
-                    <button className="button">vrt</button>
+                    {visibleButtons.map((button) => (
+                        <button key={button} className="button">
+                            {button}
+                        </button>
+                    ))}
+                    {showLoadMore && <button className="button">. . .</button>}
                 </div>
             )}
         </div>
@@ -145,21 +153,24 @@ export const Article = ({
                 </a>
 
                 <Row className={'h-100 '}>
-                    <Card.Body
-                        className={'flex-grow-1'}
-                        style={{
-                            overflow: 'hidden',
-                        }}
-                    >
+                    <Card.Body className={'flex-grow-1'}>
                         <Card.Title>{title}</Card.Title>
-                        <Card.Text style={{ height: 'auto' }}>
+                        <Card.Subtitle>Het Gazet van Antwerpen</Card.Subtitle>
+                        <Card.Body style={{ height: 'auto' }}>
                             {description}
-                        </Card.Text>
-
-                        <div className="clock-text">3 hours ago</div>
+                        </Card.Body>
+                        <div className="clock-component">
+                            <img
+                                src="/public/img/clock.png"
+                                width={15}
+                                className="clock"
+                            ></img>
+                            <p className="clock-text">3 hours ago</p>
+                        </div>
                     </Card.Body>
                 </Row>
             </Row>
+
             <MyComponent />
         </Card>
     );

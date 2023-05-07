@@ -1,6 +1,7 @@
 @media (max-width: 768px) {
     .article-card {
         min-height: 10rem !important;
+        margin-bottom: 20px;
         width: 100%;
     }
 
@@ -67,7 +68,13 @@
         transition: all 0.3s ease-in-out;
         margin-bottom: 5px;
     }
-
+    .source_name
+    {
+        position: relative;
+        top: 0px;
+        font-size: 10px !important;
+        margin-rigt: 30px;
+    }
 
 }
 
@@ -127,44 +134,39 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* clock 1 */
-.clock {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    left: 9px;
-    top: 153px;
 
-}
-
-/* Vector */
-.vector {
-    position: absolute;
-    left: 43.75%;
-    right: 28.19%;
-    top: 18.75%;
-    bottom: 28.16%;
-
-    background: #878787;
-
-}
-/* Vector */
-.vector1 {
-    position: absolute;
-    left: 0%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
-
-    background: #878787;
-}
-
-.clock-text
+.clock-component
 {
     position: absolute;
-    bottom: 20px;
-    right: 15px;
-    font-size: 13px;
-
+    display: flex;
+    bottom: 30px;
+    right: 0px;
+    flex-direction: row;
+    align-items: center;
+    min-width: 10%;
 }
+.clock-text
+{
+    font-size: 12px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 0px;
+    order: 2;
+}
+
+.source_name
+{
+    position: relative;
+    top: 0px;
+    font-size: 13px;
+    margin-rigt: 30px;
+}
+
+.clock
+{
+    position: relative;
+    margin-left: 105px;
+    order: 1;
+}
+
 
