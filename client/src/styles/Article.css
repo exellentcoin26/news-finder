@@ -17,7 +17,7 @@
         top: 0px;
         order: 2 !important;
         height: 100% !important;
-        width: 100% !important;
+        width: fit-content !important;
 
     }
     .card-text {
@@ -46,6 +46,27 @@
         transition: all 0.3s ease-in-out;
         margin-right: 10px;
     }
+    .Drop-down-button-custom{
+        font-size: 12px !important;
+        color: #FFFFFF;
+        background-color: #26d38e;
+    }
+    .drop-down-item-custom{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 15px;
+        font-size: 11px;
+        font-weight: 500;
+        color: #FFFFFF;
+        border-radius: 5px;
+        border: none;
+        background-color: #0a1f44;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        margin-bottom: 5px;
+    }
 
 
 }
@@ -70,23 +91,17 @@
         padding: 3px 10px !important;
         margin-right: 5px !important;
     }
-    .Drop-down-button-custom{
-        font-size: 2px !important;
-        color: #0a1f44;
-    }
-    .drop-down-item-custom{
-        font-size: 6px;
-    }
 }
 
 .button-container {
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     justify-content: left;
     align-items: center;
     margin-bottom: 20px;
     left: 20px !important;
-    bottom: 0px !important;
+    bottom: 10px !important;
 }
 
 .button {
@@ -104,6 +119,7 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .button:hover {

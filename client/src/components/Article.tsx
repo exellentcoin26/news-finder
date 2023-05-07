@@ -30,17 +30,37 @@ function MyComponent() {
             {isSmallScreen ? (
                 <DropdownButton
                     title="source"
-                    className="Drop-down-button-custom"
+                    drop="up"
+                    size="sm"
+                    variant="dark"
+                    style={{
+                        fontSize: '3px', // Increase font size to 16 pixels
+                        borderRadius: '5px', // Add border radius
+                        padding: '8px 12px', // Add padding
+                    }}
+                    menuVariant="light"
                 >
                     <Dropdown.Item className="drop-down-item-custom">
-                        Action
+                        Het NiewsBlad
                     </Dropdown.Item>
-                    <Dropdown.Item>Another action</Dropdown.Item>
-                    <Dropdown.Item>Something else</Dropdown.Item>
+                    <Dropdown.Item className="drop-down-item-custom">
+                        De Gazet van Antwerpen
+                    </Dropdown.Item>
+                    <Dropdown.Item className="drop-down-item-custom">
+                        vrt
+                    </Dropdown.Item>
+                    <Dropdown.Item className="drop-down-item-custom">
+                        Het Laatste Nieuws
+                    </Dropdown.Item>
                 </DropdownButton>
             ) : (
                 <div className="button-container">
                     <button className="button">Het NiewsBlad</button>
+                    <button className="button">De Gazet van Antwerpen</button>
+                    <button className="button">De Gazet van Antwerpen</button>
+                    <button className="button">De Gazet van Antwerpen</button>
+                    <button className="button">De Gazet van Antwerpen</button>
+                    <button className="button">De Gazet van Antwerpen</button>
                     <button className="button">De Gazet van Antwerpen</button>
                     <button className="button">vrt</button>
                 </div>
@@ -145,11 +165,12 @@ export const Article = ({
                         <Card.Text style={{ height: 'auto' }}>
                             {description}
                         </Card.Text>
-                        <MyComponent />
+
                         <div className="clock-text">3 hours ago</div>
                     </Card.Body>
                 </Row>
             </Row>
+            <MyComponent />
         </Card>
     );
 };
