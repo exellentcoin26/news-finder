@@ -21,11 +21,6 @@ from utils import Language, filter_stop_words, filter_numerics
 
 THRESHOLD = 0.50
 
-# failsafe for running async call with non async scheduler.
-# Note: this fails if the schedule timestep is lower than the starting of the thread
-# (which _should_ never happen).
-is_running = False
-
 # TODO: check language of the article
 
 
