@@ -92,6 +92,10 @@ async def get_articles() -> Response:
             article.source is not None
         ), "article should always have a source associated with it"
 
+        assert (
+            article.url is not None
+        ), "article should always have a publication date"
+
         # Remove old versions that have been updated
         if article.similar_articles is not None:
             # article id -> datatime timestamp
