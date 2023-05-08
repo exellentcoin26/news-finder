@@ -2,8 +2,8 @@
     .form-div {
         width: 35%;
         overflow: auto;
-        height: 100vh;
-        max-height: fit-content;
+        height: auto;
+        max-height: 100vh;;
     }
 }
 
@@ -12,8 +12,8 @@
         min-width: min-content;
         width: 70%;
         overflow: auto;
-        height: 100vh;
-        max-height: fit-content;
+        height: 50vh;
+        max-height: 100vh;
     }
 
 }
@@ -40,7 +40,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 15px;
+    font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
 }
