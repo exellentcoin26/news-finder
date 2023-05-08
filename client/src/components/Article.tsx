@@ -5,12 +5,10 @@ import {
     ArticleApiResponse,
     ArticleSourceEntry,
 } from '../interfaces/api/article';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import DropdownMenu from 'react-bootstrap/DropdownMenu';
+
+// Based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
 
 function MyComponent() {
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [buttons, setButtons] = useState([
         'Het Laatste Nieuws',
         'vrt',
@@ -21,45 +19,17 @@ function MyComponent() {
     const visibleButtons = buttons.slice(0, 4);
     const hiddenButtons = buttons.slice(4);
     const showLoadMore = hiddenButtons.length > 0;
-    const buttonCount = buttons.length;
-    window.addEventListener('resize', () => {
-        setIsSmallScreen(window.innerWidth < 768);
-    });
 
     return (
         <div>
-            {isSmallScreen ? (
-                <DropdownButton
-                    title="source"
-                    drop="up"
-                    size="sm"
-                    menuVariant="dark"
-                >
-                    <DropdownMenu>
-                        <Dropdown.Item className="drop-down-item-custom">
-                            Het NiewsBlad
-                        </Dropdown.Item>
-                        <Dropdown.Item className="drop-down-item-custom">
-                            De Gazet van Antwerpen
-                        </Dropdown.Item>
-                        <Dropdown.Item className="drop-down-item-custom">
-                            vrt
-                        </Dropdown.Item>
-                        <Dropdown.Item className="drop-down-item-custom">
-                            Het Laatste Nieuws
-                        </Dropdown.Item>
-                    </DropdownMenu>
-                </DropdownButton>
-            ) : (
-                <div className="button-container">
-                    {visibleButtons.map((button) => (
-                        <button key={button} className="button">
-                            {button}
-                        </button>
-                    ))}
-                    {showLoadMore && <button className="button">. . .</button>}
-                </div>
-            )}
+            <div className="button-container">
+                {visibleButtons.map((button) => (
+                    <button key={button} className="button">
+                        {button}
+                    </button>
+                ))}
+                {showLoadMore && <button className="button">. . .</button>}
+            </div>
         </div>
     );
 }
@@ -119,6 +89,7 @@ export const Article = ({
 }) => {
     const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+    const [open, setOpen] = useState(false);
 
     window.addEventListener('resize', () => {
         setIsSmallScreen(window.innerWidth < 768);
@@ -135,39 +106,69 @@ export const Article = ({
             }
         })();
     }, []);
-
+    // Dropdown menu is based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
     return (
         <div>
             {isSmallScreen ? (
-                <Col className="article-card">
-                    <Col className="article-info">
-                        <Row className="title-article">{title}</Row>
-                        <Row className="article-body">{description}</Row>
-                        <Row className="article-extra">
-                            <Col className="clock-component-small">
+                <Col className="root-container">
+                    <div className="menu-container">
+                        <div
+                            className="menu-trigger-button"
+                            onClick={() => {
+                                setOpen(!open);
+                            }}
+                        >
+                            <button className="menu-trigger">source </button>
+                        </div>
+                        <div
+                            className={`custom-dropdown-menu ${
+                                open ? 'active' : 'inactive'
+                            }`}
+                        >
+                            <ul>
+                                <DropdownItem text={'Het Niewsblad'} />
+                                <DropdownItem text={'Gazet van Antwerpen'} />
+                                <DropdownItem text={'vrt'} />
+                                <DropdownItem text={'Financial Times'} />
+                            </ul>
+                        </div>
+                    </div>
+                    <Row className="article-card">
+                        <div className="clock-component-small">
+                            <div>
                                 <img
                                     src="/public/img/clock.png"
                                     className="clock"
                                 ></img>
-                                <p className="clock-text-small">3 hours ago</p>
-                            </Col>
-                            <Col className="sources-component">
-                                <MyComponent></MyComponent>
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col>
-                        <img
-                            className="article-image w-full object-fit"
-                            src={img_src ? img_src : '/img/no-image.png'}
-                        ></img>
-                    </Col>
+                            </div>
+                            <p className="clock-text-small">3 hours ago</p>
+                        </div>
+                        <Col className="article-info">
+                            <Row>
+                                <Row className="title-article">{title}</Row>
+                                <Row className="source_name-small">
+                                    <p> Het Gazet Van antwerpen</p>
+                                </Row>
+                            </Row>
+                            <Row className="article-body">{description}</Row>
+                        </Col>
+                        <Col>
+                            <a href={article_link}>
+                                <img
+                                    className="article-image"
+                                    src={
+                                        img_src ? img_src : '/img/no-image.png'
+                                    }
+                                ></img>
+                            </a>
+                        </Col>
+                    </Row>
                 </Col>
             ) : (
                 <Card className={'article-card'}>
                     <Row>
-                        <a href={article_link}>
-                            <Row className={'article-image'}>
+                        <Row className={'article-image'}>
+                            <a href={article_link}>
                                 <img
                                     src={
                                         img_src ? img_src : '/img/no-image.png'
@@ -179,8 +180,8 @@ export const Article = ({
                                     }
                                 />
                                 <img />
-                            </Row>
-                        </a>
+                            </a>
+                        </Row>
                         <Row>
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
@@ -223,3 +224,11 @@ export default function LoadingSpinner() {
 export const NoArticlesToShow = () => {
     return <h1>No articles in database.</h1>;
 };
+
+function DropdownItem(props: any) {
+    return (
+        <li className="dropdownItem">
+            <a>{props.text}</a>
+        </li>
+    );
+}
