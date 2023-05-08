@@ -168,7 +168,7 @@ async def get_similar_articles() -> Response:
             ErrorKind.ServerError,
         )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
+    response: Dict[str, List[Dict[str, str]]] = {"articles": []}
     for pair in similar_articles:
 
         assert (
@@ -196,12 +196,7 @@ async def get_similar_articles() -> Response:
         response["articles"].append(
             {
                 "source": similar_article.source.name,
-                "article": {
-                    "title": similar_article.title,
-                    "description": similar_article.description,
-                    "photo": similar_article.photo,
-                    "link": similar_article.url,
-                },
+                "link": similar_article.url
             }
         )
 
