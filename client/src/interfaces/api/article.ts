@@ -5,6 +5,7 @@ export interface ArticleEntry {
     description?: string;
     photo?: string;
     link: string;
+    publication_date : number
 }
 
 export interface ArticleSourceEntry {
