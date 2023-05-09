@@ -151,7 +151,7 @@ export const Article = ({
                             <Row className="article-body">{description}</Row>
                         </Col>
                         <Col>
-                            <a href={article_link}>
+                            <a href={article_link} className="article-link">
                                 <img
                                     className="article-image"
                                     src={
