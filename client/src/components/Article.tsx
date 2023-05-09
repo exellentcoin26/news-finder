@@ -143,7 +143,7 @@ export const Article = ({
                         </div>
                         <Col className="article-info">
                             <Row>
-                                <Row className="title-article">{title}</Row>
+                                <Row className="article-title">{title}</Row>
                                 <Row className="source_name-small">
                                     <p> Het Gazet Van antwerpen</p>
                                 </Row>
