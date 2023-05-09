@@ -93,7 +93,7 @@ async def get_articles() -> Response:
         ), "article should always have a source associated with it"
 
         assert (
-            article.url is not None
+            article.publication_date is not None
         ), "article should always have a publication date"
 
         # Remove old versions that have been updated
