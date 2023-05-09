@@ -3,8 +3,9 @@
         display: flex;
         position: relative;
         flex-direction: row;
-        width: 100%;
+        width: 500px;
         margin-bottom: 25px;
+        margin-left: 3px;
         overflow: hidden;
         border: 1px solid #C9C9C9;
         border-radius: 5px;
@@ -15,16 +16,16 @@
         position: relative;
         order: 2;
         width: 100%;
-        height: fit-content;
+        height: 150px;
         margin-left: 20px;
         background-size: cover;
     }
 
     .article-title {
         font-size: 13px;
-        max-height: 40px;
-        text-overflow: ellipsis;
-        overflow: hidden;
+    }
+    .small-container-image{
+        height: 150px;
     }
 
     .article-body {
@@ -79,7 +80,7 @@
 
     .source_name-small {
         position: relative;
-        font-size: 9px;
+        font-size: 7px;
         margin-bottom: 10px;
         top: 0px;
         height: auto;
@@ -122,10 +123,16 @@
     }
 
     .article-image {
-        position: relative;
         max-height: 75% !important;
-        width: 100%;
+        min-width: 100% !important;
+    }
 
+    .article-image-img
+    {
+        max-width: 100%;
+        min-width: 100%;
+        object-fit: cover;
+        height: auto;
     }
 
 
@@ -247,6 +254,7 @@
     border: none;
     background-color: #0a1f44;
     margin-right: 10px;
+    z-index: 4;
 }
 
 
