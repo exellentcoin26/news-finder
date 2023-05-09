@@ -1,6 +1,6 @@
 from flask import Blueprint, Response, request
 from http import HTTPStatus
-from typing import List, Dict
+from jsonschema import SchemaError, validate, ValidationError
 import sys
 
 from news_finder.db import get_db
@@ -10,8 +10,9 @@ from news_finder.response import (
     make_success_response,
 )
 
-history_bp = Blueprint("user", __name__, url_prefix="/user-history")
 
+#Test
+history_bp = Blueprint("user", __name__, url_prefix="/user-history")
 
 @history_bp.post("/")
 
@@ -63,10 +64,13 @@ async def store_user_history() -> Response:
             raise e
 
         db = await get_db()
+        b = db.batch_()
+
         user = await db.users.find_first(where={"username": data["username"]})
         clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
 
-        userarticle = await db.usersarticles.create(
+
+        userarticle = b.usersarticles.create(
             data={
                     "user": user.username,
                     "user_id": user.id,
@@ -79,8 +83,7 @@ async def store_user_history() -> Response:
         )
         
         user.History.append(userarticle)
-
-
+        return make_success_response()
 
 
 

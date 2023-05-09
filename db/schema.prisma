@@ -79,8 +79,6 @@ model NewsArticles {
   similar_relation SimilarArticles[]   @relation("similar_relation")
   similar_articles SimilarArticles[]   @relation("similar")
   UsersArticles    UsersArticles?
-
-  @@unique([id, url])
 }
 
 // Many to many articles relation denoting what articles are similar to eachother.
