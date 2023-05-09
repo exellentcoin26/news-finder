@@ -183,15 +183,15 @@ export const Article = ({
                         <Row>
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
-                                <Card.Subtitle>
+                                <p className="source_name-small">
                                     Het Gazet van Antwerpen
-                                </Card.Subtitle>
+                                </p>
                                 <Card.Body style={{ height: 'auto' }}>
                                     {description}
                                 </Card.Body>
                                 <div className="clock-component">
                                     <img
-                                        src="/public/img/clock.png"
+                                        src="/img/clock.png"
                                         width={15}
                                         className="clock"
                                     ></img>
