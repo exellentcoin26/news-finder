@@ -6,8 +6,6 @@ import {
     ArticleSourceEntry,
 } from '../interfaces/api/article';
 
-// Based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
-
 function MyComponent() {
     const [buttons, setButtons] = useState([
         'Het Laatste Nieuws',
