@@ -63,7 +63,6 @@ async def store_user_history() -> Response:
             raise e
 
         db = await get_db()
-        b = db.batch_()
 
         user = await db.users.find_first(where={"username": data["username"]})
         clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
@@ -73,9 +72,7 @@ async def store_user_history() -> Response:
                         "user": user.username,
                         "user_id": user.id,
                         "url": clicked_article.url,
-                        "source": clicked_article.source,
                         "source_id": clicked_article.source_id,
-                        "article": clicked_article,
                         "article_id": clicked_article.id          
                 }
             )
