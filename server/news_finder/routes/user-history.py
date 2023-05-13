@@ -68,7 +68,7 @@ async def store_user_history() -> Response:
         user = await db.users.find_first(where={"username": data["username"]})
         clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
         if user is not None and clicked_article is not None:
-            userarticle = b.usersarticles.create(
+            userarticle = await db.usersarticles.create(
                 data={
                         "user": user.username,
                         "user_id": user.id,
@@ -82,6 +82,8 @@ async def store_user_history() -> Response:
             
             user.History.append(userarticle)
             return make_success_response()
+        
+        return make_success_response()
 
 
 

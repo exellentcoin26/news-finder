@@ -20,7 +20,7 @@ generator python {
 
 generator rss-scraper {
   provider = "cargo prisma"
-    output   = "../rss-scraper/src/prisma.rs"
+  output   = "../rss-scraper/src/prisma.rs"
 }
 
 // data models
@@ -109,7 +109,7 @@ model UsersArticles {
   source     NewsSources  @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   source_id  Int
   url        String
-  user       Users        @relation(fields: [user_id], references: [id])
+  user       Users        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id    Int
 
   @@id([user_id, article_id])
