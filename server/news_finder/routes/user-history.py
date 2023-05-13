@@ -66,23 +66,24 @@ async def store_user_history() -> Response:
         b = db.batch_()
 
         user = await db.users.find_first(where={"username": data["username"]})
-        clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
+        if user is not None:
+            clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
 
 
-        userarticle = b.usersarticles.create(
-            data={
-                    "user": user.username,
-                    "user_id": user.id,
-                    "url": clicked_article.url,
-                    "source": clicked_article.source,
-                    "source_id": clicked_article.source_id,
-                    "article": clicked_article,
-                    "article_id": clicked_article.id          
-            }
-        )
-        
-        user.History.append(userarticle)
-        return make_success_response()
+            userarticle = b.usersarticles.create(
+                data={
+                        "user": user.username,
+                        "user_id": user.id,
+                        "url": clicked_article.url,
+                        "source": clicked_article.source,
+                        "source_id": clicked_article.source_id,
+                        "article": clicked_article,
+                        "article_id": clicked_article.id          
+                }
+            )
+            
+            user.History.append(userarticle)
+            return make_success_response()
 
 
 
