@@ -11,7 +11,6 @@ from news_finder.response import (
 )
 
 
-#Test
 history_bp = Blueprint("user", __name__, url_prefix="/user-history")
 
 @history_bp.post("/")
