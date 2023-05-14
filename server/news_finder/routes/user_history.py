@@ -67,7 +67,7 @@ async def store_user_history() -> Response:
         user = await db.users.find_first(where={"username": data["username"]})
         clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
         if user is not None and clicked_article is not None:
-            userarticle = await db.usersarticles.create(
+            await db.usersarticles.create(
                     {
                     "user": {
                          "connect": { 
@@ -83,7 +83,6 @@ async def store_user_history() -> Response:
                     "source_id": clicked_article.source_id
                 }       
             )
-            
             return make_success_response()
         
         return make_success_response()
