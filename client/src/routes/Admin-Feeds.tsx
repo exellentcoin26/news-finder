@@ -63,6 +63,7 @@ const getFeedsFromServer = async (source: string) => {
 
 const AdminFeeds = () => {
     const [inputFeeds, setInputFeeds] = useState<string>('');
+    const [category, setCategory] = useState<string>('');
 
     const [sources, setSources] = useState<string[]>([]);
     const [feeds, setFeeds] = useState<string[]>([]);
@@ -93,6 +94,7 @@ const AdminFeeds = () => {
 
     // Fetch feeds
     useEffect(() => {
+        // wait for back-end route change to return categories also
         (async () => {
             if (selectedSource) {
                 try {
@@ -119,7 +121,7 @@ const AdminFeeds = () => {
         setSelectedFeed(event.target.value);
     };
 
-    const handleAddFeed = async (feeds: string): Promise<boolean> => {
+    const handleAddFeed = async (feeds: string, category: string): Promise<boolean> => {
         const array = feeds
             .split(';' || ' ')
             .map((feed) => feed.trim())
@@ -128,7 +130,7 @@ const AdminFeeds = () => {
         const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ feeds: array }),
+            body: JSON.stringify({ feeds: array, category: category}),
         });
 
         if (response.ok) {
@@ -186,7 +188,7 @@ const AdminFeeds = () => {
         return (
             <Container>
                 <Container className="page-title">Feed Management</Container>
-                <Container>
+                <Container className="mb-5">
                     <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>
@@ -213,12 +215,23 @@ const AdminFeeds = () => {
                                 }
                             ></Form.Control>
                         </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="category"
+                                value={category}
+                                onChange={(event) =>
+                                    setCategory(event.target.value)
+                                }
+                            >
+                            </Form.Control>
+                        </Form.Group>
                         <Button
                             type="submit"
                             variant="custom"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleAddFeed(inputFeeds);
+                                handleAddFeed(inputFeeds, category);
                             }}
                         >
                             Submit
