@@ -1,0 +1,101 @@
+from flask import Blueprint, Response, request
+from http import HTTPStatus
+from jsonschema import SchemaError, validate, ValidationError
+import sys
+
+from news_finder.db import get_db
+from news_finder.response import (
+    make_response_from_error,
+    ErrorKind,
+    make_success_response,
+)
+
+
+history_bp = Blueprint("user", __name__, url_prefix="/user-history")
+
+@history_bp.post("/")
+
+async def store_user_history() -> Response:    
+        """
+        # Json structure: Username of user that is currently logged in and the article on which he clicked
+
+        .. code-block:: json
+
+            {
+                "username": "name",
+                "article": {
+                            "title": "Is the cat still there?",
+                            "description": "The most interesting article about a cat in a tree."
+                            "photo": "https://www.test-photo.io",
+                            "link": "https:foo.article/article1.html"
+                        }
+            }
+        """
+
+        schema = {
+            "type": "object",
+            "properties": {
+                 "username" : {
+                      "description": "Name of the user that is currently logged in",
+                      "type": "string",     
+                 },
+                "article": {
+                     "description": "Article on which the user clicked",
+                     "type": "object",
+                     "items": {"type":"string"},
+                }
+            },
+            "required": "username"
+        }
+
+        data = request.get_json(silent=True)
+        if not data:
+            return make_response_from_error(HTTPStatus.BAD_REQUEST, ErrorKind.InvalidJson)
+
+        try:
+            validate(instance=data, schema=schema)
+        except ValidationError as e:
+            return make_response_from_error(
+                HTTPStatus.BAD_REQUEST, ErrorKind.JsonValidationError, e.message
+            )
+        except SchemaError as e:
+            print(f"jsonschema is invalid: {e.message}", file=sys.stderr)
+            raise e
+
+        db = await get_db()
+
+        user = await db.users.find_first(where={"username": data["username"]})
+        clicked_article = await db.newsarticles.find_first(where={"url": data["article"]["link"]})
+        if user is not None and clicked_article is not None:
+            userarticle = await db.usersarticles.create(
+                    {
+                    "user": {
+                         "connect": { 
+                              "user_id": user.id,
+                         },
+                    },
+                    "article": {
+                      "connect": {
+                           "url" : clicked_article.url,
+                           "article_id": clicked_article.id,
+                      }, 
+                    },
+                    "source_id": clicked_article.source_id
+                }       
+            )
+            
+            return make_success_response()
+        
+        return make_success_response()
+
+
+
+
+
+
+
+
+
+
+
+

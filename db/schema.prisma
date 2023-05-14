@@ -31,7 +31,7 @@ model Users {
   admin      Boolean         @default(false)
   login      UserLogins?
   cookies    UserCookies[]
-  History    UsersArticles[]
+  history    UsersArticles[]
 }
 
 // User login information (user_id, password).
