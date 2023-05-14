@@ -109,28 +109,6 @@ export const Article = ({
         <div>
             {isSmallScreen ? (
                 <Col className="root-container">
-                    <div className="menu-container">
-                        <div
-                            className="menu-trigger-button"
-                            onClick={() => {
-                                setOpen(!open);
-                            }}
-                        >
-                            <button className="menu-trigger">source </button>
-                        </div>
-                        <div
-                            className={`custom-dropdown-menu ${
-                                open ? 'active' : 'inactive'
-                            }`}
-                        >
-                            <ul>
-                                <DropdownItem text={'Het Niewsblad'} />
-                                <DropdownItem text={'Gazet van Antwerpen'} />
-                                <DropdownItem text={'vrt'} />
-                                <DropdownItem text={'Financial Times'} />
-                            </ul>
-                        </div>
-                    </div>
                     <Row className="article-card">
                         <div className="clock-component-small">
                             <div>
@@ -143,14 +121,45 @@ export const Article = ({
                         </div>
                         <Col className="article-info">
                             <Row>
+                                <Row>
+                                    <div className="menu-container">
+                                        <div
+                                            className="menu-trigger-button"
+                                            onClick={() => {
+                                                setOpen(!open);
+                                            }}
+                                        >
+                                            <button className="menu-trigger">
+                                                source
+                                            </button>
+                                        </div>
+                                        <div
+                                            className={`custom-dropdown-menu ${
+                                                open ? 'active' : 'inactive'
+                                            }`}
+                                        >
+                                            <ul>
+                                                <DropdownItem
+                                                    text={'Het Niewsblad'}
+                                                />
+                                                <DropdownItem
+                                                    text={'Gazet van Antwerpen'}
+                                                />
+                                                <DropdownItem text={'vrt'} />
+                                                <DropdownItem
+                                                    text={'Financial Times'}
+                                                />
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </Row>
                                 <Row className="article-title">{title}</Row>
                                 <Row className="source_name-small">
                                     <p> Het Gazet Van antwerpen</p>
                                 </Row>
                             </Row>
-                            <Row className="article-body">{description}</Row>
                         </Col>
-                        <Col>
+                        <Col className="small-container-image">
                             <a href={article_link} className="article-link">
                                 <img
                                     className="article-image"
@@ -171,11 +180,7 @@ export const Article = ({
                                     src={
                                         img_src ? img_src : '/img/no-image.png'
                                     }
-                                    style={
-                                        img_src
-                                            ? { objectFit: 'cover' }
-                                            : { objectFit: 'contain' }
-                                    }
+                                    className="article-image-img"
                                 />
                                 <img />
                             </a>

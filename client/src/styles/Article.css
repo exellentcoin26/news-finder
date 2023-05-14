@@ -22,7 +22,11 @@
     }
 
     .article-title {
-        font-size: 13px;
+        position: relative;
+        font-size: 15px;
+        margin-left: 15px;
+        font-weight: bold;
+        top: 30px;
     }
     .small-container-image{
         height: 150px;
@@ -82,11 +86,11 @@
         position: relative;
         font-size: 7px;
         margin-bottom: 10px;
-        top: 0px;
         height: auto;
         max-height: 10px;
         width: auto;
-        top: 0px;
+        top: 30px;
+        margin-left: 13px;
         order: 0;
     }
 
@@ -114,7 +118,6 @@
     .article-card {
         min-height: 35rem !important;
         margin-bottom: 20px;
-        border:none;
     }
 
     .article-body {
@@ -125,6 +128,8 @@
     .article-image {
         max-height: 75% !important;
         min-width: 100% !important;
+        max-width: 100% !important;
+
     }
 
     .article-image-img
@@ -213,7 +218,9 @@
 .menu-container
 {
     position: absolute;
-    top: -23px;
+    right: 250px;
+    max-width: 250px;
+    top: 2px;
 
 
 }
