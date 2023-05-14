@@ -24,7 +24,7 @@
     .article-title {
         position: relative;
         font-size: 15px;
-        margin-left: 15px;
+        margin-left: 10px;
         font-weight: bold;
         top: 30px;
     }
@@ -35,7 +35,6 @@
 
 
     .article-info{
-        margin-left: 4px;
         flex:3;
     }
 
@@ -58,14 +57,16 @@
         display: flex;
         align-items: end;
         position: absolute;
+        max-width: 200px;
         bottom: 0;
-        left: 90px;
+        left:135px;
     }
 
     .clock-text-small {
         font-size: 9px;
         position: relative;
         top: 10px;
+        min-width: 60px;
         order: 2;
     }
 
