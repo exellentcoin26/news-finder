@@ -94,7 +94,6 @@ const AdminFeeds = () => {
 
     // Fetch feeds
     useEffect(() => {
-        // wait for back-end route change to return categories also
         (async () => {
             if (selectedSource) {
                 try {
