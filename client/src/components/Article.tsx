@@ -117,7 +117,7 @@ export const Article = ({
                                     className="clock"
                                 ></img>
                             </div>
-                            <p className="clock-text-small">3 hours ago</p>
+                            <p className="clock-text-small">36 minutes ago</p>
                         </div>
                         <Col className="article-info">
                             <Row>

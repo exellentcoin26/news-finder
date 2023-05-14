@@ -59,14 +59,14 @@
         position: absolute;
         max-width: 200px;
         bottom: 0;
-        left:135px;
+        left:125px;
     }
 
     .clock-text-small {
         font-size: 9px;
         position: relative;
         top: 10px;
-        min-width: 60px;
+        min-width: 70px;
         order: 2;
     }
 
@@ -97,7 +97,6 @@
 
     .source_name {
         position: relative;
-        top: 0px;
         font-size: 10px !important;
         margin-rigt: 30px;
     }
