@@ -174,17 +174,14 @@ export const Article = ({
             ) : (
                 <Card className={'article-card'}>
                     <Row>
-                        <Row className={'article-image'}>
-                            <a href={article_link}>
-                                <img
-                                    src={
-                                        img_src ? img_src : '/img/no-image.png'
-                                    }
-                                    className="article-image-img"
-                                />
-                                <img />
-                            </a>
-                        </Row>
+                        <a href={article_link}>
+                            <img
+                                src={img_src ? img_src : '/img/no-image.png'}
+                                className="article-image-img"
+                            />
+                            <img />
+                        </a>
+
                         <Row>
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
