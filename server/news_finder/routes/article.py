@@ -36,6 +36,7 @@ async def get_articles() -> Response:
                         "description": "The most interesting article about a cat in a tree."
                         "photo": "https://www.test-photo.io",
                         "link": "https:foo.article/article1.html"
+                        "publication_date": 2021-09-27 15:22:00
                     }
                 },
                 {
@@ -45,6 +46,7 @@ async def get_articles() -> Response:
                         "description": "The most interesting article about a cat on its way home."
                         "photo": null
                         "link": "https:foo.article/article2.html"
+                        "publication_date": 2021-09-30 08:16:00
                 },
                 ...
             ]
@@ -84,7 +86,7 @@ async def get_articles() -> Response:
             ErrorKind.ServerError,
         )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
+    response: Dict[str, List[Dict[str, str | Dict[str, str | float | None]]]] = {"articles": []}
     for article in articles:
         assert (
             article.source is not None
@@ -118,6 +120,10 @@ async def get_articles() -> Response:
                 ):
                     continue
 
+        assert (
+                article.publication_date is not None
+        ), "article should always have a publication date"
+
         news_source = article.source.name
 
         response["articles"].append(
@@ -128,6 +134,7 @@ async def get_articles() -> Response:
                     "description": article.description,
                     "photo": article.photo,
                     "link": article.url,
+                    "publication_date": article.publication_date.timestamp(),
                 },
             }
         )
