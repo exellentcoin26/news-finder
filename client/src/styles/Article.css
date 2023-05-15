@@ -27,6 +27,12 @@
         margin-left: 10px;
         font-weight: bold;
         top: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
     }
     .small-container-image{
         height: 150px;
