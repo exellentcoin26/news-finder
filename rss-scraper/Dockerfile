@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y python3-pip
 
 RUN pip3 install prisma
 
+RUN cargo build --release -p prisma-cli
+
 RUN prisma generate --generator rss-scraper --schema ../db/schema.prisma
 
 CMD cargo run --release -- run

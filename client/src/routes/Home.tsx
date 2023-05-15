@@ -23,7 +23,7 @@ const getArticlesFromServer = async (
         try {
             return await fetch(
                 serverUrl +
-                    '/article?' +
+                    '/article/?' +
                     new URLSearchParams({
                         amount: amount.toString(),
                         offset: offset.toString(),
@@ -71,7 +71,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const fetchArticles = async () => {
+        (async () => {
             try {
                 const articles = await getArticlesFromServer(
                     50,
@@ -84,9 +84,7 @@ const Home = () => {
             } finally {
                 setIsLoading(false);
             }
-        };
-
-        fetchArticles();
+        })();
     }, []);
 
     return (

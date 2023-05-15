@@ -1,19 +1,17 @@
-import Container from 'react-bootstrap/Container';
+import { Container, Form, Button } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { FeedsApiResponse } from '../interfaces/api/rss';
-import { SourcesApiResponse } from '../interfaces/api/newsSource';
-
-import '../styles/Admin.css';
-import { AdminStatusApiResponse } from '../interfaces/api/admin';
 import { Navigate } from 'react-router-dom';
 
-const server_url =
-    import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
+import { FeedsApiResponse, RssFeed } from '../interfaces/api/rss';
+import { SourcesApiResponse } from '../interfaces/api/newsSource';
+
+import { fetchAdminStatus } from '../helpers';
+import { SERVER_URL } from '../env';
+
+import '../styles/Admin.css';
 
 const getSourcesFromServer = async () => {
-    const response = await fetch(server_url + '/source/', {
+    const response = await fetch(SERVER_URL + '/source/', {
         method: 'GET',
     });
 
@@ -34,9 +32,9 @@ const getSourcesFromServer = async () => {
     }
 };
 
-const getFeedsFromServer = async (source: string) => {
+const getFeedsFromServer = async (source: string): Promise<RssFeed[]> => {
     const response = await fetch(
-        server_url + '/rss/?' + new URLSearchParams({ source: source }),
+        SERVER_URL + '/rss/?' + new URLSearchParams({ source: source }),
         {
             method: 'GET',
         },
@@ -61,53 +59,35 @@ const AdminFeeds = () => {
     const [inputFeeds, setInputFeeds] = useState<string>('');
 
     const [sources, setSources] = useState<string[]>([]);
-    const [feeds, setFeeds] = useState<string[]>([]);
+    const [feeds, setFeeds] = useState<RssFeed[]>([]);
     const [selectedSource, setSelectedSource] = useState<string | null>(null);
     const [selectedFeed, setSelectedFeed] = useState<string | null>(null);
     const [feedIsDisabled, setFeedIsDisabled] = useState<boolean>(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isFetchingAdmin, setIsFetchingAdmin] = useState(true);
 
+    // Admin guard
     useEffect(() => {
-        const fetchSources = async () => {
+        (async () => {
+            await fetchAdminStatus(setIsAdmin, setIsFetchingAdmin);
+        })();
+    });
+
+    // Fetch sources
+    useEffect(() => {
+        (async () => {
             try {
                 const sources = await getSourcesFromServer();
                 setSources(sources);
             } catch (error) {
                 console.log(error);
             }
-        };
-
-        fetchSources();
-
-        const fetchAdminStatus = async () => {
-            const response = await fetch(server_url + '/admin/', {
-                method: 'GET',
-                credentials: 'include',
-            });
-
-            const adminStatusApiResponse: AdminStatusApiResponse =
-                await response.json();
-
-            if (adminStatusApiResponse.data == null) {
-                throw new Error(
-                    'data property on `AdminStatusApiResponse` object',
-                );
-            }
-
-            if (adminStatusApiResponse.data.admin) {
-                setIsAdmin(true);
-            } else {
-                setIsAdmin(false);
-            }
-            setIsFetchingAdmin(false);
-        };
-
-        fetchAdminStatus();
+        })();
     }, []);
 
+    // Fetch feeds
     useEffect(() => {
-        const fetchFeeds = async () => {
+        (async () => {
             if (selectedSource) {
                 try {
                     const feeds = await getFeedsFromServer(selectedSource);
@@ -120,9 +100,7 @@ const AdminFeeds = () => {
                 setFeeds([]);
                 setFeedIsDisabled(true);
             }
-        };
-
-        fetchFeeds();
+        })();
     }, [selectedSource]);
 
     const handleSourceChange = (
@@ -135,16 +113,15 @@ const AdminFeeds = () => {
         setSelectedFeed(event.target.value);
     };
 
-    const handleAddFeed = async (feeds: string): Promise<boolean> => {
-        const array = feeds
-            .split(';' || ' ')
-            .map((feed) => feed.trim())
-            .filter((str) => str.length !== 0);
-
-        const response = await fetch(server_url + '/rss/', {
+    const handleAddFeed = async (
+        feed: string,
+        name: string,
+    ): Promise<boolean> => {
+        const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ feeds: array }),
+            // TODO: Fill in proper feed name here
+            body: JSON.stringify({ feeds: feed, name: name }),
         });
 
         if (response.ok) {
@@ -167,7 +144,7 @@ const AdminFeeds = () => {
             return false;
         }
 
-        const response = await fetch(server_url + '/rss/', {
+        const response = await fetch(SERVER_URL + '/rss/', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ feeds: [feed] }),
@@ -210,7 +187,7 @@ const AdminFeeds = () => {
                             variant="custom"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleAddFeed(inputFeeds);
+                                handleAddFeed(inputFeeds, 'foo');
                             }}
                         >
                             Submit
@@ -235,9 +212,12 @@ const AdminFeeds = () => {
                                 disabled={feedIsDisabled}
                             >
                                 <option value="">Choose a feed</option>
-                                {feeds.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
+                                {feeds.map(({ name, feed }) => (
+                                    <option
+                                        key={feed}
+                                        value={feed + ' - ' + name}
+                                    >
+                                        {feed + ' - ' + name}
                                     </option>
                                 ))}
                             </Form.Select>

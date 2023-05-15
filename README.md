@@ -22,6 +22,16 @@ News aggregator application made for the `Project databases 2023` course at the 
 |   |-- src - Rust source code
 |   |-- prisma-cli - Rust prisma client cli application
 |
+|-- similarity-checker (Python) - Article similarity checker that runs periodically
+|   |-- similarity_checker - Python source code
+|   |-- res - Text files with stop words for languages
+|   |-- articles - Example articles used in development
+|
+|-- seeding (Python) - Scripts for seeding the database with example data
+|   |-- clear.py - Clears all tables in the database
+|   |-- rss-feeds.py - List of rss feeds used by the rss scraper
+|   |-- user.py - Example admin users
+|
 |-- ...
 ```
 
@@ -30,8 +40,6 @@ News aggregator application made for the `Project databases 2023` course at the 
 ### Using docker (production)
 
 ```bash
-# make postgresql data directory
-mkdir docker/data
 # start all containers
 docker compose -f docker/docker-compose.yml up
 # stop and remove all containers
@@ -41,7 +49,7 @@ docker compose -f docker/docker-compose.yml down
 **Note**: when rebuilding first run `docker compose -f docker/docker-compose.yml build`.
 
 **Note**: To access the front-end application go to route: `http://localhost:80`.
-To access the back-end go to route: `http://localhost:1337`
+To access the back-end go to route: `http://localhost:80/api`
 
 ### Manual installation (development)
 
@@ -85,7 +93,7 @@ Now you can restart postgres:
 sudo systemctl restart postgresql
 ```
 
-##### 3.Create virtual environment:
+##### 3. Create virtual environment:
 
 ```bash
 cd server
@@ -96,7 +104,7 @@ pip3 install .
 
 **Note**: If installing for development use `pip3 install --editable .`
 
-##### 4.Add tables to database:
+##### 4. Add tables to database:
 
 ```bash
 prisma db push --schema ../db/schema.prisma
@@ -108,11 +116,22 @@ prisma db push --schema ../db/schema.prisma
 python3 news_finder/seeding.py
 ```
 
+##### 4. Creating env files
+
+A .env file is needed with `DATABASE_URL` set to some postgres database link.
+
+##### 5. Starting the server
+
+```bash
+./news_finder/main.py
+```
+
 #### Sidenote
 
 When changing the database schema, always make sure to migrate before using `prisma db push`. The database will be cleared if this is done the other way around.
 
 ### Testing
+
 The steps to setup the testing framework for the server are described [here](server/tests/README.md).
 
 ### Client
