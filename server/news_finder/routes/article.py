@@ -120,24 +120,34 @@ async def get_articles() -> Response:
                 ):
                     continue
 
-        assert (
-                article.publication_date is not None
-        ), "article should always have a publication date"
-
         news_source = article.source.name
 
-        response["articles"].append(
-            {
-                "source": news_source,
-                "article": {
-                    "title": article.title,
-                    "description": article.description,
-                    "photo": article.photo,
-                    "link": article.url,
-                    "publication_date": article.publication_date.timestamp(),
-                },
-            }
-        )
+        if article.publication_date is not None:
+            response["articles"].append(
+                {
+                    "source": news_source,
+                    "article": {
+                        "title": article.title,
+                        "description": article.description,
+                        "photo": article.photo,
+                        "link": article.url,
+                        "publication_date": article.publication_date.timestamp(),
+                    },
+                }
+            )
+
+        else:
+            response["articles"].append(
+                {
+                    "source": news_source,
+                    "article": {
+                        "title": article.title,
+                        "description": article.description,
+                        "photo": article.photo,
+                        "link": article.url,
+                    },
+                }
+            )
 
     return make_success_response(HTTPStatus.OK, response)
 

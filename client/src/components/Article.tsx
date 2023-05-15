@@ -3,29 +3,43 @@ import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
 import { SimilarArticleApiResponse, SimilarArticleEntry } from '../interfaces/api/article';
 
-function MyComponent() {
-    const [buttons, setButtons] = useState([
-        'Het Laatste Nieuws',
-        'vrt',
-        'Gazet van Antwerpen',
-        'Financial Times',
-        'New York Times',
-    ]);
-    const visibleButtons = buttons.slice(0, 4);
-    const hiddenButtons = buttons.slice(4);
+function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
+    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
+    const visibleButtons = similarArticles.slice(0, 4);
+    const hiddenButtons = similarArticles.slice(4);
     const showLoadMore = hiddenButtons.length > 0;
 
-
+    useEffect(() => {
+        (async () => {
+            try {
+                const articles = await getSimilarArticlesFromServer(
+                    currentArticleLink,
+                );
+                setSimilarArticles(articles);
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, []);
 
     return (
         <div>
             <div className="button-container">
-                {visibleButtons.map((button) => (
-                    <button key={button} className="button">
-                        {button}
-                    </button>
-                ))}
-                {showLoadMore && <button className="button">. . .</button>}
+                {similarArticles.map(
+                    ({source,link},index) => {
+                        return (
+                            <>
+                                {visibleButtons.map((article) => (
+                                    <button key={index} className="button">
+                                        <a href={article.link} target="_blank" rel="noopener noreferrer"> {article.source} </a>
+                                    </button>
+                                ))}
+                                {showLoadMore && <button className="button">. . .</button>}
+                            </>
+                        )
+                    }
+
+                )}
             </div>
         </div>
     );
@@ -78,26 +92,23 @@ export const Article = ({
     img_src,
     description,
     article_link,
+    source,
 }: {
     title: string;
     img_src?: string;
     description?: string;
     article_link: string;
+    source: string
 }) => {
-    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [open, setOpen] = useState(false);
+    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
 
-
-    window.addEventListener('resize', () => {
-        setIsSmallScreen(window.innerWidth < 768);
-    });
     useEffect(() => {
         (async () => {
             try {
                 const articles = await getSimilarArticlesFromServer(
                     article_link,
-
                 );
                 setSimilarArticles(articles);
             } catch (error) {
@@ -105,6 +116,12 @@ export const Article = ({
             }
         })();
     }, []);
+
+
+    window.addEventListener('resize', () => {
+        setIsSmallScreen(window.innerWidth < 768);
+    });
+
     // Dropdown menu is based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
     return (
         <div>
@@ -140,17 +157,20 @@ export const Article = ({
                                             }`}
                                         >
                                             <ul>
-                                                <DropdownItem
-                                                    text={'Het Niewsblad'}
-                                                />
-                                                <DropdownItem
-                                                    text={'Gazet van Antwerpen'}
-                                                />
-                                                <DropdownItem text={'vrt'} />
-                                                <DropdownItem
-                                                    text={'Financial Times'}
-                                                />
+                                                {similarArticles.map(
+                                                    ({source,link},index) => {
+                                                        return (
+                                                            <>
+                                                                {similarArticles.map((button) => (
+                                                                    <DropdownItem key={index} className="button" text={source}>
+                                                                        <a href={link} target="_blank" rel="noopener noreferrer"> {source} </a>
+                                                                    </DropdownItem>
+                                                                ))}
+                                                            </>
+                                                        )
+                                                    })}
                                             </ul>
+
                                         </div>
                                     </div>
                                 </Row>
@@ -161,7 +181,7 @@ export const Article = ({
                             </Row>
                         </Col>
                         <Col className="small-container-image">
-                            <a href={article_link} className="article-link">
+                            <a href={article_link} target="_blank" rel="noopener noreferrer" className="article-link">
                                 <img
                                     className="article-image"
                                     src={
@@ -187,7 +207,7 @@ export const Article = ({
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
                                 <p className="source_name-small">
-                                    Het Gazet van Antwerpen
+                                    {source}
                                 </p>
                                 <Card.Body style={{ height: 'auto' }}>
                                     {description}
@@ -203,7 +223,7 @@ export const Article = ({
                             </Card.Body>
                         </Row>
                     </Row>
-                    <MyComponent></MyComponent>
+                    <MyComponent currentArticleLink={article_link}></MyComponent>
                 </Card>
             )}
         </div>
