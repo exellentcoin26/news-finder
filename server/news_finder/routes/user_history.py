@@ -35,7 +35,7 @@ async def store_user_history() -> Response:
                 "description": "Name of the user that is currently logged in",
                 "type": "string",
             },
-            "article": {
+            "articleLink": {
                 "description": "Article on which the user clicked",
                 "type": "string",
             },
@@ -77,14 +77,19 @@ async def store_user_history() -> Response:
 
     source = await db.newssources.find_unique(where={"id": clicked_article.source_id})
 
-    if source is not None:
-        # Url of the source, title, labels,
-        await db.usersarticles.create(
-            data={
-                "labels": labels,
-                "user_id" : user.id,
-                "source_id": source.id,
-                "source_url":source.url
-            }
+    if source is None:
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
         )
+    
+    # Url of the source,labels,user
+    await db.usersarticles.create(
+        data={
+            "labels": labels,
+            "user_id" : user.id,
+            "source_id": source.id,
+            "source_url":source.url
+        }
+    )
     return make_success_response()
