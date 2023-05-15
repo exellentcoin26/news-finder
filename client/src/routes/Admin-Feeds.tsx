@@ -1,14 +1,8 @@
-import {
-    Container,
-    Form,
-    Button,
-    Popover,
-    OverlayTrigger,
-} from 'react-bootstrap';
+import { Container, Form, Button } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { FeedsApiResponse } from '../interfaces/api/rss';
+import { FeedsApiResponse, RssFeed } from '../interfaces/api/rss';
 import { SourcesApiResponse } from '../interfaces/api/newsSource';
 
 import { fetchAdminStatus } from '../helpers';
@@ -38,7 +32,7 @@ const getSourcesFromServer = async () => {
     }
 };
 
-const getFeedsFromServer = async (source: string) => {
+const getFeedsFromServer = async (source: string): Promise<RssFeed[]> => {
     const response = await fetch(
         SERVER_URL + '/rss/?' + new URLSearchParams({ source: source }),
         {
@@ -66,7 +60,7 @@ const AdminFeeds = () => {
     const [category, setCategory] = useState<string>('');
 
     const [sources, setSources] = useState<string[]>([]);
-    const [feeds, setFeeds] = useState<string[]>([]);
+    const [feeds, setFeeds] = useState<RssFeed[]>([]);
     const [selectedSource, setSelectedSource] = useState<string | null>(null);
     const [selectedFeed, setSelectedFeed] = useState<string | null>(null);
     const [feedIsDisabled, setFeedIsDisabled] = useState<boolean>(true);
@@ -120,16 +114,15 @@ const AdminFeeds = () => {
         setSelectedFeed(event.target.value);
     };
 
-    const handleAddFeed = async (feeds: string, category: string): Promise<boolean> => {
-        const array = feeds
-            .split(';' || ' ')
-            .map((feed) => feed.trim())
-            .filter((str) => str.length !== 0);
-
+    const handleAddFeed = async (
+        feed: string,
+        name: string,
+    ): Promise<boolean> => {
         const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ feeds: array, category: category}),
+            // TODO: Fill in proper feed name here
+            body: JSON.stringify({ feeds: feed, name: name }),
         });
 
         if (response.ok) {
@@ -187,24 +180,10 @@ const AdminFeeds = () => {
         return (
             <Container>
                 <Container className="page-title">Feed Management</Container>
-                <Container className="mb-5">
+                <Container>
                     <Form>
                         <Form.Group className="mb-3">
-                            <Form.Label>
-                                Add Feeds
-                                <OverlayTrigger
-                                    trigger="hover"
-                                    overlay={addHelp}
-                                    placement="bottom"
-                                >
-                                    <Button variant="light help-button">
-                                        <img
-                                            src="../../public/img/question-circle.svg"
-                                            alt="?"
-                                        />
-                                    </Button>
-                                </OverlayTrigger>
-                            </Form.Label>
+                            <Form.Label>Add Feeds</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="feed"
@@ -230,7 +209,7 @@ const AdminFeeds = () => {
                             variant="custom"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleAddFeed(inputFeeds, category);
+                                handleAddFeed(inputFeeds, 'foo');
                             }}
                         >
                             Submit
@@ -255,9 +234,12 @@ const AdminFeeds = () => {
                                 disabled={feedIsDisabled}
                             >
                                 <option value="">Choose a feed</option>
-                                {feeds.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
+                                {feeds.map(({ name, feed }) => (
+                                    <option
+                                        key={feed}
+                                        value={feed + ' - ' + name}
+                                    >
+                                        {feed + ' - ' + name}
                                     </option>
                                 ))}
                             </Form.Select>
