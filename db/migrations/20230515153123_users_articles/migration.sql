@@ -27,4 +27,4 @@ ALTER TABLE "UsersArticles" ADD CONSTRAINT "UsersArticles_article_id_url_fkey" F
 ALTER TABLE "UsersArticles" ADD CONSTRAINT "UsersArticles_source_id_fkey" FOREIGN KEY ("source_id") REFERENCES "NewsSources"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UsersArticles" ADD CONSTRAINT "UsersArticles_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UsersArticles" ADD CONSTRAINT "UsersArticles_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
