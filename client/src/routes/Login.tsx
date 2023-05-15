@@ -55,6 +55,28 @@ const Login = () => {
         password: string,
         handleStatus: (status: LoginStatusInfo[]) => void,
     ) => {
+        const cleanUsername = username.trim();
+
+        const errors = [];
+        if (cleanUsername === '') {
+            errors.push({
+                kind: LoginStatusKind.Error,
+                message: 'Username cannot be empty',
+            });
+        }
+
+        if (password === '') {
+            errors.push({
+                kind: LoginStatusKind.Error,
+                message: 'Password cannot be empty',
+            });
+        }
+
+        if (errors.length > 1) {
+            handleStatus(errors);
+            return;
+        }
+
         const response = await (async (): Promise<Response> => {
             try {
                 return await fetch(TARGET_URL, {
@@ -116,18 +138,16 @@ const Login = () => {
             {isLoggedIn ? (
                 <Navigate replace to={'/home'} />
             ) : (
-                <Container className="form-container center">
-                    {loginStatusInfo ? (
-                        <LoginStatusBanner info={loginStatusInfo} />
-                    ) : null}
-                    <div>
+                <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
+                    <div className="form-div row d-flex align-items-center">
+                        {loginStatusInfo ? (
+                            <LoginStatusBanner info={loginStatusInfo} />
+                        ) : null}
                         <Card>
                             <Card.Body>
-                                <div>
-                                    <h2 className="title mb-3"> Login </h2>
-                                </div>
-                                <div>
-                                    <Form>
+                                <h2 className="title mb-3"> Login </h2>
+                                <Form>
+                                    <Form.Group>
                                         <Form.Control
                                             className="input-text mb-3"
                                             type="text"
@@ -137,6 +157,8 @@ const Login = () => {
                                                 setUsername(event.target.value)
                                             }
                                         />
+                                    </Form.Group>
+                                    <Form.Group>
                                         <Form.Control
                                             className="input-text mb-3"
                                             type="password"
@@ -146,29 +168,27 @@ const Login = () => {
                                                 setPassword(event.target.value)
                                             }
                                         />
-                                    </Form>
-                                </div>
-                                <div>
-                                    <Link to="/register">
-                                        <button className="default-button link-button mb-3">
-                                            {' '}
-                                            Create an account{' '}
-                                        </button>
-                                    </Link>
-                                    <button
-                                        className="default-button login-button mb-3"
-                                        onClick={() =>
-                                            handleLogin(
-                                                username,
-                                                password,
-                                                handleLoginStatus,
-                                            )
-                                        }
-                                    >
+                                    </Form.Group>
+                                </Form>
+                                <Link to="/register">
+                                    <button className="default-button link-button mb-3">
                                         {' '}
-                                        Login{' '}
+                                        Create an account{' '}
                                     </button>
-                                </div>
+                                </Link>
+                                <button
+                                    className="default-button login-button mb-3"
+                                    onClick={() =>
+                                        handleLogin(
+                                            username,
+                                            password,
+                                            handleLoginStatus,
+                                        )
+                                    }
+                                >
+                                    {' '}
+                                    Login{' '}
+                                </button>
                             </Card.Body>
                         </Card>
                     </div>

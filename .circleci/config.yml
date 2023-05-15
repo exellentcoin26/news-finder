@@ -67,6 +67,28 @@ jobs:
             cd similarity-checker
             pyright .
 
+  pyright-delete-old:
+    resource_class: small
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run:
+          name: Install pip packages
+          command: |
+            cd old-articles
+            pip3 install .
+      - run:
+          name: Generate Prisma definitions
+          command: |
+            cd db
+            prisma generate --generator python
+      - run:
+          name: Run pyright
+          command: |
+            cd old-articles
+            pyright .
+
   pytest:
     resource_class: small
     docker:
@@ -162,6 +184,7 @@ jobs:
           command: |
             if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
               cd rss-scraper
+              cargo build --release -p prisma-cli
               prisma generate --generator rss-scraper --schema ../db/schema.prisma
             fi
       - run:
@@ -200,6 +223,9 @@ workflows:
       - pyright-similaity-checker:
           requires:
             - prisma
+      - pyright-delete-old:
+          requires:
+            - prisma
       - pytest:
           requires:
             - pyright-server
@@ -219,5 +245,7 @@ workflows:
               only: main
           requires:
             - pytest
+            - pyright-similaity-checker
+            - pyright-delete-old
             - eslint
             - cargo

@@ -108,3 +108,16 @@ services:
         condition: service_healthy
       db-migration:
         condition: service_completed_successfully
+
+  delete-old:
+    build:
+      context: ../
+      dockerfile: ./old-articles/Dockerfile
+    restart: unless-stopped
+    env_file: ./database-url.env
+    depends_on:
+      db:
+        condition: service_healthy
+      db-migration:
+        condition: service_completed_successfully
+
