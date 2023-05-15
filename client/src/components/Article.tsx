@@ -1,10 +1,7 @@
 import { Card, Col, Row } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
-import {
-    ArticleApiResponse,
-    ArticleSourceEntry,
-} from '../interfaces/api/article';
+import { SimilarArticleApiResponse, SimilarArticleEntry } from '../interfaces/api/article';
 
 function MyComponent() {
     const [buttons, setButtons] = useState([
@@ -17,6 +14,8 @@ function MyComponent() {
     const visibleButtons = buttons.slice(0, 4);
     const hiddenButtons = buttons.slice(4);
     const showLoadMore = hiddenButtons.length > 0;
+
+
 
     return (
         <div>
@@ -34,7 +33,7 @@ function MyComponent() {
 
 const getSimilarArticlesFromServer = async (
     link: string,
-): Promise<ArticleSourceEntry[]> => {
+): Promise<SimilarArticleEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
 
@@ -55,7 +54,7 @@ const getSimilarArticlesFromServer = async (
 
     const body = await response.text();
 
-    const articleApiResponse = ((): ArticleApiResponse => {
+    const similarArticleApiResponse = ((): SimilarArticleApiResponse => {
         try {
             return JSON.parse(body);
         } catch (e) {
@@ -64,13 +63,13 @@ const getSimilarArticlesFromServer = async (
         }
     })();
 
-    if (articleApiResponse.data == null) {
+    if (similarArticleApiResponse.data == null) {
         // should always be caught with the error handler. This check is only needed for the type system.
         throw new Error('data property on `ArticleApiResponse` is not set');
     }
 
-    return articleApiResponse.data.articles.map((articleSource) => {
-        return articleSource;
+    return similarArticleApiResponse.data.articles.map((similarArticle) => {
+        return similarArticle;
     });
 };
 
@@ -85,9 +84,10 @@ export const Article = ({
     description?: string;
     article_link: string;
 }) => {
-    const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
+    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [open, setOpen] = useState(false);
+
 
     window.addEventListener('resize', () => {
         setIsSmallScreen(window.innerWidth < 768);
@@ -97,8 +97,9 @@ export const Article = ({
             try {
                 const articles = await getSimilarArticlesFromServer(
                     article_link,
+
                 );
-                setArticles(articles);
+                setSimilarArticles(articles);
             } catch (error) {
                 console.error(error);
             }
