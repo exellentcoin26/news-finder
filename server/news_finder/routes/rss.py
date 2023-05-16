@@ -119,33 +119,20 @@ async def add_rss_feed() -> Response:
     .. code-block:: json
 
         {
-            "feeds": [
-                {
-                    "name": "VRT Wereld nieuws",
-                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
-                },
-                ...
-            ]
+            "name": "VRT Wereld nieuws",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+            "category": "binnenland",
         }
     """
 
     schema = {
         "type": "object",
         "properties": {
-            "feeds": {
-                "description": "list off rss feeds to be added",
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "name": {"type": "string"},
-                        "feed": {"type": "string"},
-                    },
-                    "required": ["name", "feed"],
-                },
-            }
+            "name": {"type": "string"},
+            "feed": {"type": "string"},
+            "category": {"type": "string"},
         },
-        "required": ["feeds"],
+        "required": ["name", "feed", "category"],
     }
 
     data = request.get_json(silent=True)
@@ -166,44 +153,34 @@ async def add_rss_feed() -> Response:
         raise e
 
     db = await get_db()
-    b = db.batch_()
 
-    feeds = data["feeds"]
-    for rss_feed in feeds:
-        feed_name = rss_feed["name"]
-        feed_url = rss_feed["feed"]
+    feed_name = data["name"]
+    feed_url = data["feed"]
+    feed_category = data["category"]
 
-        if (
-            len(feeds) > 1
-            and await db.rssentries.find_first(where={"feed": feed_url}) is not None
-        ):
-            # ignore duplicates if batch insert is done
-            continue
+    # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
+    # TODO: Fixme
+    url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
+    assert isinstance(url_components, ParseResult)
 
-        # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
-        # TODO: Fixme
-        url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
-        assert isinstance(url_components, ParseResult)
-
-        news_source = url_components.netloc
-        news_source_url = url_components.scheme + "://" + url_components.netloc
-
+    news_source = url_components.netloc
+    news_source_url = url_components.scheme + "://" + url_components.netloc
+    
+    
+    try:
         # Update news-source with new rss entry if news-source already present,
         # else insert a new news-source with the rss feed.
-        b.newssources.upsert(
+        await db.newssources.upsert(
             where={"name": news_source},
             data={
                 "create": {
                     "name": news_source,
                     "url": news_source_url,
-                    "rss": {"create": {"name": feed_name, "feed": feed_url}},
+                    "rss": {"create": {"name": feed_name, "feed": feed_url, "category": feed_category}},
                 },
-                "update": {"rss": {"create": [{"name": feed_name, "feed": feed_url}]}},
+                "update": {"rss": {"create": [{"name": feed_name, "feed": feed_url, "category": feed_category}]}},
             },
         )
-
-    try:
-        await b.commit()
     except UniqueViolationError as e:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
@@ -216,6 +193,7 @@ async def add_rss_feed() -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
         )
+
 
     return make_success_response()
 
