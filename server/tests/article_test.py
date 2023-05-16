@@ -56,9 +56,8 @@ async def test_get_similar_articles(client: Flask.testing):
     db = Prisma()
     await db.connect()
 
-    source = await db.newssources.create(
-        data={"url": "https://test.com", "name": "test.com"}
-    )
+    source_data = {"url": "https://test.com", "name": "test.com"}
+    source = await db.newssources.create(data=source_data)
 
     article1 = await db.newsarticles.create(
         data={
