@@ -87,14 +87,14 @@ async def test_get_similar_articles(client: Flask.testing):
     await db.disconnect()
 
     def sync_part():
-        response = client.get("/article/similar/", query_string="url=https://example.com/article1") 
+        response = client.get("/article/similar?", query_string={"url":"https://example.com/article1"}) 
         assert response.status_code == HTTPStatus.OK
         articles = response.get_json()["data"]["articles"]
 
         assert len(articles) == 1
         assert articles[0]["link"] == "https://example.com/article2"
 
-        response = client.get("/article/similar/", query_string="url=https://example.com/article2") 
+        response = client.get("/article/similar?", query_string={"url":"https://example.com/article2"}) 
         assert response.status_code == HTTPStatus.OK
         articles = response.get_json()["data"]["articles"]
 
