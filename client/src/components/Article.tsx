@@ -180,6 +180,11 @@ export const Article = ({
                             <img
                                 src={img_src ? img_src : '/img/no-image.png'}
                                 className="article-image-img"
+                                style={
+                                    img_src
+                                        ? { objectFit: 'cover' }
+                                        : { objectFit: 'contain' }
+                                }
                             />
                             <img />
                         </a>

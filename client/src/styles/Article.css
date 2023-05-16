@@ -19,6 +19,7 @@
         height: 150px;
         margin-left: 20px;
         object-fit: cover;
+        contain: size;
     }
 
     .article-title {
