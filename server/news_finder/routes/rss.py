@@ -144,9 +144,9 @@ async def add_rss_feed() -> Response:
 
     db = await get_db()
 
-    feed_name = data["name"]
+    feed_name = data["name"].lower()
     feed_url = data["feed"]
-    feed_category = data["category"]
+    feed_category = data["category"].lower()
 
     if not validate_url(feed_url):  # type: ignore
         return make_response_from_error(
