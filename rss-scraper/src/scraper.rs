@@ -32,7 +32,15 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             }
         };
 
-        // TODO: Store the language of the article for equality checking
+        let language = match &*feed
+            .language
+            .unwrap_or("english".to_string())
+            .to_lowercase()
+        {
+            "english" => prisma::Language::English,
+            "dutch" => prisma::Language::Dutch,
+            _ => prisma::Language::Dutch,
+        };
 
         /* scrape the rss feed */
         for entry in feed.entries {
@@ -125,14 +133,9 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                 }
             }
 
-            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
+            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}, language: {language:?}");
 
             /* insert scraped data into db */
-
-            // TODO: Make labels work :)
-            // TODO: Connect labels to articles.
-
-            // insert labels
 
             article_batch.push(client.news_articles().upsert(
                 prisma::news_articles::url::equals(url.clone()),
@@ -144,6 +147,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                         prisma::news_articles::description::set(description),
                         prisma::news_articles::photo::set(photo),
                         prisma::news_articles::publication_date::set(pub_date),
+                        prisma::news_articles::language::set(language),
                     ],
                 ),
                 // Update is not needed, because we want to ignore articles that have been inserted
