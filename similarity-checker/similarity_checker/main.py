@@ -17,9 +17,9 @@ from prisma import Prisma
 import numpy as np
 from numpy.typing import NDArray
 
-from utils import Language, filter_stop_words, filter_numerics
+from utils import filter_stop_words, filter_numerics
 
-THRESHOLD = 0.50
+THRESHOLD = 0.90
 
 # TODO: check language of the article
 
@@ -77,7 +77,7 @@ async def main():
 
 
 async def calc_article_similarity(
-    databse_articles: List[NewsArticles], client: Prisma
+    database_articles: List[NewsArticles], client: Prisma
 ) -> Dict[int, Set[int]]:
     """
     Calculates the similarity between articles using tf-idf to vectorize text and uses
@@ -87,9 +87,7 @@ async def calc_article_similarity(
     the similar markers immediately into the database.
     """
 
-    raw_articles: List[str] = [
-        article.title + (article.description or "") for article in databse_articles
-    ]
+    raw_articles: List[str] = [article.title for article in database_articles]
 
     print(
         f"Starting similarity checker on list of `{len(raw_articles)}` articles.",
@@ -106,8 +104,10 @@ async def calc_article_similarity(
     # Split articles by whitespace and remove stopwords
     articles = [article.split() for article in cleaned_articles]
     articles = [filter_numerics(article) for article in articles]
-    # TODO: Get language from database.
-    articles = [filter_stop_words(article, Language.English) for article in articles]
+    articles = [
+        filter_stop_words(article, database_articles[idx].language)
+        for [idx, article] in enumerate(articles)
+    ]
 
     tf_idf_table = calc_tf_idf(articles)
 
@@ -120,8 +120,8 @@ async def calc_article_similarity(
     for lhs_article_idx in range(len(articles)):
         for rhs_article_idx in range(lhs_article_idx + 1, len(articles)):
             article1, article2 = (
-                databse_articles[lhs_article_idx],
-                databse_articles[rhs_article_idx],
+                database_articles[lhs_article_idx],
+                database_articles[rhs_article_idx],
             )
             assert article1.source is not None and article2.source is not None
 
