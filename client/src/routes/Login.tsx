@@ -138,7 +138,7 @@ const Login = () => {
             {isLoggedIn ? (
                 <Navigate replace to={'/home'} />
             ) : (
-                <Container className="form-container container-fluid d-flex justify-content-center align-items-center">
+                <Container className="form-container d-flex justify-content-center align-items-center">
                     <div className="form-div row d-flex align-items-center">
                         {loginStatusInfo ? (
                             <LoginStatusBanner info={loginStatusInfo} />
