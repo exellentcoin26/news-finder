@@ -172,7 +172,7 @@ async def get_similar_articles() -> Response:
     for pair in similar_articles:
 
         assert (
-                pair.id2 is not None
+                pair.id1 is not None and pair.id2 is not None
         ), "article in similar articles table should always have an article associated with it with an id"
 
         similar_article = await db.newsarticles.find_unique(
