@@ -154,9 +154,9 @@ async def add_rss_feed() -> Response:
 
     db = await get_db()
 
-    feed_name = data["name"]
+    feed_name = data["name"].lower()
     feed_url = data["feed"]
-    feed_category = data["category"]
+    feed_category = data["category"].lower()
 
     # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
     # TODO: Fixme
