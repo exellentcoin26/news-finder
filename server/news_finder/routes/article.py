@@ -86,7 +86,7 @@ async def get_articles() -> Response:
             ErrorKind.ServerError,
         )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | float | None]]]] = {"articles": []}
+    response: Dict[str, List[Dict[str, str | Dict[str, str | int | None]]]] = {"articles": []}
     for article in articles:
         assert (
             article.source is not None
