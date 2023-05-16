@@ -185,8 +185,8 @@ async def get_similar_articles() -> Response:
 
         response["articles"].append(
             {
-                "source": pair.similar_article.source.name,
-                "link": pair.similar_article.url
+                "source": pair.similar.source.name,
+                "link": pair.similar.url
             }
         )
 
