@@ -87,7 +87,7 @@ async def test_get_similar_articles(client: Flask.testing):
     await db.disconnect()
 
     def sync_part():
-        response = client.get("/article/similar/?url=https://example.com/article1") 
+        response = client.get("/article/similar?url=https://example.com/article2") 
         assert response.status_code == HTTPStatus.OK
         articles = response.get_json()["data"]["articles"]
 
