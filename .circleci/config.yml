@@ -184,6 +184,7 @@ jobs:
           command: |
             if [ ! -f "rss-scraper/src/prisma.rs" ] ; then
               cd rss-scraper
+              cargo build --release -p prisma-cli
               prisma generate --generator rss-scraper --schema ../db/schema.prisma
             fi
       - run:

@@ -7,33 +7,10 @@ from http import HTTPStatus
 def test_add_rss(client: Flask.testing):
     response = client.post(
         "/rss/",
-        json={"feeds": ["https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"]},
-    )
-    assert response.status_code == HTTPStatus.OK
-
-    response = client.get("/rss/")
-    expected = """{
-        "data": {
-            "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
-            ]
-        },
-        "errors": [],
-        "status": 200
-    }"""
-    assert response.status_code == HTTPStatus.OK
-    assert compare_json(expected, response.get_json())
-
-
-def test_add_multiple_rss(client: Flask.testing):
-    response = client.post(
-        "/rss/",
         json={
-            "feeds": [
-                "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
-                "https://www.vrt.be/vrtnws/nl.rss.articles_buitenland.xml",
-                "https://www.vrt.be/vrtnws/nl.rss.articles_wetenschap.xml",
-            ]
+            "name": "vrt-binnenland",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+            "category": "binnenland"
         },
     )
     assert response.status_code == HTTPStatus.OK
@@ -42,9 +19,11 @@ def test_add_multiple_rss(client: Flask.testing):
     expected = """{
         "data": {
             "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"},
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_buitenland.xml"},
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_wetenschap.xml"}
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
             ]
         },
         "errors": [],
@@ -77,7 +56,7 @@ def test_add_rss_schema(client: Flask.testing):
         "errors": [
             {
                 "kind": "JsonValidationError",
-                "message": "'feeds' is a required property"
+                "message": "'name' is a required property"
             }
         ],
         "status": 400
@@ -87,13 +66,20 @@ def test_add_rss_schema(client: Flask.testing):
 
 
 def test_add_duplicate_rss(client: Flask.testing):
+    client.post(
+        "/rss/",
+        json={
+            "name": "vrt-binnenland",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+            "category": "binnenland",
+        },
+    )
     response = client.post(
         "/rss/",
         json={
-            "feeds": [
-                "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
-                "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
-            ]
+            "name": "vrt-binnenland",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+            "category": "binnenland",
         },
     )
     assert response.status_code == HTTPStatus.BAD_REQUEST
@@ -101,7 +87,13 @@ def test_add_duplicate_rss(client: Flask.testing):
     response = client.get("/rss/")
     expected = """{
         "data": {
-            "feeds": []
+            "feeds": [
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
+            ]
         },
         "errors": [],
         "status": 200
@@ -114,7 +106,11 @@ def test_add_duplicate_rss(client: Flask.testing):
 def test_delete_rss(client: Flask.testing):
     response = client.post(
         "/rss/",
-        json={"feeds": ["https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"]},
+        json={
+            "name": "vrt-binnenland",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+            "category": "binnenland",
+        },
     )
     assert response.status_code == HTTPStatus.OK
 
@@ -122,7 +118,11 @@ def test_delete_rss(client: Flask.testing):
     expected = """{
         "data": {
             "feeds": [
-                {"source": "www.vrt.be", "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml"}
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
             ]
         },
         "errors": [],
