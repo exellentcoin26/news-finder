@@ -1,0 +1,16 @@
+.hide-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.label {
+    background-color: #26d38e;
+    border-radius: 0.5rem;
+    border: 1px solid black;
+    height: 2rem;
+    overflow: hidden;
+}

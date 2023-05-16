@@ -54,6 +54,7 @@ async def get_articles() -> Response:
     try:
         amount = int(request.args.get("amount") or 50)
         offset = int(request.args.get("offset") or 0)
+        category = request.args.get("label") or ""
     except ValueError:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
@@ -63,26 +64,55 @@ async def get_articles() -> Response:
 
     db = await get_db()
 
-    try:
-        articles = await db.newsarticles.find_many(
-            take=amount,
-            skip=offset,
-            include={
-                "source": True,
-                "similar_articles": {
-                    "include": {"similar": {"include": {"source": True}}}
+    if category == "":
+        try:
+            articles = await db.newsarticles.find_many(
+                take=amount,
+                skip=offset,
+                include={
+                    "source": True,
+                    "similar_articles": {
+                        "include": {"similar": {"include": {"source": True}}}
+                    },
                 },
-            },
-            # hardcode order for now
-            # TODO: Remove this hardcode
-            order={"publication_date": "desc"},
-        )
-    except Exception as e:
-        print(e.with_traceback(None), file=sys.stderr)
-        return make_response_from_error(
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-            ErrorKind.ServerError,
-        )
+                # hardcode order for now
+                # TODO: Remove this hardcode
+                order={"publication_date": "desc"},
+            )
+        except Exception as e:
+            print(e.with_traceback(None), file=sys.stderr)
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.ServerError,
+            )
+    else:
+        try:
+            articles = await db.newsarticles.find_many(
+                take=amount,
+                skip=offset,
+                where={
+                    "labels": {
+                        "some": {
+                            "label": {"contains": category}
+                        }
+                    }
+                },
+                include={
+                    "source": True,
+                    "similar_articles": {
+                        "include": {"similar": {"include": {"source": True}}}
+                    },
+                },
+                # hardcode order for now
+                # TODO: Remove this hardcode
+                order={"publication_date": "desc"},
+            )
+        except Exception as e:
+            print(e.with_traceback(None), file=sys.stderr)
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.ServerError,
+            )
 
     response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
     for article in articles:

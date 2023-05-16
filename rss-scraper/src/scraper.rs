@@ -1,4 +1,3 @@
-
 use crate::{
     error::RssError,
     prelude::*,
@@ -13,6 +12,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
 
     for rss_feed in rss_feeds {
         let source_id = rss_feed.source_id;
+        let rss_category = rss_feed.category;
         let rss_feed = rss_feed.feed;
 
         let mut labels_with_articles = Vec::new();
@@ -95,35 +95,37 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             let pub_date: Option<chrono::DateTime<chrono::FixedOffset>> =
                 entry.published.map(|date| date.into());
 
-            let raw_labels: Vec<String> = entry
-                .categories
-                .iter()
-                .map(|category| category.term.clone())
-                .collect();
+            // let raw_labels: Vec<String> = entry
+            //     .categories
+            //     .iter()
+            //     .map(|category| category.term.clone())
+            //     .collect();
 
-            let mut labels = Vec::new();
-            for label in raw_labels {
-                if label.contains(':') {
-                    if label.contains("structure") {
-                        let pattern = Regex::new(r"structure:(?:.*/)?(?P<category>[^/]+)/?$")
-                            .expect("failed to build regex");
-                        let label = match pattern.captures(&label) {
-                            Some(captures) => match captures.name("category") {
-                                Some(matches) => matches.as_str().to_string(),
-                                None => "".to_string(),
-                            },
-                            None => label.to_string(),
-                        };
-                        if !label.is_empty() {
-                            labels.push(label);
-                        }
-                    } else {
-                        Some(());
-                    }
-                } else {
-                    labels.push(label);
-                }
-            }
+            // let mut labels = Vec::new();
+            // for label in raw_labels {
+            //     if label.contains(':') {
+            //         if label.contains("structure") {
+            //             let pattern = Regex::new(r"structure:(?:.*/)?(?P<category>[^/]+)/?$")
+            //                 .expect("failed to build regex");
+            //             let label = match pattern.captures(&label) {
+            //                 Some(captures) => match captures.name("category") {
+            //                     Some(matches) => matches.as_str().to_string(),
+            //                     None => "".to_string(),
+            //                 },
+            //                 None => label.to_string(),
+            //             };
+            //             if !label.is_empty() {
+            //                 labels.push(label);
+            //             }
+            //         } else {
+            //             Some(());
+            //         }
+            //     } else {
+            //         labels.push(label);
+            //     }
+            // }
+
+            let labels = vec![rss_category.clone()];
 
             log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
 
