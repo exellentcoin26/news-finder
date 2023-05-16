@@ -84,7 +84,7 @@ async def store_user_history() -> Response:
         )
     
     # Url of the source,labels,user
-    await db.usersarticles.create(
+    userarticle = await db.usersarticles.create(
         data={
             "labels": labels,
             "user_id" : user.id,
@@ -92,4 +92,8 @@ async def store_user_history() -> Response:
             "source_url":source.url
         }
     )
+    if user.history is None:
+        user.history = [userarticle]
+    else:
+        user.history.append(userarticle)
     return make_success_response()
