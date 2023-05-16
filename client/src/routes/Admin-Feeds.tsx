@@ -192,7 +192,7 @@ const AdminFeeds = () => {
                                 onChange={(event) =>
                                     setCategory(event.target.value)
                                 }
-                            > </Form.Control>
+                            ></Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Control
@@ -202,7 +202,7 @@ const AdminFeeds = () => {
                                 onChange={(event) =>
                                     setName(event.target.value)
                                 }
-                            > </Form.Control>
+                            ></Form.Control>
                         </Form.Group>
                         <Button
                             type="submit"
