@@ -175,7 +175,7 @@ export const Article = ({
                                                         return (
                                                             <>
                                                                 {similarArticles.map((button) => (
-                                                                    <DropdownItem key={index} className="button" text={source}>
+                                                                    <DropdownItem key={index} className="button" text={button.source}>
                                                                         <a href={link} target="_blank" rel="noopener noreferrer"> {source} </a>
                                                                     </DropdownItem>
                                                                 ))}
