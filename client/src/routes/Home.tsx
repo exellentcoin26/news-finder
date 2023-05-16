@@ -114,6 +114,9 @@ const Home = () => {
                                         : {})}
                                     article_link={articleSource.article.link}
                                     source={articleSource.source}
+                                    {...(articleSource.article.publication_date != null
+                                       ? { timestamp: articleSource.article.publication_date }
+                                        : {})}
                                 />
                             </Col>
                         </Row>

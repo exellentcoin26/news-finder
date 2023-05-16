@@ -2,6 +2,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
 import { SimilarArticleApiResponse, SimilarArticleEntry } from '../interfaces/api/article';
+import { formatRelative } from 'date-fns'
 
 function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
     const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
@@ -93,12 +94,14 @@ export const Article = ({
     description,
     article_link,
     source,
+    timestamp
 }: {
     title: string;
     img_src?: string;
     description?: string;
     article_link: string;
     source: string
+    timestamp?: number;
 }) => {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [open, setOpen] = useState(false);
@@ -122,6 +125,13 @@ export const Article = ({
         setIsSmallScreen(window.innerWidth < 768);
     });
 
+    let timeAgo = "";
+    if (timestamp) {
+        const publication = new Date(timestamp*1000);
+        timeAgo = formatRelative(publication, new Date());
+    }
+
+
     // Dropdown menu is based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
     return (
         <div>
@@ -134,8 +144,9 @@ export const Article = ({
                                     src="/public/img/clock.png"
                                     className="clock"
                                 ></img>
+                                <p className="clock-text-small">{timeAgo}</p>
                             </div>
-                            <p className="clock-text-small">36 minutes ago</p>
+
                         </div>
                         <Col className="article-info">
                             <Row>
@@ -176,7 +187,7 @@ export const Article = ({
                                 </Row>
                                 <Row className="article-title">{title}</Row>
                                 <Row className="source_name-small">
-                                    <p> Het Gazet Van antwerpen</p>
+                                    <p> {source} </p>
                                 </Row>
                             </Row>
                         </Col>
@@ -218,7 +229,7 @@ export const Article = ({
                                         width={15}
                                         className="clock"
                                     ></img>
-                                    <p className="clock-text">3 hours ago</p>
+                                    <p className="clock-text-small">{timeAgo}</p>
                                 </div>
                             </Card.Body>
                         </Row>
