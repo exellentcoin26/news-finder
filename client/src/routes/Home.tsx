@@ -66,7 +66,6 @@ const Home = () => {
     const [articles, setArticles] = useState<ArticleEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hasErrored, setHasErrored] = useState(false);
-    const [selectedLabel, setSelectedLabel] = useState('');
 
     const handleArticleErrors = () => {
         setHasErrored(true);
@@ -92,12 +91,11 @@ const Home = () => {
 
     const handleLabelChange = async (label: string) => {
         setIsLoading(true);
-        setSelectedLabel(label);
         try {
             const articles = await getArticlesFromServer(
                 50,
                 0,
-                selectedLabel,
+                label,
                 handleArticleErrors,
             );
             setArticles(articles);

@@ -86,7 +86,6 @@ async def get_articles() -> Response:
                 ErrorKind.ServerError,
             )
     else:
-        print("test")
         try:
             articles = await db.newsarticles.find_many(
                 take=amount,
