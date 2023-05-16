@@ -3,7 +3,9 @@ from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 from prisma.errors import UniqueViolationError
-from typing import Dict, List, Tuple
+from typing import Dict, List
+
+from validators.url import url as validate_url  # type: ignore
 
 from prisma.models import RssEntries
 
@@ -17,18 +19,6 @@ from news_finder.response import (
 import sys
 
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
-
-
-def parse_url(feed_url: str) -> Tuple[str, str]:
-    # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
-    # TODO: Fixme
-    url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
-    assert isinstance(url_components, ParseResult)
-
-    news_source = url_components.netloc
-    news_source_url = url_components.scheme + "://" + url_components.netloc
-
-    return news_source, news_source_url
 
 
 @rss_bp.get("/")
@@ -158,15 +148,19 @@ async def add_rss_feed() -> Response:
     feed_url = data["feed"]
     feed_category = data["category"].lower()
 
+    if not validate_url(feed_url):  # type: ignore
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST, ErrorKind.InvalidFeedUrl, "Feed url is invalid"
+        )
+
     # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
     # TODO: Fixme
-    url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
+    url_components: ParseResult = urlparse(feed_url)  # type: ignore
     assert isinstance(url_components, ParseResult)
 
     news_source = url_components.netloc
     news_source_url = url_components.scheme + "://" + url_components.netloc
-    
-    
+
     try:
         # Update news-source with new rss entry if news-source already present,
         # else insert a new news-source with the rss feed.
@@ -176,9 +170,25 @@ async def add_rss_feed() -> Response:
                 "create": {
                     "name": news_source,
                     "url": news_source_url,
-                    "rss": {"create": {"name": feed_name, "feed": feed_url, "category": feed_category}},
+                    "rss": {
+                        "create": {
+                            "name": feed_name,
+                            "feed": feed_url,
+                            "category": feed_category,
+                        }
+                    },
                 },
-                "update": {"rss": {"create": [{"name": feed_name, "feed": feed_url, "category": feed_category}]}},
+                "update": {
+                    "rss": {
+                        "create": [
+                            {
+                                "name": feed_name,
+                                "feed": feed_url,
+                                "category": feed_category,
+                            }
+                        ]
+                    }
+                },
             },
         )
     except UniqueViolationError as e:
@@ -193,7 +203,6 @@ async def add_rss_feed() -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
         )
-
 
     return make_success_response()
 

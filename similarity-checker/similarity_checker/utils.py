@@ -1,21 +1,23 @@
-from enum import Enum
 from typing import Dict, List
 
 import os
 
-
-class Language(str, Enum):
-    English = "english"
-    Dutch = "dutch"
+from prisma.enums import Language
 
 
-def load_stop_words(language: str) -> List[str]:
-    with open(os.path.abspath(f"./res/stopwords/{language}.txt"), "r") as stop_words:
+def language_to_string(language: Language) -> str:
+    return {Language.English: "english", Language.Dutch: "dutch"}[language]
+
+
+def load_stop_words(language: Language) -> List[str]:
+    with open(
+        os.path.abspath(f"./res/stopwords/{language_to_string(language)}.txt"), "r"
+    ) as stop_words:
         return stop_words.read().splitlines()
 
 
 stop_words: Dict[Language, List[str]] = {
-    language: load_stop_words(language.value) for language in Language
+    language: load_stop_words(language) for language in Language
 }
 
 
