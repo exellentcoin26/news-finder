@@ -123,7 +123,11 @@ const AdminFeeds = () => {
         const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ name: name, feeds: feed, category: category }),
+            body: JSON.stringify({
+                name: name,
+                feeds: feed,
+                category: category,
+            }),
         });
 
         if (response.ok) {

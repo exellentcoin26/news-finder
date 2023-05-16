@@ -36,6 +36,7 @@ async def get_articles() -> Response:
                         "description": "The most interesting article about a cat in a tree."
                         "photo": "https://www.test-photo.io",
                         "link": "https:foo.article/article1.html"
+                        "publication_date": 2021-09-27 15:22:00
                     }
                 },
                 {
@@ -45,6 +46,7 @@ async def get_articles() -> Response:
                         "description": "The most interesting article about a cat on its way home."
                         "photo": null
                         "link": "https:foo.article/article2.html"
+                        "publication_date": 2021-09-30 08:16:00
                 },
                 ...
             ]
@@ -114,7 +116,7 @@ async def get_articles() -> Response:
                 ErrorKind.ServerError,
             )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
+    response: Dict[str, List[Dict[str, str | Dict[str, str | float | None]]]] = {"articles": []}
     for article in articles:
         assert (
             article.source is not None
@@ -150,17 +152,32 @@ async def get_articles() -> Response:
 
         news_source = article.source.name
 
-        response["articles"].append(
-            {
-                "source": news_source,
-                "article": {
-                    "title": article.title,
-                    "description": article.description,
-                    "photo": article.photo,
-                    "link": article.url,
-                },
-            }
-        )
+        if article.publication_date is not None:
+            response["articles"].append(
+                {
+                    "source": news_source,
+                    "article": {
+                        "title": article.title,
+                        "description": article.description,
+                        "photo": article.photo,
+                        "link": article.url,
+                        "publication_date": article.publication_date.timestamp(),
+                    },
+                }
+            )
+
+        else:
+            response["articles"].append(
+                {
+                    "source": news_source,
+                    "article": {
+                        "title": article.title,
+                        "description": article.description,
+                        "photo": article.photo,
+                        "link": article.url,
+                    },
+                }
+            )
 
     return make_success_response(HTTPStatus.OK, response)
 
@@ -198,40 +215,36 @@ async def get_similar_articles() -> Response:
             ErrorKind.ServerError,
         )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | None]]]] = {"articles": []}
+    response: Dict[str, List[Dict[str, str]]] = {"articles": []}
     for pair in similar_articles:
 
         assert (
-                pair.similar is not None and pair.similar.id is not None
-        ), "article in similar articles table should always have a similar article associated with it"
+                pair.id1 is not None
+        ), "article in similar articles table should always have an id"
 
         assert (
-                pair.similar.id is not None
-        ), "article in news articles table should always have an id"
+                pair.id2 is not None
+        ), "article in similar articles table should always have a similar article associated with it with an id"
 
         similar_article = await db.newsarticles.find_unique(
             where={
-                "id":pair.similar.id,
+                "id": pair.id2,
             },
+            include={"source": True}
         )
 
         assert (
-                similar_article is not None
-        ), "article should always exist in database"
+            similar_article is not None
+        ), "similar article should always exist in the database"
 
         assert (
-                similar_article.source is not None
-        ), "article should always have a source associated with it"
+            similar_article.source is not None
+        ), "an article should always have a source associated with it"
 
         response["articles"].append(
             {
                 "source": similar_article.source.name,
-                "article": {
-                    "title": similar_article.title,
-                    "description": similar_article.description,
-                    "photo": similar_article.photo,
-                    "link": similar_article.url,
-                },
+                "link": similar_article.url
             }
         )
 
