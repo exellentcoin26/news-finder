@@ -120,6 +120,16 @@ async fn run_scraper() {
     println!("Start scraping the rss feeds ...");
 
     scrape_rss_feeds(&client).await.unwrap();
+    client
+        .flags()
+        .upsert(
+            prisma::flags::name::equals("articles_modified".to_string()),
+            prisma::flags::create("articles_modified".to_string(), true, vec![]),
+            vec![prisma::flags::value::set(true)],
+        )
+        .exec()
+        .await
+        .unwrap();
 
     println!("Successfully scraped rss feeds!");
 }
