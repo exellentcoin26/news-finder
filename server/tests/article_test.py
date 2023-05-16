@@ -78,10 +78,10 @@ async def test_get_similar_articles(client: Flask.testing):
     )
 
     await db.similararticles.create(
-        data={"id1": article1.id, "id2": article2.id, "similarity": 0.9}
+        data={"id1": article1.id, "article":article1,"id2": article2.id, "similar": article2, "similarity": 0.9}
     )
     await db.similararticles.create(
-        data={"id1": article2.id, "id2": article1.id, "similarity": 0.9}
+        data={"id1": article2.id, "article":article2,"id2": article1.id, "similar": article1,"similarity": 0.9}
     )
 
     await db.disconnect()
