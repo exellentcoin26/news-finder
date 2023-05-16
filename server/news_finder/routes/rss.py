@@ -3,7 +3,9 @@ from urllib.parse import ParseResult, urlparse
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 from prisma.errors import UniqueViolationError
-from typing import Dict, List
+from typing import Dict, List, Tuple
+
+from prisma.models import RssEntries
 
 from news_finder.db import get_db
 from news_finder.response import (
@@ -15,6 +17,18 @@ from news_finder.response import (
 import sys
 
 rss_bp = Blueprint("rss", __name__, url_prefix="/rss")
+
+
+def parse_url(feed_url: str) -> Tuple[str, str]:
+    # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
+    # TODO: Fixme
+    url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
+    assert isinstance(url_components, ParseResult)
+
+    news_source = url_components.netloc
+    news_source_url = url_components.scheme + "://" + url_components.netloc
+
+    return news_source, news_source_url
 
 
 @rss_bp.get("/")
@@ -58,34 +72,40 @@ async def get_rss_feeds() -> Response:
                 HTTPStatus.BAD_REQUEST, ErrorKind.NewsSourceNotFound
             )
 
-        urls: List[str] = []
+        rss_feeds: List[Dict[str, str]] = []
         for rss_entry in source.rss:
-            urls.append(rss_entry.feed)
+            rss_feeds.append(
+                {"source": source.name, "feed": rss_entry.feed, "name": rss_entry.name}
+            )
 
-        response_source: Dict[str, List[str]] = {"feeds": urls}
+        response_source: Dict[str, List[Dict[str, str]]] = {"feeds": rss_feeds}
 
         return make_success_response(HTTPStatus.OK, response_source)
+    else:
+        try:
+            feeds: List[RssEntries] = await db.rssentries.find_many(
+                include={"source": True}
+            )
+        except Exception as e:
+            print(e.with_traceback(None), file=sys.stderr)
+            return make_response_from_error(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                ErrorKind.ServerError,
+            )
 
-    try:
-        feeds = await db.rssentries.find_many(include={"source": True})
-    except Exception as e:
-        print(e.with_traceback(None), file=sys.stderr)
-        return make_response_from_error(
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-            ErrorKind.ServerError,
-        )
+        response: dict[str, list[dict[str, str]]] = {"feeds": []}
+        for feed in feeds:
+            assert (
+                feed.source is not None
+            ), "feed should always have a source associated with it"
 
-    response: dict[str, list[dict[str, str]]] = {"feeds": []}
-    for feed in feeds:
-        assert (
-            feed.source is not None
-        ), "feed should always have a source associated with it"
+            news_source = feed.source.name
 
-        news_source = feed.source.name
+            response["feeds"].append(
+                {"source": news_source, "feed": feed.feed, "name": feed.name}
+            )
 
-        response["feeds"].append({"source": news_source, "feed": feed.feed})
-
-    return make_success_response(HTTPStatus.OK, response)
+        return make_success_response(HTTPStatus.OK, response)
 
 
 @rss_bp.post("/")
@@ -99,23 +119,20 @@ async def add_rss_feed() -> Response:
     .. code-block:: json
 
         {
-            "feeds": [
-                "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
-                ...
-            ]
+            "name": "VRT Wereld nieuws",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+            "category": "binnenland",
         }
     """
 
     schema = {
         "type": "object",
         "properties": {
-            "feeds": {
-                "description": "list off rss feeds to be added",
-                "type": "array",
-                "items": {"type": "string"},
-            }
+            "name": {"type": "string"},
+            "feed": {"type": "string"},
+            "category": {"type": "string"},
         },
-        "required": ["feeds"],
+        "required": ["name", "feed", "category"],
     }
 
     data = request.get_json(silent=True)
@@ -136,33 +153,34 @@ async def add_rss_feed() -> Response:
         raise e
 
     db = await get_db()
-    b = db.batch_()
 
-    for rss_feed in data["feeds"]:
-        # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
-        # TODO: Fixme
-        url_components: ParseResult = urlparse(rss_feed)  # pyright: ignore
-        assert isinstance(url_components, ParseResult)
+    feed_name = data["name"]
+    feed_url = data["feed"]
+    feed_category = data["category"]
 
-        news_source = url_components.netloc
-        news_source_url = url_components.scheme + "://" + url_components.netloc
+    # No idea why pyright thinks the type can be `Unknown`, but this "fixes" it.
+    # TODO: Fixme
+    url_components: ParseResult = urlparse(feed_url)  # pyright: ignore
+    assert isinstance(url_components, ParseResult)
 
+    news_source = url_components.netloc
+    news_source_url = url_components.scheme + "://" + url_components.netloc
+    
+    
+    try:
         # Update news-source with new rss entry if news-source already present,
         # else insert a new news-source with the rss feed.
-        b.newssources.upsert(
+        await db.newssources.upsert(
             where={"name": news_source},
             data={
                 "create": {
                     "name": news_source,
                     "url": news_source_url,
-                    "rss": {"create": {"feed": rss_feed}},
+                    "rss": {"create": {"name": feed_name, "feed": feed_url, "category": feed_category}},
                 },
-                "update": {"rss": {"create": [{"feed": rss_feed}]}},
+                "update": {"rss": {"create": [{"name": feed_name, "feed": feed_url, "category": feed_category}]}},
             },
         )
-
-    try:
-        await b.commit()
     except UniqueViolationError as e:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
@@ -175,6 +193,7 @@ async def add_rss_feed() -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
         )
+
 
     return make_success_response()
 
