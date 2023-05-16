@@ -7,13 +7,13 @@ import {
     NoArticlesToShow,
 } from '../components/Article';
 import ErrorPlaceholder from '../components/Error';
-import LabelBar from '../components/LabelBar';
-
+import { LabelBar } from '../components/LabelBar';
 import '../styles/Home.css';
 
 const getArticlesFromServer = async (
     amount = 50,
     offset = 0,
+    label = '',
     errorHandler: () => void,
 ): Promise<ArticleEntry[]> => {
     const serverUrl =
@@ -27,6 +27,7 @@ const getArticlesFromServer = async (
                     new URLSearchParams({
                         amount: amount.toString(),
                         offset: offset.toString(),
+                        label: label,
                     }),
             );
         } catch (e) {
@@ -65,6 +66,7 @@ const Home = () => {
     const [articles, setArticles] = useState<ArticleEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hasErrored, setHasErrored] = useState(false);
+    const [selectedLabel, setSelectedLabel] = useState('');
 
     const handleArticleErrors = () => {
         setHasErrored(true);
@@ -76,6 +78,7 @@ const Home = () => {
                 const articles = await getArticlesFromServer(
                     50,
                     0,
+                    '',
                     handleArticleErrors,
                 );
                 setArticles(articles);
@@ -87,9 +90,27 @@ const Home = () => {
         })();
     }, []);
 
+    const handleLabelChange = async (label: string) => {
+        setIsLoading(true);
+        setSelectedLabel(label);
+        try {
+            const articles = await getArticlesFromServer(
+                50,
+                0,
+                selectedLabel,
+                handleArticleErrors,
+            );
+            setArticles(articles);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <Container className={'home-container'}>
-            <LabelBar />
+            <LabelBar onClick={handleLabelChange} />
             <br />
             {hasErrored ? (
                 <ErrorPlaceholder />

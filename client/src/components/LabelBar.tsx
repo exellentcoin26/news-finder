@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LabelsApiResponse } from '../interfaces/api/labels';
 import { Col, Container, Row } from 'react-bootstrap';
-import Label from './Label';
+import { Label } from './Label';
 
 import '../styles/LabelBar.css';
 
@@ -36,7 +36,7 @@ const getLabelsFromServer = async (): Promise<string[]> => {
     return labelsApiResponse.data.labels;
 };
 
-export const LabelBar = () => {
+export const LabelBar = ({ onClick }: { onClick: (name: string) => void }) => {
     const [labels, setLabels] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -64,7 +64,7 @@ export const LabelBar = () => {
                     {labels.map((label, index) => {
                         return (
                             <Col key={index}>
-                                <Label name={label} />
+                                <Label name={label} onClick={onClick} />
                             </Col>
                         );
                     })}
