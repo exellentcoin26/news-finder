@@ -122,8 +122,9 @@ async fn run_scraper() {
     scrape_rss_feeds(&client).await.unwrap();
     client
         .flags()
-        .update(
+        .upsert(
             prisma::flags::name::equals("articles_modified".to_string()),
+            prisma::flags::create("articles_modified".to_string(), true, vec![]),
             vec![prisma::flags::value::set(true)],
         )
         .exec()
