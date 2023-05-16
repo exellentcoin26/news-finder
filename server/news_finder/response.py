@@ -26,6 +26,7 @@ class ErrorKind(Enum):
     IncorrectCredentials = 12
     UsernameToShort = 13
     PasswordToShort = 14
+    InvalidFeedUrl = 15
 
     ServerError = 500
 
