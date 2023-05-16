@@ -78,16 +78,25 @@ async def test_get_similar_articles(client: Flask.testing):
     )
 
     await db.similararticles.create(
-        data={"id1": article1.id, "id2": article2.id, "similarity": 0.9}
+        data={ 
+            "id1": article1.id, 
+            "id2": article2.id, 
+            "similarity": 0.9,
+            }
     )
+
     await db.similararticles.create(
-        data={"id1": article2.id, "id2": article1.id, "similarity": 0.9}
+        data={
+            "id1": article2.id, 
+            "id2": article1.id, 
+            "similarity": 0.9,
+            }
     )
 
     await db.disconnect()
 
     def sync_part():
-        response = client.get("/article/similar?", query_string={"url":"https://example.com/article1"}) 
+        response = client.get("/article/similar/?", query_string={"url":"https://example.com/article1"}) 
         assert response.status_code == HTTPStatus.OK
         articles = response.get_json()["data"]["articles"]
 
