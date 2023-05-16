@@ -189,7 +189,7 @@ export const Article = ({
                                 </Row>
                                 <Row className="article-title">{title}</Row>
                                 <Row className="source_name-small">
-                                    <a href={article_link} target="_blank" rel="noopener noreferrer">
+                                    <a href={article_link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
                                         {source}
                                     </a>
                                 </Row>
@@ -222,7 +222,7 @@ export const Article = ({
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
                                 <p className="source_name-small">
-                                    <a href={article_link} target="_blank" rel="noopener noreferrer">
+                                    <a href={article_link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
                                         {source}
                                     </a>
                                 </p>
