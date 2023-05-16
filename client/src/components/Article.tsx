@@ -56,7 +56,7 @@ const getSimilarArticlesFromServer = async (
         try {
             return await fetch(
                 serverUrl +
-                    '/article/similar?' +
+                    '/article/similar/?' +
                     new URLSearchParams({
                         url: link,
                     }),
