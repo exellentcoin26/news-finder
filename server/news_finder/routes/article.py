@@ -187,6 +187,10 @@ async def get_similar_articles() -> Response:
         )
 
         assert (
+            similar_article is not None
+        ), "similar article should always exist in the database"
+
+        assert (
             similar_article.source is not None
         ), "an article should always have a source associated with it"
 
