@@ -94,7 +94,7 @@ async def test_get_similar_articles(client: Flask.testing):
         assert len(articles) == 1
         assert articles[0]["link"] == "https://example.com/article2"
 
-        response = client.get("/article/similar?", query_string=dict(dict="https://example.com/article2")) 
+        response = client.get("/article/similar?", query_string=dict(url="https://example.com/article2")) 
         assert response.status_code == HTTPStatus.OK
         articles = response.get_json()["data"]["articles"]
 
