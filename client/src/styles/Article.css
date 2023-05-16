@@ -88,6 +88,7 @@
         top: 30px;
         margin-left: 13px;
         order: 0;
+        color: black;
     }
 
     .clock {
@@ -104,7 +105,7 @@
     .source_name {
         position: relative;
         font-size: 10px !important;
-        margin-rigt: 30px;
+        margin-right: 30px;
     }
 
 }
@@ -199,29 +200,28 @@
     margin-right: 5px;
     margin-bottom: 0px;
     order: 2;
+    display: inline;
 }
 
 .source_name {
     position: relative;
     top: 0px;
     font-size: 13px;
-    margin-rigt: 30px;
+    margin-right: 30px;
 }
 
 .clock {
     position: relative;
     margin-left: 105px;
     order: 1;
+    display: inline;
 }
 
-.menu-container
-{
+.menu-container {
     position: absolute;
     right: 305px;
     max-width: 200px;
     top: 5px;
-
-
 }
 
 .root-container{
@@ -276,9 +276,6 @@
     transform: translateY(-20px);
 }
 
-
-
-
 .dropdownItem {
     display: flex;
     margin:  auto;
@@ -296,7 +293,6 @@
     color: #f13a3a;
 }
 
-.source_name-small
-{
+.source_name-small {
     font-size: 11px;
 }

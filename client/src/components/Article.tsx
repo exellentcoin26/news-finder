@@ -2,7 +2,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
 import { SimilarArticleApiResponse, SimilarArticleEntry } from '../interfaces/api/article';
-import { formatRelative } from 'date-fns'
+import { formatDistance } from 'date-fns'
 
 function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
     const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
@@ -128,7 +128,7 @@ export const Article = ({
     let timeAgo = "";
     if (timestamp) {
         const publication = new Date(timestamp*1000);
-        timeAgo = formatRelative(publication, new Date());
+        timeAgo = formatDistance(publication, new Date(), {addSuffix: true});
     }
 
 
@@ -139,14 +139,16 @@ export const Article = ({
                 <Col className="root-container">
                     <Row className="article-card">
                         <div className="clock-component-small">
-                            <div>
-                                <img
-                                    src="/public/img/clock.png"
-                                    className="clock"
-                                ></img>
-                                <p className="clock-text-small">{timeAgo}</p>
-                            </div>
-
+                            {timeAgo && (
+                                <div className="clock-component">
+                                    <img
+                                        src="/img/clock.png"
+                                        style={{width: 15}}
+                                        className="clock"
+                                    ></img>
+                                    <p className="clock-text">{timeAgo}</p>
+                                </div>
+                            )}
                         </div>
                         <Col className="article-info">
                             <Row>
@@ -187,7 +189,9 @@ export const Article = ({
                                 </Row>
                                 <Row className="article-title">{title}</Row>
                                 <Row className="source_name-small">
-                                    <p> {source} </p>
+                                    <a href={article_link} target="_blank" rel="noopener noreferrer">
+                                        {source}
+                                    </a>
                                 </Row>
                             </Row>
                         </Col>
@@ -206,7 +210,7 @@ export const Article = ({
             ) : (
                 <Card className={'article-card'}>
                     <Row>
-                        <a href={article_link}>
+                        <a href={article_link} target="_blank" rel="noopener noreferrer" >
                             <img
                                 src={img_src ? img_src : '/img/no-image.png'}
                                 className="article-image-img"
@@ -218,19 +222,23 @@ export const Article = ({
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
                                 <p className="source_name-small">
-                                    {source}
+                                    <a href={article_link} target="_blank" rel="noopener noreferrer">
+                                        {source}
+                                    </a>
                                 </p>
                                 <Card.Body style={{ height: 'auto' }}>
                                     {description}
                                 </Card.Body>
-                                <div className="clock-component">
-                                    <img
-                                        src="/img/clock.png"
-                                        width={15}
-                                        className="clock"
-                                    ></img>
-                                    <p className="clock-text-small">{timeAgo}</p>
-                                </div>
+                                    {timeAgo && (
+                                        <div className="clock-component">
+                                            <img
+                                                src="/img/clock.png"
+                                                style={{width: 15}}
+                                                className="clock"
+                                            ></img>
+                                            <p className="clock-text">{timeAgo}</p>
+                                        </div>
+                                    )}
                             </Card.Body>
                         </Row>
                     </Row>
