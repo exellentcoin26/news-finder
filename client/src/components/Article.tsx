@@ -1,7 +1,10 @@
 import { Card, Col, Row } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
-import { SimilarArticleApiResponse, SimilarArticleEntry } from '../interfaces/api/article';
+import {
+    SimilarArticleApiResponse,
+    SimilarArticleEntry,
+} from '../interfaces/api/article';
 
 function MyComponent() {
     const [buttons, setButtons] = useState([
@@ -14,8 +17,6 @@ function MyComponent() {
     const visibleButtons = buttons.slice(0, 4);
     const hiddenButtons = buttons.slice(4);
     const showLoadMore = hiddenButtons.length > 0;
-
-
 
     return (
         <div>
@@ -84,10 +85,11 @@ export const Article = ({
     description?: string;
     article_link: string;
 }) => {
-    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
+    const [similarArticles, setSimilarArticles] = useState<
+        SimilarArticleEntry[]
+    >([]);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [open, setOpen] = useState(false);
-
 
     window.addEventListener('resize', () => {
         setIsSmallScreen(window.innerWidth < 768);
@@ -97,7 +99,6 @@ export const Article = ({
             try {
                 const articles = await getSimilarArticlesFromServer(
                     article_link,
-
                 );
                 setSimilarArticles(articles);
             } catch (error) {
@@ -179,6 +180,11 @@ export const Article = ({
                             <img
                                 src={img_src ? img_src : '/img/no-image.png'}
                                 className="article-image-img"
+                                style={
+                                    img_src
+                                        ? { objectFit: 'cover' }
+                                        : { objectFit: 'contain' }
+                                }
                             />
                             <img />
                         </a>
@@ -198,7 +204,7 @@ export const Article = ({
                                         width={15}
                                         className="clock"
                                     ></img>
-                                    <p className="clock-text">3 hours ago</p>
+                                    <p className="clock-text">32 minutes ago</p>
                                 </div>
                             </Card.Body>
                         </Row>
