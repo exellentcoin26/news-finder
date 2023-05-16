@@ -5,7 +5,7 @@ export interface ArticleEntry {
     description?: string;
     photo?: string;
     link: string;
-    publication_date? : number
+    publication_date?: number;
 }
 
 export interface ArticleSourceEntry {
@@ -28,4 +28,4 @@ export interface SimilarArticlePayload {
 
 export type ArticleApiResponse = ApiResponse<ArticlePayload>;
 
-export type SimilarArticleApiResponse = ApiResponse<SimilarArticlePayload>
+export type SimilarArticleApiResponse = ApiResponse<SimilarArticlePayload>;

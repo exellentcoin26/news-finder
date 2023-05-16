@@ -1,11 +1,16 @@
 import { Card, Col, Row } from 'react-bootstrap';
 import '../styles/Article.css';
 import React, { useEffect, useState } from 'react';
-import { SimilarArticleApiResponse, SimilarArticleEntry } from '../interfaces/api/article';
-import { formatDistance } from 'date-fns'
+import {
+    SimilarArticleApiResponse,
+    SimilarArticleEntry,
+} from '../interfaces/api/article';
+import { formatDistance } from 'date-fns';
 
 function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
-    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
+    const [similarArticles, setSimilarArticles] = useState<
+        SimilarArticleEntry[]
+    >([]);
     const visibleButtons = similarArticles.slice(0, 4);
     const hiddenButtons = similarArticles.slice(4);
     const showLoadMore = hiddenButtons.length > 0;
@@ -26,21 +31,27 @@ function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
     return (
         <div>
             <div className="button-container">
-                {similarArticles.map(
-                    ({source,link},index) => {
-                        return (
-                            <>
-                                {visibleButtons.map((article) => (
-                                    <button key={index} className="button">
-                                        <a href={article.link} target="_blank" rel="noopener noreferrer"> {article.source} </a>
-                                    </button>
-                                ))}
-                                {showLoadMore && <button className="button">. . .</button>}
-                            </>
-                        )
-                    }
-
-                )}
+                {similarArticles.map(({ source, link }, index) => {
+                    return (
+                        <>
+                            {visibleButtons.map((article) => (
+                                <button key={index} className="button">
+                                    <a
+                                        href={article.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {' '}
+                                        {article.source}{' '}
+                                    </a>
+                                </button>
+                            ))}
+                            {showLoadMore && (
+                                <button className="button">. . .</button>
+                            )}
+                        </>
+                    );
+                })}
             </div>
         </div>
     );
@@ -94,18 +105,20 @@ export const Article = ({
     description,
     article_link,
     source,
-    timestamp
+    timestamp,
 }: {
     title: string;
     img_src?: string;
     description?: string;
     article_link: string;
-    source: string
+    source: string;
     timestamp?: number;
 }) => {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [open, setOpen] = useState(false);
-    const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
+    const [similarArticles, setSimilarArticles] = useState<
+        SimilarArticleEntry[]
+    >([]);
 
     window.addEventListener('resize', () => {
         setIsSmallScreen(window.innerWidth < 768);
@@ -124,10 +137,10 @@ export const Article = ({
         })();
     }, []);
 
-    let timeAgo = "";
+    let timeAgo = '';
     if (timestamp) {
-        const publication = new Date(timestamp*1000);
-        timeAgo = formatDistance(publication, new Date(), {addSuffix: true});
+        const publication = new Date(timestamp * 1000);
+        timeAgo = formatDistance(publication, new Date(), { addSuffix: true });
     }
 
     // Dropdown menu is based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
@@ -141,7 +154,7 @@ export const Article = ({
                                 <div className="clock-component">
                                     <img
                                         src="/img/clock.png"
-                                        style={{width: 15}}
+                                        style={{ width: 15 }}
                                         className="clock"
                                     ></img>
                                     <p className="clock-text">{timeAgo}</p>
@@ -169,32 +182,71 @@ export const Article = ({
                                         >
                                             <ul>
                                                 {similarArticles.map(
-                                                    ({source,link},index) => {
+                                                    (
+                                                        { source, link },
+                                                        index,
+                                                    ) => {
                                                         return (
                                                             <>
-                                                                {similarArticles.map((button) => (
-                                                                    <DropdownItem key={index} className="button" text={button.source}>
-                                                                        <a href={link} target="_blank" rel="noopener noreferrer"> {source} </a>
-                                                                    </DropdownItem>
-                                                                ))}
+                                                                {similarArticles.map(
+                                                                    (
+                                                                        button,
+                                                                    ) => (
+                                                                        <DropdownItem
+                                                                            key={
+                                                                                index
+                                                                            }
+                                                                            className="button"
+                                                                            text={
+                                                                                button.source
+                                                                            }
+                                                                        >
+                                                                            <a
+                                                                                href={
+                                                                                    link
+                                                                                }
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                            >
+                                                                                {' '}
+                                                                                {
+                                                                                    source
+                                                                                }{' '}
+                                                                            </a>
+                                                                        </DropdownItem>
+                                                                    ),
+                                                                )}
                                                             </>
-                                                        )
-                                                    })}
+                                                        );
+                                                    },
+                                                )}
                                             </ul>
-
                                         </div>
                                     </div>
                                 </Row>
                                 <Row className="article-title">{title}</Row>
                                 <Row className="source_name-small">
-                                    <a href={article_link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                    <a
+                                        href={article_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                        }}
+                                    >
                                         {source}
                                     </a>
                                 </Row>
                             </Row>
                         </Col>
                         <Col className="small-container-image">
-                            <a href={article_link} target="_blank" rel="noopener noreferrer" className="article-link">
+                            <a
+                                href={article_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="article-link"
+                            >
                                 <img
                                     className="article-image"
                                     src={
@@ -208,7 +260,11 @@ export const Article = ({
             ) : (
                 <Card className={'article-card'}>
                     <Row>
-                        <a href={article_link} target="_blank" rel="noopener noreferrer" >
+                        <a
+                            href={article_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <img
                                 src={img_src ? img_src : '/img/no-image.png'}
                                 className="article-image-img"
@@ -225,27 +281,37 @@ export const Article = ({
                             <Card.Body className={'article-body'}>
                                 <Card.Title>{title}</Card.Title>
                                 <p className="source_name-small">
-                                    <a href={article_link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                    <a
+                                        href={article_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                        }}
+                                    >
                                         {source}
                                     </a>
                                 </p>
                                 <Card.Body style={{ height: 'auto' }}>
                                     {description}
                                 </Card.Body>
-                                    {timeAgo && (
-                                        <div className="clock-component">
-                                            <img
-                                                src="/img/clock.png"
-                                                style={{width: 15}}
-                                                className="clock"
-                                            ></img>
-                                            <p className="clock-text">{timeAgo}</p>
-                                        </div>
-                                    )}
+                                {timeAgo && (
+                                    <div className="clock-component">
+                                        <img
+                                            src="/img/clock.png"
+                                            style={{ width: 15 }}
+                                            className="clock"
+                                        ></img>
+                                        <p className="clock-text">{timeAgo}</p>
+                                    </div>
+                                )}
                             </Card.Body>
                         </Row>
                     </Row>
-                    <MyComponent currentArticleLink={article_link}></MyComponent>
+                    <MyComponent
+                        currentArticleLink={article_link}
+                    ></MyComponent>
                 </Card>
             )}
         </div>

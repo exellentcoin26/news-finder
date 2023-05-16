@@ -1,7 +1,10 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
-import {ArticleApiResponse, ArticleSourceEntry} from '../interfaces/api/article';
+import {
+    ArticleApiResponse,
+    ArticleSourceEntry,
+} from '../interfaces/api/article';
 import {
     Article,
     ArticlePlaceholder,
@@ -128,16 +131,29 @@ const Home = () => {
                             <Col>
                                 <Article
                                     title={articleSource.article.title}
-                                    {...(articleSource.article.description != null
-                                        ? { description: articleSource.article.description }
+                                    {...(articleSource.article.description !=
+                                    null
+                                        ? {
+                                              description:
+                                                  articleSource.article
+                                                      .description,
+                                          }
                                         : {})}
                                     {...(articleSource.article.photo != null
-                                        ? { img_src: articleSource.article.photo }
+                                        ? {
+                                              img_src:
+                                                  articleSource.article.photo,
+                                          }
                                         : {})}
                                     article_link={articleSource.article.link}
                                     source={articleSource.source}
-                                    {...(articleSource.article.publication_date != null
-                                       ? { timestamp: articleSource.article.publication_date }
+                                    {...(articleSource.article
+                                        .publication_date != null
+                                        ? {
+                                              timestamp:
+                                                  articleSource.article
+                                                      .publication_date,
+                                          }
                                         : {})}
                                 />
                             </Col>

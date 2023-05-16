@@ -9,6 +9,7 @@
         overflow: hidden;
         border: 1px solid #C9C9C9;
         border-radius: 5px;
+        min-width: 450px;
     }
 
     .article-image {
@@ -67,6 +68,7 @@
         max-width: 200px;
         bottom: 0;
         margin-left: 91px;
+        margin-top: 5px;
     }
 
     .clock-text-small {
@@ -80,13 +82,13 @@
 
     .source_name-small {
         position: relative;
-        font-size: 7px;
+        font-size: 10px;
         margin-bottom: 10px;
         height: auto;
         max-height: 10px;
         width: auto;
         top: 30px;
-        margin-left: 13px;
+        margin-left: 0;
         order: 0;
         color: black;
     }
@@ -175,7 +177,7 @@
 .clock-component {
     position: absolute;
     display: flex;
-    bottom: 30px;
+    bottom: 5px;
     right: 3px;
     flex-direction: row;
     align-items: center;
@@ -186,7 +188,7 @@
     font-size: 12px;
     margin-left: 5px;
     margin-right: 5px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     order: 2;
     display: inline;
 }
@@ -194,7 +196,7 @@
 .source_name {
     position: relative;
     top: 0px;
-    font-size: 13px;
+    font-size: 16px;
     margin-right: 30px;
 }
 
@@ -283,5 +285,5 @@
 }
 
 .source_name-small {
-    font-size: 11px;
+    font-size: 15px;
 }
