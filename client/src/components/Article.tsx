@@ -107,6 +107,10 @@ export const Article = ({
     const [open, setOpen] = useState(false);
     const [similarArticles, setSimilarArticles] = useState<SimilarArticleEntry[]>([]);
 
+    window.addEventListener('resize', () => {
+        setIsSmallScreen(window.innerWidth < 768);
+    });
+
     useEffect(() => {
         (async () => {
             try {
@@ -120,17 +124,11 @@ export const Article = ({
         })();
     }, []);
 
-
-    window.addEventListener('resize', () => {
-        setIsSmallScreen(window.innerWidth < 768);
-    });
-
     let timeAgo = "";
     if (timestamp) {
         const publication = new Date(timestamp*1000);
         timeAgo = formatDistance(publication, new Date(), {addSuffix: true});
     }
-
 
     // Dropdown menu is based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
     return (
@@ -214,6 +212,11 @@ export const Article = ({
                             <img
                                 src={img_src ? img_src : '/img/no-image.png'}
                                 className="article-image-img"
+                                style={
+                                    img_src
+                                        ? { objectFit: 'cover' }
+                                        : { objectFit: 'contain' }
+                                }
                             />
                             <img />
                         </a>
