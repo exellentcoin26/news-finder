@@ -15,9 +15,6 @@ https://sporza.be/nl/categorie/auto-motor.rss.xml
 https://sporza.be/nl/categorie/zaalsporten/basketbal.rss.xml
 https://sporza.be/nl/categorie/voetbal.rss.xml
 https://sporza.be/nl/categorie/wielrennen.rss.xml
-http://rss.cnn.com/rss/edition_world.rss
-http://rss.cnn.com/rss/edition_europe.rss
-http://rss.cnn.com/rss/edition_motorsport.rss
 https://www.cbsnews.com/latest/rss/science
 https://www.cbsnews.com/latest/rss/technology
 https://www.cbsnews.com/latest/rss/world
