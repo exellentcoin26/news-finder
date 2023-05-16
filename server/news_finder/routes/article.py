@@ -179,14 +179,21 @@ async def get_similar_articles() -> Response:
                 pair.similar is not None and pair.id2 is not None
         ), "article in similar articles table should always have a similar article associated with it with an id"
 
+        similar_article = await db.newsarticles.find_unique(
+            where={
+                "id": pair.id2,
+            },
+            include={"source": True}
+        )
+
         assert (
-                pair.similar.source is not None
-        ), "article should always have a source associated with it"
+            similar_article.source is not None
+        ), "an article should always have a source associated with it"
 
         response["articles"].append(
             {
-                "source": pair.similar.source.name,
-                "link": pair.similar.url
+                "source": similar_article.source.name,
+                "link": similar_article.url
             }
         )
 
