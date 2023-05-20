@@ -71,9 +71,14 @@ async def store_user_history() -> Response:
         )
 
     labels : List[str] = [] 
-    if clicked_article.labels is not None:
-        for label in clicked_article.labels:
-            labels.append(label.label)
+    if clicked_article.labels is None:
+                return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
+        )
+
+    for label in clicked_article.labels:
+        labels.append(label.label)
 
     source = await db.newssources.find_unique(where={"id": clicked_article.source_id})
 
@@ -84,16 +89,11 @@ async def store_user_history() -> Response:
         )
     
     # Url of the source,labels,user
-    userarticle = await db.usersarticles.create(
+    await db.userarticlehistory.create(
         data={
-            "labels": labels,
+            "labels" : labels,
             "user_id" : user.id,
-            "source_id": source.id,
-            "source_url":source.url
+            "source_url" : source.url
         }
     )
-    if user.history is None:
-        user.history = [userarticle]
-    else:
-        user.history.append(userarticle)
     return make_success_response()

@@ -25,13 +25,13 @@ generator rss-scraper {
 
 // data models
 model Users {
-  id         Int             @id @default(autoincrement())
-  username   String          @unique
-  created_at DateTime        @default(now())
-  admin      Boolean         @default(false)
+  id         Int                  @id @default(autoincrement())
+  username   String               @unique
+  created_at DateTime             @default(now())
+  admin      Boolean              @default(false)
   login      UserLogins?
   cookies    UserCookies[]
-  history    UsersArticles[]
+  history    UserArticleHistory[]
 }
 
 // User login information (user_id, password).
@@ -50,12 +50,11 @@ model UserCookies {
 
 // News source information.
 model NewsSources {
-  id            Int             @id @default(autoincrement())
-  name          String          @unique
-  url           String          @unique
-  rss           RssEntries[]
-  articles      NewsArticles[]
-  UsersArticles UsersArticles[]
+  id       Int            @id @default(autoincrement())
+  name     String         @unique
+  url      String         @unique
+  rss      RssEntries[]
+  articles NewsArticles[]
 }
 
 // An rss feed url with corresponding news source.
@@ -69,18 +68,18 @@ model RssEntries {
 
 // News article entry scraped from an rss feed.
 model NewsArticles {
-  id               Int                 @id @default(autoincrement())
-  source           NewsSources         @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  source_id        Int
-  url              String              @unique
-  title            String
-  description      String?
-  photo            String?
-  publication_date DateTime?
-  labels           NewsArticleLabels[]
-  similar_relation SimilarArticles[]   @relation("similar_relation")
-  similar_articles SimilarArticles[]   @relation("similar")
-  UsersArticles    UsersArticles[]
+  id                 Int                  @id @default(autoincrement())
+  source             NewsSources          @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  source_id          Int
+  url                String               @unique
+  title              String
+  description        String?
+  photo              String?
+  publication_date   DateTime?
+  labels             NewsArticleLabels[]
+  similar_relation   SimilarArticles[]    @relation("similar_relation")
+  similar_articles   SimilarArticles[]    @relation("similar")
+  UserArticleHistory UserArticleHistory[]
 
   @@unique([id, url])
 }
@@ -93,6 +92,7 @@ model SimilarArticles {
   id2     Int
 
   similarity Float
+
   @@id([id1, id2])
 }
 
@@ -106,15 +106,13 @@ model NewsArticleLabels {
 }
 
 // One to many relation of user and articles to track user history
-model UsersArticles {
+model UserArticleHistory {
   labels         String[]
-  source         NewsSources   @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  source_id      Int
   source_url     String
   user           Users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id        Int
   NewsArticles   NewsArticles? @relation(fields: [newsArticlesId], references: [id])
   newsArticlesId Int?
 
-  @@id([user_id, source_id])
+  @@id([user_id, source_url])
 }
