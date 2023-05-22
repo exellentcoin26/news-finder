@@ -70,9 +70,9 @@ async def store_user_history() -> Response:
             ErrorKind.ServerError,
         )
 
-    labels : List[str] = [] 
+    labels: List[str] = []
     if clicked_article.labels is None:
-                return make_response_from_error(
+        return make_response_from_error(
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
         )
@@ -87,13 +87,17 @@ async def store_user_history() -> Response:
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
         )
-    
+
     # Url of the source,labels,user
     await db.userarticlehistory.create(
         data={
-            "labels" : labels,
-            "user_id" : user.id,
-            "source_url" : source.url
+            "labels": labels,
+            "user": {
+                "connect": {
+                    "id": user.id,
+                }
+            },
+            "source_url": source.url,
         }
     )
     return make_success_response()
