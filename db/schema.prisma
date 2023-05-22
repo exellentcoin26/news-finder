@@ -37,6 +37,7 @@ model Users {
     admin      Boolean       @default(false)
     login      UserLogins?
     cookies    UserCookies[]
+    history    UserArticleHistory[]
 }
 
 // User login information (user_id, password).
@@ -88,6 +89,8 @@ model NewsArticles {
     labels           NewsArticleLabels[]
     similar_relation SimilarArticles[]   @relation("similar_relation")
     similar_articles SimilarArticles[]   @relation("similar")
+    
+    @@unique([id, url])
 }
 
 enum Language {
@@ -114,4 +117,14 @@ model NewsArticleLabels {
     label   String
 
     @@id([id, label])
+}
+
+// One to many relation of user and articles to track user history
+model UserArticleHistory {
+  labels     String[]
+  source_url String
+  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id    Int
+
+  @@id([user_id, source_url])
 }
