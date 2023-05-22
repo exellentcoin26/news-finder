@@ -69,7 +69,8 @@ model RssEntries {
     source_id Int
     name      String
     feed      String      @unique
-    interval  Int
+    // Scrape interval in minutes.
+    interval  Int         @default(10)
     category  String
 }
 
