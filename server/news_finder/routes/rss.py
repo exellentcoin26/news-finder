@@ -8,6 +8,7 @@ from typing import Dict, List
 from validators.url import url as validate_url  # type: ignore
 
 from prisma.models import RssEntries
+from prisma.types import RssEntriesCreateWithoutRelationsInput
 
 from news_finder.db import get_db
 from news_finder.response import (
@@ -112,6 +113,7 @@ async def add_rss_feed() -> Response:
             "name": "VRT Wereld nieuws",
             "feed": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
             "category": "binnenland",
+            "interval": 5,
         }
     """
 
@@ -121,6 +123,7 @@ async def add_rss_feed() -> Response:
             "name": {"type": "string"},
             "feed": {"type": "string"},
             "category": {"type": "string"},
+            "interval": {"type": "integer"},
         },
         "required": ["name", "feed", "category"],
     }
@@ -147,6 +150,7 @@ async def add_rss_feed() -> Response:
     feed_name = data["name"].lower()
     feed_url = data["feed"]
     feed_category = data["category"].lower()
+    feed_interval = data.get("interval", None)
 
     if not validate_url(feed_url):  # type: ignore
         return make_response_from_error(
@@ -164,31 +168,23 @@ async def add_rss_feed() -> Response:
     try:
         # Update news-source with new rss entry if news-source already present,
         # else insert a new news-source with the rss feed.
+        rss_create: RssEntriesCreateWithoutRelationsInput = {
+            "name": feed_name,
+            "feed": feed_url,
+            "category": feed_category,
+        }
+        if feed_interval is not None:
+            rss_create["interval"] = feed_interval
+
         await db.newssources.upsert(
             where={"name": news_source},
             data={
                 "create": {
                     "name": news_source,
                     "url": news_source_url,
-                    "rss": {
-                        "create": {
-                            "name": feed_name,
-                            "feed": feed_url,
-                            "category": feed_category,
-                        }
-                    },
+                    "rss": {"create": rss_create},
                 },
-                "update": {
-                    "rss": {
-                        "create": [
-                            {
-                                "name": feed_name,
-                                "feed": feed_url,
-                                "category": feed_category,
-                            }
-                        ]
-                    }
-                },
+                "update": {"rss": {"create": [rss_create]}},
             },
         )
     except UniqueViolationError as e:
