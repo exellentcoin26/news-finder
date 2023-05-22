@@ -98,7 +98,7 @@ async fn start_scrape_job() -> Result<()> {
 
     let mut counters = BTreeSet::new();
 
-    let force_update_counters = true;
+    let mut force_update_counters = true;
 
     // interval in nanoseconds
     let interval = 4e9_f64;
@@ -142,6 +142,8 @@ async fn start_scrape_job() -> Result<()> {
                         start_time: Instant::now(),
                     });
                 }
+
+                force_update_counters = false;
             }
 
             let mut next_run: Option<Duration> = None;
