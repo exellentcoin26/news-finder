@@ -23,6 +23,12 @@ generator rss-scraper {
   output   = "../rss-scraper/src/prisma.rs"
 }
 
+// flags used by applications
+model Flags {
+    name  String  @id
+    value Boolean
+}
+
 // data models
 model Users {
   id         Int                  @id @default(autoincrement())
@@ -76,11 +82,17 @@ model NewsArticles {
   description      String?
   photo            String?
   publication_date DateTime?
+  language         Language            @default(English)
   labels           NewsArticleLabels[]
   similar_relation SimilarArticles[]   @relation("similar_relation")
   similar_articles SimilarArticles[]   @relation("similar")
 
   @@unique([id, url])
+}
+
+enum Language {
+    English
+    Dutch
 }
 
 // Many to many articles relation denoting what articles are similar to eachother.

@@ -1,21 +1,25 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
-import { ArticleApiResponse, ArticleEntry } from '../interfaces/api/article';
+import {
+    ArticleApiResponse,
+    ArticleSourceEntry,
+} from '../interfaces/api/article';
 import {
     Article,
     ArticlePlaceholder,
     NoArticlesToShow,
 } from '../components/Article';
 import ErrorPlaceholder from '../components/Error';
-
+import { LabelBar } from '../components/LabelBar';
 import '../styles/Home.css';
 
 const getArticlesFromServer = async (
     amount = 50,
     offset = 0,
+    label = '',
     errorHandler: () => void,
-): Promise<ArticleEntry[]> => {
+): Promise<ArticleSourceEntry[]> => {
     const serverUrl =
         import.meta.env['VITE_SERVER_URL'] || 'http://localhost:5000';
 
@@ -27,6 +31,7 @@ const getArticlesFromServer = async (
                     new URLSearchParams({
                         amount: amount.toString(),
                         offset: offset.toString(),
+                        label: label,
                     }),
             );
         } catch (e) {
@@ -57,12 +62,12 @@ const getArticlesFromServer = async (
     }
 
     return articleApiResponse.data.articles.map((articleSource) => {
-        return articleSource.article;
+        return articleSource;
     });
 };
 
 const Home = () => {
-    const [articles, setArticles] = useState<ArticleEntry[]>([]);
+    const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hasErrored, setHasErrored] = useState(false);
 
@@ -76,6 +81,7 @@ const Home = () => {
                 const articles = await getArticlesFromServer(
                     50,
                     0,
+                    '',
                     handleArticleErrors,
                 );
                 setArticles(articles);
@@ -87,8 +93,27 @@ const Home = () => {
         })();
     }, []);
 
+    const handleLabelChange = async (label: string) => {
+        setIsLoading(true);
+        try {
+            const articles = await getArticlesFromServer(
+                50,
+                0,
+                label,
+                handleArticleErrors,
+            );
+            setArticles(articles);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <Container className={'home-container'}>
+            <LabelBar onClick={handleLabelChange} />
+            <br />
             {hasErrored ? (
                 <ErrorPlaceholder />
             ) : isLoading ? (
@@ -96,7 +121,7 @@ const Home = () => {
             ) : articles.length == 0 ? (
                 <NoArticlesToShow />
             ) : (
-                articles.map(({ title, description, photo, link }, index) => {
+                articles.map((articleSource, index) => {
                     return (
                         <Row
                             // TODO: Use something better than index as key
@@ -105,14 +130,31 @@ const Home = () => {
                         >
                             <Col>
                                 <Article
-                                    title={title}
-                                    {...(description != null
-                                        ? { description: description }
+                                    title={articleSource.article.title}
+                                    {...(articleSource.article.description !=
+                                    null
+                                        ? {
+                                              description:
+                                                  articleSource.article
+                                                      .description,
+                                          }
                                         : {})}
-                                    {...(photo != null
-                                        ? { img_src: photo }
+                                    {...(articleSource.article.photo != null
+                                        ? {
+                                              img_src:
+                                                  articleSource.article.photo,
+                                          }
                                         : {})}
-                                    article_link={link}
+                                    article_link={articleSource.article.link}
+                                    source={articleSource.source}
+                                    {...(articleSource.article
+                                        .publication_date != null
+                                        ? {
+                                              timestamp:
+                                                  articleSource.article
+                                                      .publication_date,
+                                          }
+                                        : {})}
                                 />
                             </Col>
                         </Row>

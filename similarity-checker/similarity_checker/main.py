@@ -8,69 +8,76 @@ import re
 import math
 import string
 from datetime import datetime
+import time
 from typing import List, Dict, Tuple, Set
 
-import schedule
 from prisma.models import NewsArticles
 from prisma import Prisma
 
-from utils import Language, filter_stop_words, filter_numerics
+import numpy as np
+from numpy.typing import NDArray
 
-THRESHOLD = 0.50
+from utils import filter_stop_words, filter_numerics
 
-# failsafe for running async call with non async scheduler.
-# Note: this fails if the schedule timestep is lower than the starting of the thread
-# (which _should_ never happen).
-is_running = False
+THRESHOLD = 0.90
 
 # TODO: check language of the article
 
 
 async def main():
-    schedule.every(30).minutes.do(run)  # pyright: ignore
-
-    while True:
-        schedule.run_pending()
-        next_run = schedule.next_run()
-        if next_run is None:
-            exit(0)
-
-        delta = next_run - datetime.now()
-
-        print(
-            f"Time until next run: {int(delta.total_seconds())} seconds",
-            file=sys.stderr,
-        )
-        await asyncio.sleep(3)
-
-
-def run():
-    asyncio.get_event_loop().create_task(run_similarity_checker())
-
-
-async def run_similarity_checker():
-    global is_running
-
-    if is_running:
-        print("Not running checker because last run has not finished", file=sys.stderr)
-        return
-
-    is_running = True
-
     db = Prisma()
     await db.connect()
 
-    raw_articles = await db.newsarticles.find_many(include={"source": True})
+    # interval in milliseconds
+    interval = 4.0e6
 
-    await calc_article_similarity(raw_articles, db)
+    delta = 0.0
+    last_time = datetime.now()
 
-    await db.disconnect()
+    while True:
+        now = datetime.now()
+        delta += (now - last_time).total_seconds() * 1e6 / interval
+        last_time = now
 
-    is_running = False
+        if delta >= 1:
+            delta -= 1
+
+            retry_count = 0
+            while not db.is_connected():
+                if retry_count >= 4:
+                    raise Exception(
+                        "Connecting to database failed 4 times. Aborting application!"
+                    )
+
+                try:
+                    await db.connect()
+                except Exception:
+                    retry_count += 1
+
+            should_check = await db.flags.find_unique(
+                where={"name": "articles_modified"}
+            )
+
+            if should_check is None:
+                await db.flags.create({"name": "articles_modified", "value": False})
+            elif should_check.value is False:
+                print(
+                    "Nothing modified. Not running similarity checker.", file=sys.stderr
+                )
+                time.sleep(2)
+                continue
+
+            raw_articles = await db.newsarticles.find_many(include={"source": True})
+
+            await calc_article_similarity(raw_articles, db)
+
+            await db.flags.update(
+                where={"name": "articles_modified"}, data={"value": False}
+            )
 
 
 async def calc_article_similarity(
-    databse_articles: List[NewsArticles], client: Prisma
+    database_articles: List[NewsArticles], client: Prisma
 ) -> Dict[int, Set[int]]:
     """
     Calculates the similarity between articles using tf-idf to vectorize text and uses
@@ -80,9 +87,7 @@ async def calc_article_similarity(
     the similar markers immediately into the database.
     """
 
-    raw_articles: List[str] = [
-        article.title + (article.description or "") for article in databse_articles
-    ]
+    raw_articles: List[str] = [article.title for article in database_articles]
 
     print(
         f"Starting similarity checker on list of `{len(raw_articles)}` articles.",
@@ -99,35 +104,32 @@ async def calc_article_similarity(
     # Split articles by whitespace and remove stopwords
     articles = [article.split() for article in cleaned_articles]
     articles = [filter_numerics(article) for article in articles]
-    # TODO: Get language from database.
-    articles = [filter_stop_words(article, Language.English) for article in articles]
+    articles = [
+        filter_stop_words(article, database_articles[idx].language)
+        for [idx, article] in enumerate(articles)
+    ]
 
     tf_idf_table = calc_tf_idf(articles)
 
     similar: Dict[int, Set[int]] = {}
 
+    cosine_similarity_table = np.matmul(tf_idf_table, tf_idf_table.T)
+
     # Check every article against every other article
     print("Checking cosine similarities...", file=sys.stderr)
     for lhs_article_idx in range(len(articles)):
         for rhs_article_idx in range(lhs_article_idx + 1, len(articles)):
-            # Only compare articles from different sources
             article1, article2 = (
-                databse_articles[lhs_article_idx],
-                databse_articles[rhs_article_idx],
+                database_articles[lhs_article_idx],
+                database_articles[rhs_article_idx],
             )
             assert article1.source is not None and article2.source is not None
-            # if article1.source.id == article2.source.id:
-            #     continue
 
-            similarity = cos_similarity(
-                extract_tf_idf_values(tf_idf_table, lhs_article_idx),
-                extract_tf_idf_values(tf_idf_table, rhs_article_idx),
-            )
+            similarity = cosine_similarity_table[lhs_article_idx][rhs_article_idx]
             sys.stdout.write(
                 "\033[K"
-                + f"Article `{lhs_article_idx}` == Article `{rhs_article_idx}`: {similarity}".expandtabs(
-                    2
-                )
+                + f"Article `{lhs_article_idx}` == Article `{rhs_article_idx}`: "
+                + f"{similarity}".expandtabs(2)
                 + "\r"
             )
             if similarity > THRESHOLD:
@@ -205,48 +207,50 @@ async def insert_similar_article_pair_into_db(
     )
 
 
-def calc_tf_idf(documents: List[List[str]]) -> Dict[str, Tuple[List[float], float]]:
-    # Join all frequency values in a single table
-    tf_table: Dict[str, List[float]] = {}
-    for [doc_idx, document] in enumerate(documents):
-        tf = calc_norm_term_freq(document)
+def calc_tf_idf(
+    documents: List[List[str]],
+) -> NDArray[np.float32]:
+    words: NDArray[np.str_] = np.unique(  # type: ignore
+        [word for document in documents for word in document]
+    )
+    words.sort()
 
-        for [term, freq] in tf.items():
-            # Insert if term already in table. Create new list with empty entries up
-            # until current idx.
-            if term not in tf_table:
-                # Insert 0 entries
-                tf_table[term] = [0 for _ in range(doc_idx)]
+    # Term frequencies per document
+    tf_table = np.zeros([len(documents), len(words)])
 
-            tf_table[term].append(freq)
+    for [i, document] in enumerate(documents):
+        document_tf_array = calc_norm_term_freq(document, words)
+        tf_table[i] = document_tf_array
 
-        # Add 0 entry for terms present in table but not in current document
-        for term in tf_table.keys():
-            if term not in tf:
-                tf_table[term].append(0)
+    # Amount of documents containing the word
+    df_counts = np.count_nonzero(tf_table, axis=0)  # type: ignore
 
-    idf_table = calc_idf(list(tf_table.keys()), documents)
-    tf_idf_table = {
-        term: (freq, idf_table.get(term, 0)) for [term, freq] in tf_table.items()
-    }
+    idf_counts = len(words) / df_counts
 
-    return tf_idf_table
+    # Muliply every row element-wise with the idf_counts col vector
+    tf_table *= idf_counts.T
 
-
-def calc_norm_term_freq(document: List[str]) -> Dict[str, float]:
-    tf_table: Dict[str, float] = {}
-    total_count = 0
-
-    # Count terms occurrences in document
-    for term in document:
-        tf_table[term] = tf_table.get(term, 0) + 1
-        total_count += 1
-
-    # Normalize counts
-    for term in tf_table.keys():
-        tf_table[term] /= total_count
+    # Normalize rows
+    tf_table /= np.linalg.norm(tf_table, axis=1, keepdims=True)  # type: ignore
 
     return tf_table
+
+
+def calc_norm_term_freq(
+    document: List[str], words: NDArray[np.str_]
+) -> NDArray[np.float32]:
+    tf_array = np.zeros(len(words), dtype=float)
+
+    # Count terms occurrences in document
+    unique_words, word_count = np.unique(document, return_counts=True)  # type: ignore
+    for [i, word] in enumerate(unique_words):
+        idx = np.where(words == word)[0][0]  # type: ignore
+        tf_array[idx] = word_count[i]
+
+    # Normalize counts
+    tf_array /= np.sum(tf_array)  # type: ignore
+
+    return tf_array  # type: ignore
 
 
 def calc_idf(terms: List[str], documents: List[List[str]]) -> Dict[str, float]:
