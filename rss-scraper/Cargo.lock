@@ -466,17 +466,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cron"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ff76b51e4c068c52bfd2866e1567bee7c567ae8f24ada09fd4307019e25eab7"
-dependencies = [
- "chrono",
- "nom",
- "once_cell",
-]
-
-[[package]]
 name = "crossbeam-channel"
 version = "0.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1331,17 +1320,6 @@ name = "itoa"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "453ad9f582a441959e5f0d088b02ce04cfe8d51a8eaf077f12ac6d3e94164ca6"
-
-[[package]]
-name = "job_scheduler_ng"
-version = "2.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10bbdf445513bbe53f4666218b7057d265c76fa0b30475e121a6bf05dbaacaae"
-dependencies = [
- "chrono",
- "cron",
- "uuid",
-]
 
 [[package]]
 name = "js-sys"
@@ -2723,7 +2701,6 @@ dependencies = [
  "dotenv",
  "env_logger",
  "feed-rs",
- "job_scheduler_ng",
  "log",
  "mime",
  "prisma-client-rust",
