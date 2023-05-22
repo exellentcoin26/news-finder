@@ -1,7 +1,7 @@
 use crate::{
     error::RssError,
     prelude::*,
-    prisma::{rss_entries::Data as PrismaFeed, PrismaClient},
+    prisma::{self, rss_entries::Data as PrismaFeed, PrismaClient},
 };
 use feed_rs::model::Feed;
 use regex::Regex;
