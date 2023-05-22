@@ -23,14 +23,21 @@ generator rss-scraper {
   output   = "../rss-scraper/src/prisma.rs"
 }
 
+// flags used by applications
+model Flags {
+    name  String  @id
+    value Boolean
+}
+
 // data models
 model Users {
-  id         Int           @id @default(autoincrement())
-  username   String        @unique
-  created_at DateTime      @default(now())
-  admin      Boolean       @default(false)
+  id         Int                  @id @default(autoincrement())
+  username   String               @unique
+  created_at DateTime             @default(now())
+  admin      Boolean              @default(false)
   login      UserLogins?
   cookies    UserCookies[]
+  history    UserArticleHistory[]
 }
 
 // User login information (user_id, password).
@@ -75,9 +82,17 @@ model NewsArticles {
   description      String?
   photo            String?
   publication_date DateTime?
+  language         Language            @default(English)
   labels           NewsArticleLabels[]
   similar_relation SimilarArticles[]   @relation("similar_relation")
   similar_articles SimilarArticles[]   @relation("similar")
+
+  @@unique([id, url])
+}
+
+enum Language {
+    English
+    Dutch
 }
 
 // Many to many articles relation denoting what articles are similar to eachother.
@@ -99,4 +114,14 @@ model NewsArticleLabels {
   label   String
 
   @@id([id, label])
+}
+
+// One to many relation of user and articles to track user history
+model UserArticleHistory {
+  labels     String[]
+  source_url String
+  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id    Int
+
+  @@id([user_id, source_url])
 }

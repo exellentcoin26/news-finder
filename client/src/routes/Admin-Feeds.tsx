@@ -57,6 +57,8 @@ const getFeedsFromServer = async (source: string): Promise<RssFeed[]> => {
 
 const AdminFeeds = () => {
     const [inputFeeds, setInputFeeds] = useState<string>('');
+    const [category, setCategory] = useState<string>('');
+    const [name, setName] = useState<string>('');
 
     const [sources, setSources] = useState<string[]>([]);
     const [feeds, setFeeds] = useState<RssFeed[]>([]);
@@ -114,14 +116,18 @@ const AdminFeeds = () => {
     };
 
     const handleAddFeed = async (
-        feed: string,
         name: string,
+        feed: string,
+        category: string,
     ): Promise<boolean> => {
         const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            // TODO: Fill in proper feed name here
-            body: JSON.stringify({ feeds: feed, name: name }),
+            body: JSON.stringify({
+                name: name,
+                feeds: feed,
+                category: category,
+            }),
         });
 
         if (response.ok) {
@@ -169,7 +175,7 @@ const AdminFeeds = () => {
         return (
             <Container>
                 <Container className="page-title">Feed Management</Container>
-                <Container>
+                <Container className="mb-5">
                     <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>Add Feeds</Form.Label>
@@ -182,12 +188,32 @@ const AdminFeeds = () => {
                                 }
                             ></Form.Control>
                         </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="category"
+                                value={category}
+                                onChange={(event) =>
+                                    setCategory(event.target.value)
+                                }
+                            ></Form.Control>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Control
+                                type="text"
+                                placeholder="name"
+                                value={name}
+                                onChange={(event) =>
+                                    setName(event.target.value)
+                                }
+                            ></Form.Control>
+                        </Form.Group>
                         <Button
                             type="submit"
                             variant="custom"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleAddFeed(inputFeeds, 'foo');
+                                handleAddFeed(name, inputFeeds, category);
                             }}
                         >
                             Submit

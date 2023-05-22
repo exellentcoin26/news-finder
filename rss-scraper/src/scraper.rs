@@ -1,4 +1,3 @@
-
 use crate::{
     error::RssError,
     prelude::*,
@@ -13,6 +12,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
 
     for rss_feed in rss_feeds {
         let source_id = rss_feed.source_id;
+        let rss_category = rss_feed.category;
         let rss_feed = rss_feed.feed;
 
         let mut labels_with_articles = Vec::new();
@@ -32,7 +32,15 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             }
         };
 
-        // TODO: Store the language of the article for equality checking
+        let language = match &*feed
+            .language
+            .unwrap_or("english".to_string())
+            .to_lowercase()
+        {
+            "english" => prisma::Language::English,
+            "dutch" => prisma::Language::Dutch,
+            _ => prisma::Language::Dutch,
+        };
 
         /* scrape the rss feed */
         for entry in feed.entries {
@@ -95,44 +103,41 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
             let pub_date: Option<chrono::DateTime<chrono::FixedOffset>> =
                 entry.published.map(|date| date.into());
 
-            let raw_labels: Vec<String> = entry
-                .categories
-                .iter()
-                .map(|category| category.term.clone())
-                .collect();
+            // let raw_labels: Vec<String> = entry
+            //     .categories
+            //     .iter()
+            //     .map(|category| category.term.clone())
+            //     .collect();
 
-            let mut labels = Vec::new();
-            for label in raw_labels {
-                if label.contains(':') {
-                    if label.contains("structure") {
-                        let pattern = Regex::new(r"structure:(?:.*/)?(?P<category>[^/]+)/?$")
-                            .expect("failed to build regex");
-                        let label = match pattern.captures(&label) {
-                            Some(captures) => match captures.name("category") {
-                                Some(matches) => matches.as_str().to_string(),
-                                None => "".to_string(),
-                            },
-                            None => label.to_string(),
-                        };
-                        if !label.is_empty() {
-                            labels.push(label);
-                        }
-                    } else {
-                        Some(());
-                    }
-                } else {
-                    labels.push(label);
-                }
-            }
+            // let mut labels = Vec::new();
+            // for label in raw_labels {
+            //     if label.contains(':') {
+            //         if label.contains("structure") {
+            //             let pattern = Regex::new(r"structure:(?:.*/)?(?P<category>[^/]+)/?$")
+            //                 .expect("failed to build regex");
+            //             let label = match pattern.captures(&label) {
+            //                 Some(captures) => match captures.name("category") {
+            //                     Some(matches) => matches.as_str().to_string(),
+            //                     None => "".to_string(),
+            //                 },
+            //                 None => label.to_string(),
+            //             };
+            //             if !label.is_empty() {
+            //                 labels.push(label);
+            //             }
+            //         } else {
+            //             Some(());
+            //         }
+            //     } else {
+            //         labels.push(label);
+            //     }
+            // }
 
-            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}");
+            let labels = vec![rss_category.clone()];
+
+            log::debug!("title: `{title}`, url: `{url}`, photo: `{photo:?}`, description: {description:?}, pub_date: `{pub_date:?}`, tags: {labels:?}, language: {language:?}");
 
             /* insert scraped data into db */
-
-            // TODO: Make labels work :)
-            // TODO: Connect labels to articles.
-
-            // insert labels
 
             article_batch.push(client.news_articles().upsert(
                 prisma::news_articles::url::equals(url.clone()),
@@ -144,6 +149,7 @@ pub async fn scrape_rss_feeds(client: &PrismaClient) -> Result<()> {
                         prisma::news_articles::description::set(description),
                         prisma::news_articles::photo::set(photo),
                         prisma::news_articles::publication_date::set(pub_date),
+                        prisma::news_articles::language::set(language),
                     ],
                 ),
                 // Update is not needed, because we want to ignore articles that have been inserted
