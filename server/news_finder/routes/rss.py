@@ -200,6 +200,14 @@ async def add_rss_feed() -> Response:
             ErrorKind.ServerError,
         )
 
+    await db.flags.upsert(
+        where={"name": "rss_feeds_modified"},
+        data={
+            "create": {"name": "rss_feeds_modified", "value": True},
+            "update": {"value": True},
+        },
+    )
+
     return make_success_response()
 
 
@@ -295,5 +303,13 @@ async def delete_rss() -> Response:
             )
         if not source_entry.rss:
             await db.newssources.delete(where={"id": source})
+
+    await db.flags.upsert(
+        where={"name": "rss_feeds_modified"},
+        data={
+            "create": {"name": "rss_feeds_modified", "value": True},
+            "update": {"value": True},
+        },
+    )
 
     return make_success_response()
