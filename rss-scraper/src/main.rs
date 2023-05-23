@@ -5,7 +5,6 @@ use crate::{
     prisma::{rss_entries::Data as PrismaFeed, PrismaClient},
     scraper::{scrape_rss_feed, scrape_rss_feeds},
 };
-use chrono::Duration;
 use clap::{error::ErrorKind, CommandFactory, Parser};
 use dotenv::dotenv;
 use std::{
@@ -13,7 +12,7 @@ use std::{
     fs,
     io::{BufRead, BufReader, BufWriter, Write},
     path::PathBuf,
-    time::Instant,
+    time::{Duration, Instant},
     vec,
 };
 
@@ -83,11 +82,9 @@ async fn start_scrape_job() -> Result<()> {
         if delta >= 1.0 {
             delta -= 1.0;
 
-            use prisma::flags::UniqueWhereParam::NameEquals;
-
             let should_update_counters = client
                 .flags()
-                .find_unique(NameEquals("rss_feeds_modified".to_string()))
+                .find_unique(prisma::flags::name::equals("rss_feeds_modified".to_string()))
                 .exec()
                 .await?;
 
@@ -115,21 +112,25 @@ async fn start_scrape_job() -> Result<()> {
 
                 // insert counters for feeds not already present
                 for current_feed in current_feeds {
+                    let interval = current_feed.interval;
                     counters.entry(current_feed.id).or_insert(RssCounter {
                         feed: current_feed,
-                        start_time: Instant::now(),
+                        start_time: Instant::now() - Duration::from_secs(interval as u64 * 60),
                     });
                 }
+
                 force_update_counters = false;
+
+                use prisma::flags::{name, value};
+                client.flags().update(name::equals("rss_feeds_modified".to_string()), vec![value::set(false)]).exec().await?;
             }
 
             let mut next_run: Option<Duration> = None;
             let mut new_counters = Vec::new();
             for (_, feed_counter) in counters.iter() {
-                let interval =
-                    Duration::from_std(Instant::now() - feed_counter.start_time).unwrap();
+                let interval = Instant::now() - feed_counter.start_time;
 
-                if interval.num_seconds() >= feed_counter.feed.interval as i64 * 60 {
+                if interval.as_secs() >= feed_counter.feed.interval as u64 * 60 {
                     run_scraper(Some(&feed_counter.feed), &client).await?;
                     new_counters.push(RssCounter {
                         feed: feed_counter.feed.clone(),
@@ -137,7 +138,7 @@ async fn start_scrape_job() -> Result<()> {
                     });
                 } else {
                     let time_till_next_run =
-                        Duration::seconds(feed_counter.feed.interval as i64 * 60) - interval;
+                        Duration::from_secs(feed_counter.feed.interval as u64 * 60) - interval;
                     next_run = match next_run {
                         Some(next_run) => Some(next_run.min(time_till_next_run)),
                         None => Some(time_till_next_run),
@@ -150,13 +151,13 @@ async fn start_scrape_job() -> Result<()> {
             }
 
             if let Some(next_run) = next_run {
-                log::info!("Next run in {} seconds", next_run.num_seconds());
+                log::info!("Next run in {} seconds", next_run.as_secs());
             } else {
                 log::info!("No feeds to scrape.")
             }
         }
 
-        std::thread::sleep(Duration::seconds(1).to_std().expect("failed to convert chrono duration to std duration"));
+        std::thread::sleep(Duration::from_secs(1));
     }
 }
 
