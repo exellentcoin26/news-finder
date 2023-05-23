@@ -1,59 +1,28 @@
 use crate::{
+    cli::{Cli, CliCommands},
     counter::RssCounter,
     prelude::*,
     prisma::{rss_entries::Data as PrismaFeed, PrismaClient},
     scraper::{scrape_rss_feed, scrape_rss_feeds},
 };
 use chrono::Duration;
-use clap::{error::ErrorKind, Args, CommandFactory, Parser, Subcommand};
+use clap::{error::ErrorKind, CommandFactory, Parser};
 use dotenv::dotenv;
 use std::{
-    collections::BTreeSet,
+    collections::BTreeMap,
     fs,
     io::{BufRead, BufReader, BufWriter, Write},
     path::PathBuf,
     time::Instant,
+    vec,
 };
 
+mod cli;
 mod counter;
 mod error;
 mod prelude;
 mod prisma;
 mod scraper;
-
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    /// Check RSS feeds validity from input file
-    Check {
-        /// File to read feeds from
-        #[arg(short, long, value_name = "INPUT_FILE", default_value = "input.txt")]
-        input: PathBuf,
-
-        /// File to write successful feeds to
-        #[arg(short, long, value_name = "OUTPUT_FILE", default_value = "working.txt")]
-        output: PathBuf,
-    },
-    /// Run the rss-scraper
-    Run {
-        #[command(flatten)]
-        args: ScrapeArgs,
-    },
-}
-
-#[derive(Args)]
-#[group(multiple = false)]
-struct ScrapeArgs {
-    /// Run once
-    #[arg(long)]
-    once: bool,
-}
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -68,7 +37,7 @@ async fn main() -> Result<()> {
         .init();
 
     match cli.command {
-        Commands::Check { input, output } => {
+        CliCommands::Check { input, output } => {
             if !input.exists() {
                 let mut cmd = Cli::command();
                 cmd.error(ErrorKind::Io, "Input file does not exist").exit();
@@ -76,7 +45,7 @@ async fn main() -> Result<()> {
 
             check_rss_feeds_from_file(&input, &output).await?;
         }
-        Commands::Run { args } => {
+        CliCommands::Run { args } => {
             if args.once {
                 let client = prisma::new_client()
                     .await
@@ -96,7 +65,7 @@ async fn start_scrape_job() -> Result<()> {
         .await
         .expect("failed to create prisma client");
 
-    let mut counters = BTreeSet::new();
+    let mut counters = BTreeMap::new();
 
     let mut force_update_counters = true;
 
@@ -136,19 +105,27 @@ async fn start_scrape_job() -> Result<()> {
 
             if should_update_counters || force_update_counters {
                 // query the interval of all rss feeds
-                for feed in client.rss_entries().find_many(vec![]).exec().await? {
-                    counters.insert(RssCounter {
-                        feed,
+                let current_feeds: Vec<PrismaFeed> =
+                    client.rss_entries().find_many(vec![]).exec().await?;
+
+                let current_feed_ids: Vec<i32> = current_feeds.iter().map(|f| f.id).collect();
+
+                // remove feeds that are not in the database anymore
+                counters.retain(|k: &i32, _| current_feed_ids.contains(k));
+
+                // insert counters for feeds not already present
+                for current_feed in current_feeds {
+                    counters.entry(current_feed.id).or_insert(RssCounter {
+                        feed: current_feed,
                         start_time: Instant::now(),
                     });
                 }
-
                 force_update_counters = false;
             }
 
             let mut next_run: Option<Duration> = None;
             let mut new_counters = Vec::new();
-            for feed_counter in counters.iter() {
+            for (_, feed_counter) in counters.iter() {
                 let interval =
                     Duration::from_std(Instant::now() - feed_counter.start_time).unwrap();
 
@@ -169,7 +146,7 @@ async fn start_scrape_job() -> Result<()> {
             }
 
             for new_counter in new_counters {
-                counters.replace(new_counter);
+                counters.insert(new_counter.feed.id, new_counter);
             }
 
             if let Some(next_run) = next_run {
