@@ -155,6 +155,8 @@ async fn start_scrape_job() -> Result<()> {
                 log::info!("No feeds to scrape.")
             }
         }
+
+        std::thread::sleep(Duration::seconds(1).to_std().expect("failed to convert chrono duration to std duration"));
     }
 }
 
