@@ -7,6 +7,7 @@ import {
 } from '../interfaces/api/article';
 import { formatDistance } from 'date-fns';
 import { SERVER_URL } from '../env';
+import { isLoggedIn } from '.,/helpers';
 
 function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
     const [similarArticles, setSimilarArticles] = useState<
@@ -145,6 +146,8 @@ export const Article = ({
     }
 
     const handleArticleClick = async () => {
+        if (!isLoggedIn()) return
+
         const response = await fetch(SERVER_URL + '/user-history/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
