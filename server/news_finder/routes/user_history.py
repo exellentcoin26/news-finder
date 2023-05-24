@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, request
+from flask_cors import CORS
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 import sys
@@ -12,7 +13,8 @@ from news_finder.response import (
 )
 
 
-history_bp = Blueprint("user", __name__, url_prefix="/user-history")
+history_bp = Blueprint("user_history", __name__, url_prefix="/user-history")
+CORS(history_bp, supports_credentials=True)
 
 
 @history_bp.post("/")
@@ -23,7 +25,6 @@ async def store_user_history() -> Response:
     .. code-block:: json
 
         {
-            "username": "name",
             "articleLink": "https:foo.article/article1.html"
         }
     """
@@ -31,16 +32,12 @@ async def store_user_history() -> Response:
     schema = {
         "type": "object",
         "properties": {
-            "username": {
-                "description": "Name of the user that is currently logged in",
-                "type": "string",
-            },
             "articleLink": {
                 "description": "Article on which the user clicked",
                 "type": "string",
             },
         },
-        "required": "username",
+        "required": ["articleLink"],
     }
 
     data = request.get_json(silent=True)
@@ -59,12 +56,37 @@ async def store_user_history() -> Response:
 
     db = await get_db()
 
-    user = await db.users.find_first(where={"username": data["username"]})
+    cookie = request.cookies.get("session")
+    if cookie is None:
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.CookieNotSet,
+            "Cookie not present in request",
+        )
+
+    try:
+        user_cookie = await db.usercookies.find_unique(
+            where={"cookie": cookie}, include={"user": True}
+        )
+    except Exception:
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
+        )
+
+    if user_cookie is None or user_cookie.user is None:
+        return make_response_from_error(
+            HTTPStatus.BAD_REQUEST,
+            ErrorKind.CookieNotFound,
+        )
+
+    user = user_cookie.user
+
     clicked_article = await db.newsarticles.find_first(
-        where={"url": data["articleLink"]}
+        where={"url": data["articleLink"]}, include={"labels": True}
     )
 
-    if user is None or clicked_article is None:
+    if clicked_article is None:
         return make_response_from_error(
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
