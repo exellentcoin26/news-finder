@@ -4,13 +4,43 @@ from http import HTTPStatus
 
 
 # Add feeds
-def test_add_rss(client: Flask.testing):
+def test_add_rss_without_interval(client: Flask.testing):
     response = client.post(
         "/rss/",
         json={
             "name": "vrt-binnenland",
             "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
-            "category": "binnenland"
+            "category": "binnenland",
+        },
+    )
+    assert response.status_code == HTTPStatus.OK
+
+    response = client.get("/rss/")
+    expected = """{
+        "data": {
+            "feeds": [
+                {
+                    "source": "www.vrt.be",
+                    "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+                    "name": "vrt-binnenland"
+                }
+            ]
+        },
+        "errors": [],
+        "status": 200
+    }"""
+    assert response.status_code == HTTPStatus.OK
+    assert compare_json(expected, response.get_json())
+
+
+def test_add_rss_with_interval(client: Flask.testing):
+    response = client.post(
+        "/rss/",
+        json={
+            "name": "vrt-binnenland",
+            "feed": "https://www.vrt.be/vrtnws/nl.rss.articles_binnenland.xml",
+            "category": "binnenland",
+            "interval": 4,
         },
     )
     assert response.status_code == HTTPStatus.OK
