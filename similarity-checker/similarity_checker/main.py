@@ -19,9 +19,7 @@ from numpy.typing import NDArray
 
 from utils import filter_stop_words, filter_numerics
 
-THRESHOLD = 0.90
-
-# TODO: check language of the article
+THRESHOLD = 0.65
 
 
 async def main():
@@ -33,6 +31,8 @@ async def main():
 
     delta = 0.0
     last_time = datetime.now()
+
+    update_override = True
 
     while True:
         now = datetime.now()
@@ -60,7 +60,7 @@ async def main():
 
             if should_check is None:
                 await db.flags.create({"name": "articles_modified", "value": False})
-            elif should_check.value is False:
+            elif should_check.value is False and not update_override:
                 print(
                     "Nothing modified. Not running similarity checker.", file=sys.stderr
                 )
@@ -75,6 +75,8 @@ async def main():
                 where={"name": "articles_modified"}, data={"value": False}
             )
 
+            update_override = False
+
 
 async def calc_article_similarity(
     database_articles: List[NewsArticles], client: Prisma
@@ -88,6 +90,9 @@ async def calc_article_similarity(
     """
 
     raw_articles: List[str] = [article.title for article in database_articles]
+    raw_descriptions: List[str] = [
+        article.description or "" for article in database_articles
+    ]
 
     print(
         f"Starting similarity checker on list of `{len(raw_articles)}` articles.",
@@ -101,6 +106,12 @@ async def calc_article_similarity(
         .lower()
         for article in raw_articles
     ]
+    cleaned_description: List[str] = [
+        re.sub(r"\s+", " ", article)
+        .translate(str.maketrans("", "", string.punctuation))
+        .lower()
+        for article in raw_descriptions
+    ]
     # Split articles by whitespace and remove stopwords
     articles = [article.split() for article in cleaned_articles]
     articles = [filter_numerics(article) for article in articles]
@@ -108,12 +119,24 @@ async def calc_article_similarity(
         filter_stop_words(article, database_articles[idx].language)
         for [idx, article] in enumerate(articles)
     ]
+    descriptions = [description.split() for description in cleaned_description]
+    descriptions = [filter_numerics(description) for description in descriptions]
+    descriptions = [
+        filter_stop_words(description, database_articles[idx].language)
+        for [idx, description] in enumerate(descriptions)
+    ]
 
-    tf_idf_table = calc_tf_idf(articles)
+    article_tf_idf_table = calc_tf_idf(articles)
+    description_tf_idf_table = calc_tf_idf(descriptions)
 
     similar: Dict[int, Set[int]] = {}
 
-    cosine_similarity_table = np.matmul(tf_idf_table, tf_idf_table.T)
+    title_cosine_similarity_table = np.matmul(
+        article_tf_idf_table, article_tf_idf_table.T
+    )
+    description_cosine_similarity_table = np.matmul(
+        description_tf_idf_table, description_tf_idf_table.T
+    )
 
     # Check every article against every other article
     print("Checking cosine similarities...", file=sys.stderr)
@@ -125,22 +148,25 @@ async def calc_article_similarity(
             )
             assert article1.source is not None and article2.source is not None
 
-            similarity = cosine_similarity_table[lhs_article_idx][rhs_article_idx]
+            title_similarity = title_cosine_similarity_table[lhs_article_idx][
+                rhs_article_idx
+            ]
+            description_similarity = description_cosine_similarity_table[
+                lhs_article_idx
+            ][rhs_article_idx]
+
             sys.stdout.write(
-                "\033[K"
+                "\r"
+                + "\033[2K"
                 + f"Article `{lhs_article_idx}` == Article `{rhs_article_idx}`: "
-                + f"{similarity}".expandtabs(2)
+                + f"{title_similarity}".expandtabs(2)
+                + f"/{description_similarity}".expandtabs(2)
                 + "\r"
             )
-            if similarity > THRESHOLD:
-                if article1.source.id == article2.source.id:
-                    print(
-                        f"Found a possible update! ({article1.source.name})",
-                        file=sys.stderr,
-                    )
 
-                print(
-                    "\033[K"
+            if title_similarity > THRESHOLD:
+                sys.stdout.write(
+                    "\n"
                     + f"Found:\n\t`{' '.join(articles[lhs_article_idx])}`\n"
                     + "\t"
                     + article1.source.name
@@ -148,8 +174,15 @@ async def calc_article_similarity(
                     + f"\n\t`{' '.join(articles[rhs_article_idx])}\n"
                     + "\t"
                     + article2.source.name
-                    + f"\nsimilarity: {similarity}`"
+                    + f"\nsimilarity: {title_similarity}`"
+                    + "\n"
                 )
+
+                if article1.source.id == article2.source.id:
+                    print(
+                        f"Found a possible update! ({article1.source.name})",
+                        file=sys.stderr,
+                    )
 
                 similar[lhs_article_idx] = set(
                     [*similar.get(lhs_article_idx, []), rhs_article_idx]
@@ -162,10 +195,50 @@ async def calc_article_similarity(
                 await insert_similar_article_pair_into_db(
                     article1,
                     article2,
-                    similarity,
+                    title_similarity,
                     client,
                 )
+            elif (
+                title_similarity > np.finfo(float).eps
+                and description_similarity > THRESHOLD
+                and not (
+                    descriptions[lhs_article_idx] == ""
+                    or descriptions[rhs_article_idx] == ""
+                )
+            ):
+                sys.stdout.write(
+                    "\n"
+                    f"Found:\n\t`{' '.join(articles[lhs_article_idx])}`\n"
+                    + "\t"
+                    + article1.source.name
+                    + "\n\t=="
+                    + f"\n\t`{' '.join(articles[rhs_article_idx])}\n"
+                    + "\t"
+                    + article2.source.name
+                    + f"\ndescription similarity: {description_similarity}`"
+                    + "\n"
+                )
 
+                if article1.source.id == article2.source.id:
+                    print(
+                        f"Found a possible update! ({article1.source.name})",
+                        file=sys.stderr,
+                    )
+
+                similar[lhs_article_idx] = set(
+                    [*similar.get(lhs_article_idx, []), rhs_article_idx]
+                )
+                similar[rhs_article_idx] = set(
+                    [*similar.get(rhs_article_idx, []), lhs_article_idx]
+                )
+
+                # Insert into database
+                await insert_similar_article_pair_into_db(
+                    article1,
+                    article2,
+                    description_similarity,
+                    client,
+                )
     return similar
 
 
