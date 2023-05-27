@@ -1,9 +1,17 @@
 from flask import Blueprint, Response, request
 
 from http import HTTPStatus
-from typing import List, Dict
+from typing import List, Dict, Literal
+from dataclasses import dataclass
 
 import sys
+
+from prisma.models import NewsArticles
+from prisma.types import (
+    NewsArticlesInclude,
+    NewsArticlesOrderByInput,
+    NewsArticlesWhereInput,
+)
 
 from news_finder.db import get_db
 from news_finder.response import (
@@ -15,13 +23,73 @@ from news_finder.response import (
 article_bp = Blueprint("article", __name__, url_prefix="/article")
 
 
+@dataclass
+class NewsArticlesFindParams:
+    take: int
+    skip: int
+    include: NewsArticlesInclude
+    where: NewsArticlesWhereInput | None
+    order: List[NewsArticlesOrderByInput]
+
+    def add_where(self, where: NewsArticlesWhereInput, relation: Literal["OR", "AND"]):
+        if self.where is None:
+            self.where = where
+        else:
+            # Create a filter from both conditions using the provided relation
+            self.where = NewsArticlesWhereInput(**{relation: [self.where, where]})
+
+
+def remove_updated(articles: List[NewsArticles]) -> List[NewsArticles]:
+    result: List[NewsArticles] = []
+
+    for article in articles:
+        # Remove old versions that have been updated
+        if article.similar_articles is not None:
+            # article id -> datatime timestamp
+            similar_article_sources: Dict[int, float] = {}
+
+            for sim in article.similar_articles:
+                assert (
+                    sim.similar is not None
+                ), "similar for similar articles cannot be none"
+                assert (
+                    sim.similar.source is not None
+                ), "similar.similar_source for similar article cannot be none"
+
+                if sim.similar.publication_date is None:
+                    continue
+
+                similar_article_sources[sim.similar.source.id] = max(
+                    similar_article_sources.get(sim.similar.source_id, 0),
+                    sim.similar.publication_date.timestamp(),
+                )
+
+            if (
+                article.publication_date is not None
+                and similar_article_sources.get(article.source_id, 0)
+                > article.publication_date.timestamp()
+            ):
+                continue
+
+        result.append(article)
+
+    return result
+
+
 @article_bp.get("/")
 async def get_articles() -> Response:
     """
-    Get a json with all the articles and their news source. set the `amount` and
-    `offset` parameters to specify a range of articles to retrieve.
+    Get a json with all the articles and their news source.
 
     Articles are ordened by recency and versions that have an upadate are emitted.
+
+    # Parameters:
+        - amount: Amount of articles to retrieve.
+        - offset: Offset in the article selection list.
+        - label: Filter for the articles to retrieve.
+        - sortBy:
+            * recency (default)
+            * popularity
 
     # Articles json structure:
 
@@ -56,134 +124,89 @@ async def get_articles() -> Response:
     try:
         amount = int(request.args.get("amount") or 50)
         offset = int(request.args.get("offset") or 0)
-        category = request.args.get("label") or ""
-    except ValueError:
+        category = request.args.get("label") or None
+        sortBy = request.args.get("sortBy") or "recency"
+
+        if sortBy not in ("recency", "popularity"):
+            raise ValueError(f"sortBy has invalid value `{sortBy}`")
+    except ValueError as e:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
             ErrorKind.IncorrectParameters,
-            "Parameters to get request are not integer values",
+            str(e),
         )
 
     db = await get_db()
 
-    if category == "":
-        try:
-            articles = await db.newsarticles.find_many(
-                take=amount,
-                skip=offset,
-                include={
-                    "source": True,
-                    "similar_articles": {
-                        "include": {"similar": {"include": {"source": True}}}
-                    },
+    article_find_params = NewsArticlesFindParams(
+        take=amount,
+        skip=offset,
+        include=NewsArticlesInclude(
+            {
+                "source": True,
+                "similar_articles": {
+                    "include": {"similar": {"include": {"source": True}}}
                 },
-                # hardcode order for now
-                # TODO: Remove this hardcode
-                order={"publication_date": "desc"},
-            )
-        except Exception as e:
-            print(e.with_traceback(None), file=sys.stderr)
-            return make_response_from_error(
-                HTTPStatus.INTERNAL_SERVER_ERROR,
-                ErrorKind.ServerError,
-            )
-    else:
-        try:
-            articles = await db.newsarticles.find_many(
-                take=amount,
-                skip=offset,
-                where={
-                    "labels": {
-                        "some": {
-                            "label": {"contains": category}
-                        }
-                    }
-                },
-                include={
-                    "source": True,
-                    "similar_articles": {
-                        "include": {"similar": {"include": {"source": True}}}
-                    },
-                },
-                # hardcode order for now
-                # TODO: Remove this hardcode
-                order={"publication_date": "desc"},
-            )
-        except Exception as e:
-            print(e.with_traceback(None), file=sys.stderr)
-            return make_response_from_error(
-                HTTPStatus.INTERNAL_SERVER_ERROR,
-                ErrorKind.ServerError,
-            )
+            }
+        ),
+        where=None,
+        order=[],
+    )
 
-    response: Dict[str, List[Dict[str, str | Dict[str, str | float | None]]]] = {"articles": []}
+    match sortBy:
+        case "recency":
+            article_find_params.order.append({"publication_date": "desc"})
+        case "popularity":
+            # TODO: Implement sort by popularity
+            pass
+
+    if category is not None:
+        article_find_params.add_where(
+            {"labels": {"some": {"label": {"contains": category}}}}, "AND"
+        )
+
+    try:
+        articles = await db.newsarticles.find_many(**vars(article_find_params))
+    except Exception as e:
+        print(e.with_traceback(None), file=sys.stderr)
+        return make_response_from_error(
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+            ErrorKind.ServerError,
+        )
+
+    # Remove older version of article that has newer entry in list.
+    articles = remove_updated(articles)
+
+    response: Dict[str, List[Dict[str, str | Dict[str, str | float | None]]]] = {
+        "articles": []
+    }
+
     for article in articles:
         assert (
             article.source is not None
         ), "article should always have a source associated with it"
 
-        # Remove old versions that have been updated
-        if article.similar_articles is not None:
-            # article id -> datatime timestamp
-            similar_article_sources: Dict[int, float] = {}
-
-            for sim in article.similar_articles:
-                assert (
-                    sim.similar is not None
-                ), "similar for similar articles cannot be none"
-                assert (
-                    sim.similar.source is not None
-                ), "similar.similar_source for similar article cannot be none"
-
-                if sim.similar.publication_date is None:
-                    continue
-
-                similar_article_sources[sim.similar.source.id] = max(
-                    similar_article_sources.get(sim.similar.source_id, 0),
-                    sim.similar.publication_date.timestamp(),
-                )
-
-            if article.publication_date is not None:
-                if (
-                    similar_article_sources.get(article.source_id, 0)
-                    > article.publication_date.timestamp()
-                ):
-                    continue
-
         news_source = article.source.name
+        entry = {
+            "source": news_source,
+            "article": {
+                "title": article.title,
+                "description": article.description,
+                "photo": article.photo,
+                "link": article.url,
+            },
+        }
 
         if article.publication_date is not None:
-            response["articles"].append(
-                {
-                    "source": news_source,
-                    "article": {
-                        "title": article.title,
-                        "description": article.description,
-                        "photo": article.photo,
-                        "link": article.url,
-                        "publication_date": article.publication_date.timestamp(),
-                    },
-                }
-            )
+            entry["article"]["publication_date"] = article.publication_date.timestamp()
 
-        else:
-            response["articles"].append(
-                {
-                    "source": news_source,
-                    "article": {
-                        "title": article.title,
-                        "description": article.description,
-                        "photo": article.photo,
-                        "link": article.url,
-                    },
-                }
-            )
+        response["articles"].append(entry)
 
     return make_success_response(HTTPStatus.OK, response)
 
+
 @article_bp.get("/similar/")
 async def get_similar_articles() -> Response:
-
     article_link = str(request.args.get("url"))
 
     db = await get_db()
@@ -191,21 +214,17 @@ async def get_similar_articles() -> Response:
     try:
         current_article = await db.newsarticles.find_unique(
             where={
-                "url":article_link,
+                "url": article_link,
             },
         )
 
-        assert (
-                current_article is not None
-        ), "article should always exist in database"
+        assert current_article is not None, "article should always exist in database"
 
-        assert (
-                current_article.id is not None
-        ), "article should always have an id"
+        assert current_article.id is not None, "article should always have an id"
 
         similar_articles = await db.similararticles.find_many(
             where={
-                "id1":current_article.id,
+                "id1": current_article.id,
             }
         )
     except Exception as e:
@@ -217,20 +236,19 @@ async def get_similar_articles() -> Response:
 
     response: Dict[str, List[Dict[str, str]]] = {"articles": []}
     for pair in similar_articles:
-
         assert (
-                pair.id1 is not None
+            pair.id1 is not None
         ), "article in similar articles table should always have an id"
 
         assert (
-                pair.id2 is not None
+            pair.id2 is not None
         ), "article in similar articles table should always have a similar article associated with it with an id"
 
         similar_article = await db.newsarticles.find_unique(
             where={
                 "id": pair.id2,
             },
-            include={"source": True}
+            include={"source": True},
         )
 
         assert (
@@ -242,11 +260,7 @@ async def get_similar_articles() -> Response:
         ), "an article should always have a source associated with it"
 
         response["articles"].append(
-            {
-                "source": similar_article.source.name,
-                "link": similar_article.url
-            }
+            {"source": similar_article.source.name, "link": similar_article.url}
         )
-
 
     return make_success_response(HTTPStatus.OK, response)
