@@ -14,7 +14,6 @@ from prisma.types import (
     NewsArticlesOrderByInput,
     NewsArticlesWhereInput,
 )
-from prisma import Prisma
 
 from news_finder.db import get_db
 from news_finder.response import (
