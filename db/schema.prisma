@@ -1,136 +1,145 @@
 // database
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // generator
 // Note: this is only present for backwards compatibility (use of `python` generator is recommended).
 generator server {
-    provider             = "prisma-client-py"
-    interface            = "asyncio"
-    recursive_type_depth = -1
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = -1
 }
 
 generator python {
-    provider             = "prisma-client-py"
-    interface            = "asyncio"
-    recursive_type_depth = -1
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = -1
 }
 
 generator rss-scraper {
-    provider = "cargo prisma"
-    output   = "../rss-scraper/src/prisma.rs"
+  provider = "cargo prisma"
+  output   = "../rss-scraper/src/prisma.rs"
 }
 
 // flags used by applications
 model Flags {
-    name  String  @id
-    value Boolean
+  name  String  @id
+  value Boolean
 }
 
 // data models
 model Users {
-    id         Int                  @id @default(autoincrement())
-    username   String               @unique
-    created_at DateTime             @default(now())
-    admin      Boolean              @default(false)
-    login      UserLogins?
-    cookies    UserCookies[]
-    history    UserArticleHistory[]
+  id         Int           @id @default(autoincrement())
+  username   String        @unique
+  created_at DateTime      @default(now())
+  admin      Boolean       @default(false)
+  login      UserLogins?
+  cookies    UserCookies[]
+
+  label_source_history UserLabelSourceHistory[]
+  article_history      UserArticleHistory[]
 }
 
 // User login information (user_id, password).
 model UserLogins {
-    user     Users  @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    id       Int    @id
-    password String
+  user     Users  @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id       Int    @id
+  password String
 }
 
 // Cookie belonging to a logged in user.
 model UserCookies {
-    user    Users  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    user_id Int
-    cookie  String @id
+  user    Users  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id Int
+  cookie  String @id
 }
 
 // News source information.
 model NewsSources {
-    id       Int            @id @default(autoincrement())
-    name     String         @unique
-    url      String         @unique
-    rss      RssEntries[]
-    articles NewsArticles[]
+  id       Int            @id @default(autoincrement())
+  name     String         @unique
+  url      String         @unique
+  rss      RssEntries[]
+  articles NewsArticles[]
 }
 
 // An rss feed url with corresponding news source.
 model RssEntries {
-    id        Int         @id @default(autoincrement())
-    source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    source_id Int
-    name      String
-    feed      String      @unique
-    // Scrape interval in minutes.
-    interval  Int         @default(10)
-    category  String
+  id        Int         @id @default(autoincrement())
+  source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  source_id Int
+  name      String
+  feed      String      @unique
+  // Scrape interval in minutes.
+  interval  Int         @default(10)
+  category  String
 }
 
 // News article entry scraped from an rss feed.
 model NewsArticles {
-    id               Int                 @id @default(autoincrement())
-    source           NewsSources         @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    source_id        Int
-    url              String              @unique
-    title            String
-    description      String?
-    photo            String?
-    publication_date DateTime?
-    language         Language            @default(English)
-    labels           NewsArticleLabels[]
+  id               Int                 @id @default(autoincrement())
+  source           NewsSources         @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  source_id        Int
+  url              String              @unique
+  title            String
+  description      String?
+  photo            String?
+  publication_date DateTime?
+  language         Language            @default(English)
+  labels           NewsArticleLabels[]
 
-    similar_relation SimilarArticles[] @relation("similar_relation")
-    similar_articles SimilarArticles[] @relation("similar")
+  similar_relation SimilarArticles[] @relation("similar_relation")
+  similar_articles SimilarArticles[] @relation("similar")
 
-    user_article_history UserArticleHistory[]
+  user_article_history UserArticleHistory[]
 
-    @@unique([id, url])
+  @@unique([id, url])
 }
 
 enum Language {
-    English
-    Dutch
+  English
+  Dutch
 }
 
 // Many to many articles relation denoting what articles are similar to eachother.
 model SimilarArticles {
-    article NewsArticles @relation("similar", fields: [id1], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    id1     Int
-    similar NewsArticles @relation("similar_relation", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    id2     Int
+  article NewsArticles @relation("similar", fields: [id1], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id1     Int
+  similar NewsArticles @relation("similar_relation", fields: [id2], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id2     Int
 
-    similarity Float
+  similarity Float
 
-    @@id([id1, id2])
+  @@id([id1, id2])
 }
 
 // One to many relation of articles to labels.
 model NewsArticleLabels {
-    article NewsArticles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    id      Int
-    label   String
+  article NewsArticles @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id      Int
+  label   String
 
-    @@id([id, label])
+  @@id([id, label])
 }
 
-// One to many relation of user and articles to track user history
-model UserArticleHistory {
-    article    NewsArticles? @relation(fields: [article_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
-    article_id Int?
-    labels     String[]
-    source_url String
-    user       Users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    user_id    Int
+// HISTORY
 
-    @@id([user_id, source_url])
-    @@unique([user_id, source_url, article_id])
+// One to many relation of user and sources/label to track user history.
+model UserLabelSourceHistory {
+  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id    Int      @id
+  labels     String[]
+  source_url String
+}
+
+// One to many relation of user and articles to track user history.
+model UserArticleHistory {
+  article    NewsArticles @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  article_id Int
+  user       Users        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id    Int
+
+  @@id([user_id, article_id])
 }
