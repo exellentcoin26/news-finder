@@ -1,7 +1,7 @@
 from flask import Blueprint, Response, request
 
 from http import HTTPStatus
-from typing import List, Dict, Literal
+from typing import List, Dict, Literal, Any
 from dataclasses import dataclass
 
 import sys
@@ -187,7 +187,8 @@ async def get_articles() -> Response:
         ), "article should always have a source associated with it"
 
         news_source = article.source.name
-        entry = {
+        # TODO: Define set of response objects with TypedDict.
+        entry: Dict[str, Any] = {
             "source": news_source,
             "article": {
                 "title": article.title,
