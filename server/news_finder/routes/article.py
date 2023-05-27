@@ -97,6 +97,7 @@ async def get_articles() -> Response:
         - sortBy:
             * recency (default)
             * popularity
+            * source
 
     # Articles json structure:
 
