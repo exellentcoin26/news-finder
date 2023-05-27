@@ -158,8 +158,25 @@ async def get_articles() -> Response:
         case "recency":
             article_find_params.order.append({"publication_date": "desc"})
         case "popularity":
-            # TODO: Implement sort by popularity
-            pass
+            # Group all history entries by article id when they are not NULL. Count the
+            # entries per group and return the appropriate amount with a descending
+            # count.
+
+            popular_articles = await db.query_raw(
+                f""" 
+                SELECT article_id, COUNT(*) as count
+                FROM "UserArticleHistory"
+                WHERE article_id IS NOT NULL
+                GROUP BY article_id
+                ORDER BY count DESC
+                OFFSET {offset}
+                LIMIT {amount}
+                """ # type: ignore
+            )
+            popular_article_ids = [popular_article["article_id"] for popular_article in popular_articles]
+
+            print(popular_article_ids)
+            article_find_params.add_where({"id": {"in": popular_article_ids}}, "AND")
 
     if category is not None:
         article_find_params.add_where(
