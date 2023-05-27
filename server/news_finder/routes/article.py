@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, request
+from flask_cors import CORS
 
 from http import HTTPStatus
 from typing import List, Dict, Literal, Any
@@ -13,6 +14,7 @@ from prisma.types import (
     NewsArticlesOrderByInput,
     NewsArticlesWhereInput,
 )
+from prisma import Prisma
 
 from news_finder.db import get_db
 from news_finder.response import (
@@ -22,22 +24,7 @@ from news_finder.response import (
 )
 
 article_bp = Blueprint("article", __name__, url_prefix="/article")
-
-
-@dataclass
-class NewsArticlesFindParams:
-    take: int
-    skip: int
-    include: NewsArticlesInclude
-    where: NewsArticlesWhereInput | None
-    order: List[NewsArticlesOrderByInput]
-
-    def add_where(self, where: NewsArticlesWhereInput, relation: Literal["OR", "AND"]):
-        if self.where is None:
-            self.where = where
-        else:
-            # Create a filter from both conditions using the provided relation
-            self.where = NewsArticlesWhereInput(**{relation: [self.where, where]})
+CORS(article_bp, supports_credentials=True)
 
 
 def remove_updated(articles: List[NewsArticles]) -> List[NewsArticles]:
@@ -75,6 +62,26 @@ def remove_updated(articles: List[NewsArticles]) -> List[NewsArticles]:
         result.append(article)
 
     return result
+
+
+@dataclass
+class NewsArticlesFindParams:
+    take: int
+    skip: int
+    include: NewsArticlesInclude
+    where: NewsArticlesWhereInput | None
+    order: List[NewsArticlesOrderByInput]
+
+    def add_where(self, where: NewsArticlesWhereInput, relation: Literal["OR", "AND"]):
+        if self.where is None:
+            self.where = where
+        else:
+            # Create a filter from both conditions using the provided relation
+            self.where = NewsArticlesWhereInput(**{relation: [self.where, where]})
+
+    def add_include(self, include: NewsArticlesInclude):
+        self.include = {**self.include, **include}
+
 
 
 @article_bp.get("/")
@@ -128,7 +135,7 @@ async def get_articles() -> Response:
         category = request.args.get("label") or None
         sort_by = request.args.get("sortBy") or "recency"
 
-        if sort_by not in ("recency", "popularity"):
+        if sort_by not in ("recency", "popularity", "source"):
             raise ValueError(f"sortBy has invalid value `{sort_by}`")
     except ValueError as e:
         return make_response_from_error(
@@ -178,6 +185,8 @@ async def get_articles() -> Response:
             ]
 
             article_find_params.add_where({"id": {"in": popular_article_ids}}, "AND")
+        case "source":
+            article_find_params.add_include({"source": True})
 
     if category is not None:
         article_find_params.add_where(
@@ -202,6 +211,27 @@ async def get_articles() -> Response:
 
     if sort_by == "popularity":
         articles.sort(key=lambda article: popular_article_ids.index(article.id))
+    elif sort_by == "source":
+        cookie = request.cookies.get("session")
+        if cookie is not None:
+            user_cookie = await db.usercookies.find_unique(where={"cookie": cookie})
+
+            if user_cookie is None:
+                return make_response_from_error(
+                    HTTPStatus.BAD_REQUEST,
+                    ErrorKind.CookieNotFound,
+                )
+
+            source_priority_list = await db.usersourcehistory.find_many(
+                where={"user_id": user_cookie.user_id}, order={"amount": "desc"}
+            )
+            source_priority_list = [source.source_id for source in source_priority_list]
+
+            def key(article: NewsArticles) -> int:
+                assert article.source is not None
+                return source_priority_list.index(article.source.id)
+
+            articles.sort(key=key)
 
     for article in articles:
         assert (

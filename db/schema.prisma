@@ -153,5 +153,7 @@ model UserSourceHistory {
   source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   source_id Int
 
+  amount Int    @default(1)
+
   @@id([user_id, source_id])
 }

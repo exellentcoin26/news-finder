@@ -146,7 +146,7 @@ async def store_user_history() -> Response:
                 "user": {"connect": {"id": user.id}},
                 "source": {"connect": {"id": source.id}},
             },
-            "update": {},
+            "update": {"amount": {"increment": 1}},
         },
     )
 
