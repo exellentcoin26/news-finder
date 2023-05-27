@@ -202,8 +202,8 @@ async def calc_article_similarity(
                 title_similarity > np.finfo(float).eps
                 and description_similarity > THRESHOLD
                 and not (
-                    descriptions[lhs_article_idx] == ""
-                    or descriptions[rhs_article_idx] == ""
+                    descriptions[lhs_article_idx] == []
+                    or descriptions[rhs_article_idx] == []
                 )
             ):
                 sys.stdout.write(
