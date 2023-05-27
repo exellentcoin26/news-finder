@@ -38,8 +38,9 @@ model Users {
   login      UserLogins?
   cookies    UserCookies[]
 
-  label_source_history UserLabelSourceHistory[]
-  article_history      UserArticleHistory[]
+  label_history   UserLabelHistory[]
+  article_history UserArticleHistory[]
+  source_history  UserSourceHistory[]
 }
 
 // User login information (user_id, password).
@@ -63,6 +64,8 @@ model NewsSources {
   url      String         @unique
   rss      RssEntries[]
   articles NewsArticles[]
+
+  UserSourceHistory UserSourceHistory[]
 }
 
 // An rss feed url with corresponding news source.
@@ -126,12 +129,11 @@ model NewsArticleLabels {
 
 // HISTORY
 
-// One to many relation of user and sources/label to track user history.
-model UserLabelSourceHistory {
-  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user_id    Int      @id
-  labels     String[]
-  source_url String
+// One to many relation of user and label to track user history.
+model UserLabelHistory {
+  user    Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id Int      @id
+  labels  String[]
 }
 
 // One to many relation of user and articles to track user history.
@@ -142,4 +144,14 @@ model UserArticleHistory {
   user_id    Int
 
   @@id([user_id, article_id])
+}
+
+// One to many relation of user and sources to track user history.
+model UserSourceHistory {
+  user      Users       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id   Int
+  source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  source_id Int
+
+  @@id([user_id, source_id])
 }

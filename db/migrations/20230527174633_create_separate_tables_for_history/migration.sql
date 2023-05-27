@@ -21,16 +21,29 @@ ALTER COLUMN "article_id" SET NOT NULL,
 ADD CONSTRAINT "UserArticleHistory_pkey" PRIMARY KEY ("user_id", "article_id");
 
 -- CreateTable
-CREATE TABLE "UserLabelSourceHistory" (
+CREATE TABLE "UserLabelHistory" (
     "user_id" INTEGER NOT NULL,
     "labels" TEXT[],
-    "source_url" TEXT NOT NULL,
 
-    CONSTRAINT "UserLabelSourceHistory_pkey" PRIMARY KEY ("user_id")
+    CONSTRAINT "UserLabelHistory_pkey" PRIMARY KEY ("user_id")
+);
+
+-- CreateTable
+CREATE TABLE "UserSourceHistory" (
+    "user_id" INTEGER NOT NULL,
+    "source_id" INTEGER NOT NULL,
+
+    CONSTRAINT "UserSourceHistory_pkey" PRIMARY KEY ("user_id","source_id")
 );
 
 -- AddForeignKey
-ALTER TABLE "UserLabelSourceHistory" ADD CONSTRAINT "UserLabelSourceHistory_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "UserLabelHistory" ADD CONSTRAINT "UserLabelHistory_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserArticleHistory" ADD CONSTRAINT "UserArticleHistory_article_id_fkey" FOREIGN KEY ("article_id") REFERENCES "NewsArticles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserSourceHistory" ADD CONSTRAINT "UserSourceHistory_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserSourceHistory" ADD CONSTRAINT "UserSourceHistory_source_id_fkey" FOREIGN KEY ("source_id") REFERENCES "NewsSources"("id") ON DELETE CASCADE ON UPDATE CASCADE;
