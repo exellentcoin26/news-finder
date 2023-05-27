@@ -120,6 +120,7 @@ async def store_user_history() -> Response:
                 }
             },
             "source_url": source.url,
+            "article": {"connect": {"id": clicked_article.id}},
         }
     )
     return make_success_response()
