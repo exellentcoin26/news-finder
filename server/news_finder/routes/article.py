@@ -126,10 +126,10 @@ async def get_articles() -> Response:
         amount = int(request.args.get("amount") or 50)
         offset = int(request.args.get("offset") or 0)
         category = request.args.get("label") or None
-        sortBy = request.args.get("sortBy") or "recency"
+        sort_by = request.args.get("sortBy") or "recency"
 
-        if sortBy not in ("recency", "popularity"):
-            raise ValueError(f"sortBy has invalid value `{sortBy}`")
+        if sort_by not in ("recency", "popularity"):
+            raise ValueError(f"sortBy has invalid value `{sort_by}`")
     except ValueError as e:
         return make_response_from_error(
             HTTPStatus.BAD_REQUEST,
@@ -154,7 +154,7 @@ async def get_articles() -> Response:
         order=[],
     )
 
-    match sortBy:
+    match sort_by:
         case "recency":
             article_find_params.order.append({"publication_date": "desc"})
         case "popularity":
@@ -171,11 +171,12 @@ async def get_articles() -> Response:
                 ORDER BY count DESC
                 OFFSET {offset}
                 LIMIT {amount}
-                """ # type: ignore
+                """  # type: ignore
             )
-            popular_article_ids = [popular_article["article_id"] for popular_article in popular_articles]
+            popular_article_ids = [
+                popular_article["article_id"] for popular_article in popular_articles
+            ]
 
-            print(popular_article_ids)
             article_find_params.add_where({"id": {"in": popular_article_ids}}, "AND")
 
     if category is not None:
@@ -198,6 +199,9 @@ async def get_articles() -> Response:
     response: Dict[str, List[Dict[str, str | Dict[str, str | float | None]]]] = {
         "articles": []
     }
+
+    if sort_by == "popularity":
+        articles.sort(key=lambda article: popular_article_ids.index(article.id))
 
     for article in articles:
         assert (
