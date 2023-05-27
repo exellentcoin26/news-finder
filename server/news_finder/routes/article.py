@@ -5,6 +5,7 @@ from typing import List, Dict, Literal, Any
 from dataclasses import dataclass
 
 import sys
+import traceback
 
 from prisma.models import NewsArticles
 from prisma.types import (
@@ -167,8 +168,8 @@ async def get_articles() -> Response:
 
     try:
         articles = await db.newsarticles.find_many(**vars(article_find_params))
-    except Exception as e:
-        print(e.with_traceback(None), file=sys.stderr)
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
         return make_response_from_error(
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
