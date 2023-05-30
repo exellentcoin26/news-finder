@@ -1,4 +1,5 @@
 import { Button } from 'react-bootstrap';
+import '../styles/LabelBar.css'
 
 export const Label = ({
     name,
@@ -12,7 +13,7 @@ export const Label = ({
     };
 
     return (
-        <Button className="label" onClick={() => handleButtonClick(name)}>
+        <Button className="label my-auto" onClick={() => handleButtonClick(name)}>
             {name}
         </Button>
     );

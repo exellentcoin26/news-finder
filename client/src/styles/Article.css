@@ -157,7 +157,7 @@
     padding: 5px 15px;
     font-size: 11px;
     font-weight: 500;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     border-radius: 5px;
     border: none;
     background-color: #0a1f44;
