@@ -23,6 +23,11 @@ generator rss-scraper {
     output   = "../rss-scraper/src/prisma.rs"
 }
 
+// schema visualizer
+generator dbml {
+    provider = "prisma-dbml-generator"
+}
+
 // flags used by applications
 model Flags {
     name  String  @id
