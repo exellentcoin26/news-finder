@@ -1,0 +1,47 @@
+# NOTE: This file is completely ignored by docker compose. I do not know why,
+# I have tried moving it to every directory possible :/
+
+# python virtualenv directory
+env
+venv
+
+# env files
+.env
+
+# mypy type checker
+.mypy_cache
+
+# python cache
+__pycache__
+
+.gitignore
+.env.example
+
+rss-feeds.txt
+
+*.egg-info
+*.pytest_cache
+
+similarity-checker/articles
+
+# markdown files
+*.md
+
+# rust build directory
+target
+
+rss-scraper/rss-feeds.txt
+
+# prisma generated files
+rss-scraper/src/prisma.rs
+
+# git files
+.git
+.gitignore
+
+# tmp files
+tmp.*
+*.tmp
+
+# node packages
+node_modules
