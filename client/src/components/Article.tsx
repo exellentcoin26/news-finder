@@ -355,7 +355,7 @@ export default function LoadingSpinner() {
 }
 
 export const NoArticlesToShow = () => {
-    return <h1>No articles in database.</h1>;
+    return <h1>No articles to show.</h1>;
 };
 
 function DropdownItem(props: any) {

@@ -118,6 +118,8 @@
 
 <span class="n">error_bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span>
 
+<span class="c1"># TODO: Rework to use new response interface</span>
+
 
 <div class="viewcode-block" id="page_not_found"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.error.page_not_found">[docs]</a><span class="nd">@error_bp</span><span class="o">.</span><span class="n">app_errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">_</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
