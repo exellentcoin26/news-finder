@@ -1,56 +1,27 @@
-use crate::{prelude::*, scraper::scrape_rss_feeds};
-use clap::{error::ErrorKind, Args, CommandFactory, Parser, Subcommand};
+use crate::{
+    cli::{Cli, CliCommands},
+    counter::RssCounter,
+    prelude::*,
+    prisma::{rss_entries::Data as PrismaFeed, PrismaClient},
+    scraper::{scrape_rss_feed, scrape_rss_feeds},
+};
+use clap::{error::ErrorKind, CommandFactory, Parser};
 use dotenv::dotenv;
-use job_scheduler_ng::{Job, JobScheduler};
 use std::{
+    collections::BTreeMap,
     fs,
     io::{BufRead, BufReader, BufWriter, Write},
     path::PathBuf,
-    time::Duration,
+    time::{Duration, Instant},
+    vec,
 };
 
+mod cli;
+mod counter;
 mod error;
 mod prelude;
 mod prisma;
 mod scraper;
-
-#[derive(Parser)]
-#[command(author, version, about, long_about=None)]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    /// Check RSS feeds validity from input file
-    Check {
-        /// File to read feeds from
-        #[arg(short, long, value_name = "INPUT_FILE", default_value = "input.txt")]
-        input: PathBuf,
-
-        /// File to write successful feeds to
-        #[arg(short, long, value_name = "OUTPUT_FILE", default_value = "working.txt")]
-        output: PathBuf,
-    },
-    /// Run the rss-scraper
-    Run {
-        #[command(flatten)]
-        args: ScrapeArgs,
-    },
-}
-
-#[derive(Args)]
-#[group(multiple = false)]
-struct ScrapeArgs {
-    /// Run once
-    #[arg(long)]
-    once: bool,
-
-    /// Run on the given interval in minutes
-    #[arg(short, long, value_name = "INTERVAL", default_value_t = 10)]
-    interval: u32,
-}
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -65,7 +36,7 @@ async fn main() -> Result<()> {
         .init();
 
     match cli.command {
-        Commands::Check { input, output } => {
+        CliCommands::Check { input, output } => {
             if !input.exists() {
                 let mut cmd = Cli::command();
                 cmd.error(ErrorKind::Io, "Input file does not exist").exit();
@@ -73,11 +44,14 @@ async fn main() -> Result<()> {
 
             check_rss_feeds_from_file(&input, &output).await?;
         }
-        Commands::Run { args } => {
+        CliCommands::Run { args } => {
             if args.once {
-                run_scraper().await;
+                let client = prisma::new_client()
+                    .await
+                    .expect("failed to create prisma client");
+                run_scraper(None, &client).await?;
             } else {
-                start_scrape_job(args.interval);
+                start_scrape_job().await?;
             }
         }
     }
@@ -85,41 +59,119 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-fn start_scrape_job(interval: u32) -> ! {
-    let mut schedule = JobScheduler::new();
+async fn start_scrape_job() -> Result<()> {
+    let client = prisma::new_client()
+        .await
+        .expect("failed to create prisma client");
 
-    let mut job = Job::new(
-        // run every 10 minutes
-        format!("* 1/{} * * * * *", interval)
-            .parse()
-            .expect("failed to parse cron job time schedule"),
-        || {
-            tokio::spawn(run_scraper());
-        },
-    );
+    let mut counters = BTreeMap::new();
 
-    job.limit_missed_runs(0);
+    let mut force_update_counters = true;
 
-    schedule.add(job);
+    // interval in nanoseconds
+    let interval = 4e9_f64;
+
+    let mut delta = 0_f64;
+    let mut last_time = Instant::now();
 
     loop {
-        schedule.tick();
-        std::thread::sleep(Duration::from_secs(3));
-        println!(
-            "Time remaining untill next job starts: {} seconds.",
-            schedule.time_till_next_job().as_secs()
-        )
+        let now = Instant::now();
+        delta += (now - last_time).as_nanos() as f64 / interval;
+        last_time = now;
+
+        if delta >= 1.0 {
+            delta -= 1.0;
+
+            let should_update_counters = client
+                .flags()
+                .find_unique(prisma::flags::name::equals("rss_feeds_modified".to_string()))
+                .exec()
+                .await?;
+
+            let should_update_counters = match should_update_counters {
+                Some(tuple) => tuple.value,
+                None => {
+                    client
+                        .flags()
+                        .create("rss_feeds_modified".to_string(), false, vec![])
+                        .exec()
+                        .await?;
+                    false
+                }
+            };
+
+            if should_update_counters || force_update_counters {
+                // query the interval of all rss feeds
+                let current_feeds: Vec<PrismaFeed> =
+                    client.rss_entries().find_many(vec![]).exec().await?;
+
+                let current_feed_ids: Vec<i32> = current_feeds.iter().map(|f| f.id).collect();
+
+                // remove feeds that are not in the database anymore
+                counters.retain(|k: &i32, _| current_feed_ids.contains(k));
+
+                // insert counters for feeds not already present
+                for current_feed in current_feeds {
+                    let interval = current_feed.interval;
+                    counters.entry(current_feed.id).or_insert(RssCounter {
+                        feed: current_feed,
+                        start_time: Instant::now() - Duration::from_secs(interval as u64 * 60),
+                    });
+                }
+
+                force_update_counters = false;
+
+                use prisma::flags::{name, value};
+                client.flags().update(name::equals("rss_feeds_modified".to_string()), vec![value::set(false)]).exec().await?;
+            }
+
+            let mut next_run: Option<Duration> = None;
+            let mut new_counters = Vec::new();
+            for (_, feed_counter) in counters.iter() {
+                let interval = Instant::now() - feed_counter.start_time;
+
+                if interval.as_secs() >= feed_counter.feed.interval as u64 * 60 {
+                    run_scraper(Some(&feed_counter.feed), &client).await?;
+                    new_counters.push(RssCounter {
+                        feed: feed_counter.feed.clone(),
+                        start_time: Instant::now(),
+                    });
+                } else {
+                    let time_till_next_run =
+                        Duration::from_secs(feed_counter.feed.interval as u64 * 60) - interval;
+                    next_run = match next_run {
+                        Some(next_run) => Some(next_run.min(time_till_next_run)),
+                        None => Some(time_till_next_run),
+                    }
+                }
+            }
+
+            for new_counter in new_counters {
+                counters.insert(new_counter.feed.id, new_counter);
+            }
+
+            if let Some(next_run) = next_run {
+                log::info!("Next run in {} seconds", next_run.as_secs());
+            } else {
+                log::info!("No feeds to scrape.")
+            }
+        }
+
+        std::thread::sleep(Duration::from_secs(1));
     }
 }
 
-async fn run_scraper() {
-    let client = prisma::new_client()
-        .await
-        .expect("failed to connect to prisma database");
-
-    println!("Start scraping the rss feeds ...");
-
-    scrape_rss_feeds(&client).await.unwrap();
+async fn run_scraper(feed: Option<&PrismaFeed>, client: &PrismaClient) -> Result<()> {
+    match feed {
+        Some(feed) => {
+            log::info!("Start scraping rss feed {} ...", feed.feed);
+            scrape_rss_feed(feed, client).await?;
+        }
+        None => {
+            log::info!("Start scraper rss feeds ...");
+            scrape_rss_feeds(client).await?;
+        }
+    }
     client
         .flags()
         .upsert(
@@ -128,10 +180,11 @@ async fn run_scraper() {
             vec![prisma::flags::value::set(true)],
         )
         .exec()
-        .await
-        .unwrap();
+        .await?;
 
-    println!("Successfully scraped rss feeds!");
+    log::info!("Successfully scraped feeds!");
+
+    Ok(())
 }
 
 #[allow(dead_code)]
@@ -181,8 +234,8 @@ async fn check_rss_feeds_from_file(
 
         println!("[+] Successful rss feed: `{}`", &rss_feed);
 
-        output.write(rss_feed.as_bytes())?;
-        output.write(b"\n")?;
+        let _ = output.write(rss_feed.as_bytes())?;
+        let _ = output.write(b"\n")?;
     }
 
     for rss_error in &rss_errors {
