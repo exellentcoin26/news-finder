@@ -13,7 +13,7 @@ export const Label = ({
     };
 
     return (
-        <Button className="label my-auto" onClick={() => handleButtonClick(name)}>
+        <Button className="label" onClick={() => handleButtonClick(name)}>
             {name}
         </Button>
     );
