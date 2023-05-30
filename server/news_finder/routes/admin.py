@@ -16,6 +16,7 @@ import sys
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 CORS(admin_bp, supports_credentials=True)
 
+
 @admin_bp.post("/")
 async def add_admin() -> Response:
     """
@@ -115,8 +116,7 @@ async def is_admin() -> Response:
 
     if cookie_entry is None:
         return make_response_from_error(
-            HTTPStatus.BAD_REQUEST,
-            ErrorKind.RecordNotFoundError
+            HTTPStatus.BAD_REQUEST, ErrorKind.RecordNotFoundError
         )
     if cookie_entry.user is None:
         return make_response_from_error(

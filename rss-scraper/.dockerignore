@@ -1,7 +1,0 @@
-target/
-
-rss-feeds.txt
-.gitignore
-tmp.txt
-.env
-src/prisma.rs

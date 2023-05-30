@@ -1,4 +1,5 @@
 import { Button } from 'react-bootstrap';
+import '../styles/LabelBar.css'
 
 export const Label = ({
     name,

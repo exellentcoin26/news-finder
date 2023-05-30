@@ -113,7 +113,10 @@
   <article role="main" class="flex-1">
     
   <h1>Source code for news_finder.routes.root</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Response</span><span class="p">,</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">jsonify</span>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Response</span><span class="p">,</span> <span class="n">Blueprint</span>
+<span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">HTTPStatus</span>
+
+<span class="kn">from</span> <span class="nn">news_finder.response</span> <span class="kn">import</span> <span class="n">make_success_response</span>
 
 <span class="n">root_bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;root&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
@@ -121,8 +124,8 @@
 <span class="c1"># route for docker to check whether the server is up and running</span>
 <div class="viewcode-block" id="healthcheck"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.root.healthcheck">[docs]</a><span class="nd">@root_bp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/healthcheck&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">healthcheck</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span>
-        <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;the server is up and running&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">return</span> <span class="n">make_success_response</span><span class="p">(</span>
+        <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span>
     <span class="p">)</span></div>
 </pre></div>
 

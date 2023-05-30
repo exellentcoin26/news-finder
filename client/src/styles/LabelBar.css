@@ -8,9 +8,11 @@
 }
 
 .label {
-    background-color: #26d38e;
-    border-radius: 0.5rem;
-    border: 1px solid black;
-    height: 2rem;
+    vertical-align: middle;
+    font-weight: 450;
+    color: #0a1f44;
+    background-color: transparent;
+    border-radius: 0.2rem;
+    border-color: #0a1f44;
     overflow: hidden;
 }

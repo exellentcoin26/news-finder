@@ -140,23 +140,75 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="news_finder.routes.admin.is_admin">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.admin.</span></span><span class="sig-name descname"><span class="pre">is_admin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="_modules/news_finder/routes/admin.html#is_admin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.admin.is_admin" title="Permalink to this definition"><span>#</span></a></dt>
-<dd><p>Check if a user is an admin.</p>
-<p># Json structure: (checked using schema validation)</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;username&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<dd><p>Check if a user is an admin based on the cookie.</p>
 </dd></dl>
 
 </section>
 <section id="module-news_finder.routes.article">
 <span id="news-finder-routes-article-module"></span><h2>news_finder.routes.article module<a class="headerlink" href="#module-news_finder.routes.article" title="Permalink to this heading"><span>#</span></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.article.</span></span><span class="sig-name descname"><span class="pre">NewsArticlesFindParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">take</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">prisma.types.NewsArticlesInclude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">prisma.types.NewsArticlesWhereInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List[Union[ForwardRef('_NewsArticles_id_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_source_id_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_url_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_title_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_description_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_photo_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_publication_date_OrderByInput'),</span> <span class="pre">ForwardRef('_NewsArticles_language_OrderByInput')]]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/news_finder/routes/article.html#NewsArticlesFindParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams" title="Permalink to this definition"><span>#</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.add_include">
+<span class="sig-name descname"><span class="pre">add_include</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NewsArticlesInclude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/news_finder/routes/article.html#NewsArticlesFindParams.add_include"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.add_include" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.add_where">
+<span class="sig-name descname"><span class="pre">add_where</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NewsArticlesWhereInput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'OR'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AND'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/news_finder/routes/article.html#NewsArticlesFindParams.add_where"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.add_where" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.include">
+<span class="sig-name descname"><span class="pre">include</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NewsArticlesInclude</span></em><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.include" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.order">
+<span class="sig-name descname"><span class="pre">order</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">_NewsArticles_id_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_source_id_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_url_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_title_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_description_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_photo_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_publication_date_OrderByInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NewsArticles_language_OrderByInput</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.order" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.skip">
+<span class="sig-name descname"><span class="pre">skip</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.skip" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.take">
+<span class="sig-name descname"><span class="pre">take</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.take" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news_finder.routes.article.NewsArticlesFindParams.where">
+<span class="sig-name descname"><span class="pre">where</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NewsArticlesWhereInput</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#news_finder.routes.article.NewsArticlesFindParams.where" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="news_finder.routes.article.get_articles">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.article.</span></span><span class="sig-name descname"><span class="pre">get_articles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="_modules/news_finder/routes/article.html#get_articles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.article.get_articles" title="Permalink to this definition"><span>#</span></a></dt>
-<dd><p>Get a json with all the articles and their news source. set the <cite>amount</cite> and
-<cite>offset</cite> parameters to specify a range of articles to retrieve.</p>
+<dd><p>Get a json with all the articles and their news source.</p>
+<p>Articles are ordened by recency and versions that have an upadate are emitted.</p>
+<dl class="simple">
+<dt># Parameters:</dt><dd><ul class="simple">
+<li><p>amount: Amount of articles to retrieve.</p></li>
+<li><p>offset: Offset in the article selection list.</p></li>
+<li><p>label: Filter for the articles to retrieve.</p></li>
+<li><dl class="simple">
+<dt>sortBy:</dt><dd><ul>
+<li><p>recency (default)</p></li>
+<li><p>popularity</p></li>
+<li><p>source</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
 <p># Articles json structure:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;articles&quot;: [
@@ -167,6 +219,7 @@
                 &quot;description&quot;: &quot;The most interesting article about a cat in a tree.&quot;
                 &quot;photo&quot;: &quot;https://www.test-photo.io&quot;,
                 &quot;link&quot;: &quot;https:foo.article/article1.html&quot;
+                &quot;publication_date&quot;: 2021-09-27 15:22:00
             }
         },
         {
@@ -176,6 +229,7 @@
                 &quot;description&quot;: &quot;The most interesting article about a cat on its way home.&quot;
                 &quot;photo&quot;: null
                 &quot;link&quot;: &quot;https:foo.article/article2.html&quot;
+                &quot;publication_date&quot;: 2021-09-30 08:16:00
         },
         ...
     ]
@@ -183,6 +237,16 @@
 </pre></div>
 </div>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="news_finder.routes.article.get_similar_articles">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.article.</span></span><span class="sig-name descname"><span class="pre">get_similar_articles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="_modules/news_finder/routes/article.html#get_similar_articles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.article.get_similar_articles" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="news_finder.routes.article.remove_updated">
+<span class="sig-prename descclassname"><span class="pre">news_finder.routes.article.</span></span><span class="sig-name descname"><span class="pre">remove_updated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">articles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">NewsArticles</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">NewsArticles</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/news_finder/routes/article.html#remove_updated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.article.remove_updated" title="Permalink to this definition"><span>#</span></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-news_finder.routes.error">
@@ -219,12 +283,12 @@
 <dd><p>Add rss feeds to database for scraping later on. The news source will be
 extracted from the hostname of the url.</p>
 <p># Feed json structure: (checked using schema validation)</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &quot;feeds&quot;: [
-        &quot;https://www.vrt.be/vrtnws/nl.rss.articles.xml&quot;,
-        ...
-    ]
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;VRT Wereld nieuws&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;feed&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://www.vrt.be/vrtnws/nl.rss.articles.xml&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;binnenland&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -232,7 +296,8 @@ extracted from the hostname of the url.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="news_finder.routes.rss.delete_rss">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.routes.rss.</span></span><span class="sig-name descname"><span class="pre">delete_rss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="_modules/news_finder/routes/rss.html#delete_rss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.routes.rss.delete_rss" title="Permalink to this definition"><span>#</span></a></dt>
-<dd><p>Delete rss feeds from the database</p>
+<dd><p>data”: {},
+Delete rss feeds from the database</p>
 <p># Feed json structure: (checked using schema validation)</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
     &quot;feeds&quot;: [

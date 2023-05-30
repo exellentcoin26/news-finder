@@ -119,73 +119,11 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"><span>#</span></a></h2>
 </section>
-<section id="module-news_finder.utils.error_response">
-<span id="news-finder-utils-error-response-module"></span><h2>news_finder.utils.error_response module<a class="headerlink" href="#module-news_finder.utils.error_response" title="Permalink to this heading"><span>#</span></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news_finder.utils.error_response.</span></span><span class="sig-name descname"><span class="pre">ResponseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/news_finder/utils/error_response.html#ResponseError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.utils.error_response.ResponseError" title="Permalink to this definition"><span>#</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Error enum used for returning a response</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.CookieNotFound">
-<span class="sig-name descname"><span class="pre">CookieNotFound</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.CookieNotFound" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.CookieNotSet">
-<span class="sig-name descname"><span class="pre">CookieNotSet</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.CookieNotSet" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.IncorrectParameters">
-<span class="sig-name descname"><span class="pre">IncorrectParameters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.IncorrectParameters" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.InvalidJson">
-<span class="sig-name descname"><span class="pre">InvalidJson</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.InvalidJson" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.JsonValidationError">
-<span class="sig-name descname"><span class="pre">JsonValidationError</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.JsonValidationError" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.RecordNotFoundError">
-<span class="sig-name descname"><span class="pre">RecordNotFoundError</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.RecordNotFoundError" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.ServerError">
-<span class="sig-name descname"><span class="pre">ServerError</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">500</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.ServerError" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.UniqueViolationError">
-<span class="sig-name descname"><span class="pre">UniqueViolationError</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.UniqueViolationError" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.UserAlreadyPresent">
-<span class="sig-name descname"><span class="pre">UserAlreadyPresent</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.UserAlreadyPresent" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.ResponseError.WrongPassword">
-<span class="sig-name descname"><span class="pre">WrongPassword</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#news_finder.utils.error_response.ResponseError.WrongPassword" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="news_finder.utils.error_response.make_error_response">
-<span class="sig-prename descclassname"><span class="pre">news_finder.utils.error_response.</span></span><span class="sig-name descname"><span class="pre">make_error_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#news_finder.utils.error_response.ResponseError" title="news_finder.utils.error_response.ResponseError"><span class="pre">ResponseError</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HTTPStatus</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Response</span></span></span><a class="reference internal" href="_modules/news_finder/utils/error_response.html#make_error_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news_finder.utils.error_response.make_error_response" title="Permalink to this definition"><span>#</span></a></dt>
-<dd></dd></dl>
-
+<section id="news-finder-utils-error-response-module">
+<h2>news_finder.utils.error_response module<a class="headerlink" href="#news-finder-utils-error-response-module" title="Permalink to this heading"><span>#</span></a></h2>
 </section>
-<section id="module-news_finder.utils">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-news_finder.utils" title="Permalink to this heading"><span>#</span></a></h2>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"><span>#</span></a></h2>
 </section>
 </section>
 

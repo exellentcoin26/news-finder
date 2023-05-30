@@ -157,7 +157,7 @@
     padding: 5px 15px;
     font-size: 11px;
     font-weight: 500;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     border-radius: 5px;
     border: none;
     background-color: #0a1f44;
@@ -166,6 +166,10 @@
     transition: all 0.3s ease-in-out;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.button > a {
+    color: white;
 }
 
 .button:hover {
@@ -234,50 +238,9 @@
     background-color: #0a1f44;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-
-.custom-dropdown-menu {
-    position: relative;
-    bottom: 15px;
-    align-items: center;
-    font-size: 11px;
-    font-weight: 500;
-    color: #FFFFFF;
     border-radius: 5px;
-    border: none;
-    background-color: #0a1f44;
-    margin-right: 10px;
-    z-index: 4;
-}
-
-
-.custom-dropdown-menu.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.custom-dropdown-menu.inactive {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px);
-}
-
-
-.dropdownItem {
-    display: flex;
-    margin: auto;
-    align-items: center;
-}
-
-.dropdownItem a {
-    display: flex;
-    margin-right: 10px;
-    align-items: center;
-    right: 20px;
+    float: right;
+    color: #0a1f44;
 }
 
 .dropdownItem:hover {

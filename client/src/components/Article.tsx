@@ -6,6 +6,8 @@ import {
     SimilarArticleEntry,
 } from '../interfaces/api/article';
 import { formatDistance } from 'date-fns';
+import { SERVER_URL } from '../env';
+import { isLoggedIn } from '../helpers';
 
 function MyComponent({ currentArticleLink }: { currentArticleLink: string }) {
     const [similarArticles, setSimilarArticles] = useState<
@@ -143,6 +145,21 @@ export const Article = ({
         timeAgo = formatDistance(publication, new Date(), { addSuffix: true });
     }
 
+    const handleArticleClick = async () => {
+        if (!isLoggedIn()) return;
+
+        const response = await fetch(SERVER_URL + '/user-history/', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                articleLink: article_link,
+            }),
+            credentials: 'include',
+        });
+
+        if (!response.ok) throw Error('Failed to send server user history.');
+    };
+
     // Dropdown menu is based on the excellent tutorial from Kiet Vuong https://www.youtube.com/watch?v=KROfo7vuIGY
     return (
         <div>
@@ -207,6 +224,9 @@ export const Article = ({
                                                                                 }
                                                                                 target="_blank"
                                                                                 rel="noopener noreferrer"
+                                                                                onClick={
+                                                                                    handleArticleClick
+                                                                                }
                                                                             >
                                                                                 {' '}
                                                                                 {
@@ -234,6 +254,7 @@ export const Article = ({
                                             color: 'inherit',
                                             textDecoration: 'none',
                                         }}
+                                        onClick={handleArticleClick}
                                     >
                                         {source}
                                     </a>
@@ -246,6 +267,7 @@ export const Article = ({
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="article-link"
+                                onClick={handleArticleClick}
                             >
                                 <img
                                     className="article-image"
@@ -264,6 +286,7 @@ export const Article = ({
                             href={article_link}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={handleArticleClick}
                         >
                             <img
                                 src={img_src ? img_src : '/img/no-image.png'}
@@ -289,6 +312,7 @@ export const Article = ({
                                             color: 'inherit',
                                             textDecoration: 'none',
                                         }}
+                                        onClick={handleArticleClick}
                                     >
                                         {source}
                                     </a>
@@ -331,7 +355,7 @@ export default function LoadingSpinner() {
 }
 
 export const NoArticlesToShow = () => {
-    return <h1>No articles in database.</h1>;
+    return <h1>No articles to show.</h1>;
 };
 
 function DropdownItem(props: any) {

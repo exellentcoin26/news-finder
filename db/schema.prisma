@@ -23,10 +23,15 @@ generator rss-scraper {
   output   = "../rss-scraper/src/prisma.rs"
 }
 
+// schema visualizer
+generator dbml {
+    provider = "prisma-dbml-generator"
+}
+
 // flags used by applications
 model Flags {
-    name  String  @id
-    value Boolean
+  name  String  @id
+  value Boolean
 }
 
 // data models
@@ -37,6 +42,10 @@ model Users {
   admin      Boolean       @default(false)
   login      UserLogins?
   cookies    UserCookies[]
+
+  label_history   UserLabelHistory[]
+  article_history UserArticleHistory[]
+  source_history  UserSourceHistory[]
 }
 
 // User login information (user_id, password).
@@ -60,14 +69,19 @@ model NewsSources {
   url      String         @unique
   rss      RssEntries[]
   articles NewsArticles[]
+
+  UserSourceHistory UserSourceHistory[]
 }
 
 // An rss feed url with corresponding news source.
 model RssEntries {
+  id        Int         @id @default(autoincrement())
   source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   source_id Int
   name      String
-  feed      String      @id
+  feed      String      @unique
+  // Scrape interval in minutes.
+  interval  Int         @default(10)
   category  String
 }
 
@@ -83,13 +97,18 @@ model NewsArticles {
   publication_date DateTime?
   language         Language            @default(English)
   labels           NewsArticleLabels[]
-  similar_relation SimilarArticles[]   @relation("similar_relation")
-  similar_articles SimilarArticles[]   @relation("similar")
+
+  similar_relation SimilarArticles[] @relation("similar_relation")
+  similar_articles SimilarArticles[] @relation("similar")
+
+  user_article_history UserArticleHistory[]
+
+  @@unique([id, url])
 }
 
 enum Language {
-    English
-    Dutch
+  English
+  Dutch
 }
 
 // Many to many articles relation denoting what articles are similar to eachother.
@@ -111,4 +130,35 @@ model NewsArticleLabels {
   label   String
 
   @@id([id, label])
+}
+
+// HISTORY
+
+// One to many relation of user and label to track user history.
+model UserLabelHistory {
+  user    Users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id Int      @id
+  labels  String[]
+}
+
+// One to many relation of user and articles to track user history.
+model UserArticleHistory {
+  article    NewsArticles @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  article_id Int
+  user       Users        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id    Int
+
+  @@id([user_id, article_id])
+}
+
+// One to many relation of user and sources to track user history.
+model UserSourceHistory {
+  user      Users       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id   Int
+  source    NewsSources @relation(fields: [source_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  source_id Int
+
+  amount Int    @default(1)
+
+  @@id([user_id, source_id])
 }

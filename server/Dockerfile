@@ -12,4 +12,4 @@ RUN prisma generate --generator server
 
 EXPOSE 5000
 
-CMD python3 news_finder/main.py
+CMD gunicorn --bind 0.0.0.0:5000 --workers 8 "app:app"

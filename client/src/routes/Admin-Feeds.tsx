@@ -56,14 +56,17 @@ const getFeedsFromServer = async (source: string): Promise<RssFeed[]> => {
 };
 
 const AdminFeeds = () => {
-    const [inputFeeds, setInputFeeds] = useState<string>('');
-    const [category, setCategory] = useState<string>('');
-    const [name, setName] = useState<string>('');
+    const [inputFeeds, setInputFeeds] = useState<string | null>(null);
+    const [category, setCategory] = useState<string | null>(null);
+    const [name, setName] = useState<string | null>(null);
+    const [interval, setInterval] = useState<number | null>(null);
 
     const [sources, setSources] = useState<string[]>([]);
     const [feeds, setFeeds] = useState<RssFeed[]>([]);
     const [selectedSource, setSelectedSource] = useState<string | null>(null);
-    const [selectedFeed, setSelectedFeed] = useState<string | null>(null);
+    const [selectedFeed, setSelectedFeed] = useState<[string, string] | null>(
+        null,
+    );
     const [feedIsDisabled, setFeedIsDisabled] = useState<boolean>(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isFetchingAdmin, setIsFetchingAdmin] = useState(true);
@@ -112,21 +115,25 @@ const AdminFeeds = () => {
     };
 
     const handleFeedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedFeed(event.target.value);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const selected = feeds[event.target.options.selectedIndex - 1]!;
+        setSelectedFeed([selected.feed, selected.name]);
     };
 
     const handleAddFeed = async (
         name: string,
         feed: string,
         category: string,
+        interval: number | null,
     ): Promise<boolean> => {
         const response = await fetch(SERVER_URL + '/rss/', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
                 name: name,
-                feeds: feed,
+                feed: feed,
                 category: category,
+                ...(interval != null ? { interval: interval } : {}),
             }),
         });
 
@@ -136,10 +143,11 @@ const AdminFeeds = () => {
             window.alert('Could not add rss feed(s).');
         }
 
+        if (response.ok) location.reload();
         return response.ok;
     };
 
-    const handleRemoveFeed = async (feed: string | null): Promise<boolean> => {
+    const handleRemoveFeed = async (feed: string): Promise<boolean> => {
         const confirmAction = window.confirm(
             `Do you want to remove feed \`${feed}\`?`,
         );
@@ -162,6 +170,7 @@ const AdminFeeds = () => {
             window.alert('Could not remove rss feed.');
         }
 
+        if (response.ok) location.reload();
         return response.ok;
     };
 
@@ -177,43 +186,79 @@ const AdminFeeds = () => {
                 <Container className="page-title">Feed Management</Container>
                 <Container className="mb-5">
                     <Form>
+                        <Form.Label>Add Feeds</Form.Label>
                         <Form.Group className="mb-3">
-                            <Form.Label>Add Feeds</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="feed"
-                                value={inputFeeds}
-                                onChange={(event) =>
-                                    setInputFeeds(event.target.value)
-                                }
-                            ></Form.Control>
+                            <Form.FloatingLabel label={'feed'}>
+                                <Form.Control
+                                    type="text"
+                                    {...(inputFeeds != null
+                                        ? { value: inputFeeds }
+                                        : {})}
+                                    placeholder={'feed'}
+                                    onChange={(event) =>
+                                        setInputFeeds(event.target.value)
+                                    }
+                                />
+                            </Form.FloatingLabel>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Control
-                                type="text"
-                                placeholder="category"
-                                value={category}
-                                onChange={(event) =>
-                                    setCategory(event.target.value)
-                                }
-                            ></Form.Control>
+                            <Form.FloatingLabel label={'name'}>
+                                <Form.Control
+                                    type="text"
+                                    {...(name != null ? { value: name } : {})}
+                                    placeholder={'name'}
+                                    onChange={(event) =>
+                                        setName(event.target.value)
+                                    }
+                                />
+                            </Form.FloatingLabel>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Control
-                                type="text"
-                                placeholder="name"
-                                value={name}
-                                onChange={(event) =>
-                                    setName(event.target.value)
-                                }
-                            ></Form.Control>
+                            <Form.FloatingLabel label={'category'}>
+                                <Form.Control
+                                    type="text"
+                                    {...(category != null
+                                        ? { value: category }
+                                        : {})}
+                                    placeholder={'name'}
+                                    onChange={(event) =>
+                                        setCategory(event.target.value)
+                                    }
+                                />
+                            </Form.FloatingLabel>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.FloatingLabel
+                                label={'scrape interval (minutes)'}
+                            >
+                                <Form.Control
+                                    type="number"
+                                    {...(interval != null
+                                        ? { value: interval }
+                                        : {})}
+                                    placeholder={'interval'}
+                                    onChange={(event) =>
+                                        setInterval(
+                                            Math.max(
+                                                parseInt(event.target.value),
+                                                1,
+                                            ),
+                                        )
+                                    }
+                                ></Form.Control>
+                            </Form.FloatingLabel>
                         </Form.Group>
                         <Button
                             type="submit"
                             variant="custom"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleAddFeed(name, inputFeeds, category);
+                                handleAddFeed(
+                                    name || '',
+                                    inputFeeds || '',
+                                    category || '',
+                                    interval,
+                                );
                             }}
                         >
                             Submit
@@ -254,7 +299,12 @@ const AdminFeeds = () => {
                             variant="custom"
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleRemoveFeed(selectedFeed);
+                                const feed = selectedFeed?.[0];
+                                if (feed === undefined)
+                                    throw Error(
+                                        'Feed should never be undefined',
+                                    );
+                                handleRemoveFeed(feed);
                             }}
                         >
                             Remove
