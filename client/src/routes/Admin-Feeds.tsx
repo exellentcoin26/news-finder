@@ -115,8 +115,6 @@ const AdminFeeds = () => {
     };
 
     const handleFeedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.debug(event.target.options.selectedIndex);
-        console.debug(feeds);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const selected = feeds[event.target.options.selectedIndex - 1]!;
         setSelectedFeed([selected.feed, selected.name]);
