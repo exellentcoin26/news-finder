@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Dropdown } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
 import {
@@ -18,6 +18,7 @@ const getArticlesFromServer = async (
     amount = 50,
     offset = 0,
     label = '',
+    sortBy: 'Recency' | 'Popularity' | 'Source',
     errorHandler: () => void,
 ): Promise<ArticleSourceEntry[]> => {
     const serverUrl =
@@ -32,6 +33,7 @@ const getArticlesFromServer = async (
                         amount: amount.toString(),
                         offset: offset.toString(),
                         label: label,
+                        sortBy: sortBy.toLowerCase(),
                     }),
             );
         } catch (e) {
@@ -70,6 +72,9 @@ const Home = () => {
     const [articles, setArticles] = useState<ArticleSourceEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [hasErrored, setHasErrored] = useState(false);
+    const [sortBy, setSortBy] = useState<'Recency' | 'Popularity' | 'Source'>(
+        'Recency',
+    );
 
     const handleArticleErrors = () => {
         setHasErrored(true);
@@ -82,6 +87,7 @@ const Home = () => {
                     50,
                     0,
                     '',
+                    sortBy,
                     handleArticleErrors,
                 );
                 setArticles(articles);
@@ -91,7 +97,7 @@ const Home = () => {
                 setIsLoading(false);
             }
         })();
-    }, []);
+    }, [sortBy]);
 
     const handleLabelChange = async (label: string) => {
         setIsLoading(true);
@@ -100,6 +106,7 @@ const Home = () => {
                 50,
                 0,
                 label,
+                sortBy,
                 handleArticleErrors,
             );
             setArticles(articles);
@@ -112,7 +119,35 @@ const Home = () => {
 
     return (
         <Container className={'home-container'}>
-            <LabelBar onClick={handleLabelChange} />
+            <Container>
+                <LabelBar onClick={handleLabelChange} />
+            </Container>
+            <br />
+            <Container style={{ display: 'flex', justifyContent: 'right' }}>
+                <Dropdown>
+                    <Dropdown.Toggle
+                        style={{
+                            backgroundColor: 'transparent',
+                            color: 'black',
+                            borderColor: 'transparent',
+                        }}
+                    >
+                        {sortBy}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => setSortBy('Recency')}>
+                            Recency
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => setSortBy('Popularity')}>
+                            Popularity
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => setSortBy('Source')}>
+                            Source
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </Container>
             <br />
             {hasErrored ? (
                 <ErrorPlaceholder />
@@ -121,45 +156,50 @@ const Home = () => {
             ) : articles.length == 0 ? (
                 <NoArticlesToShow />
             ) : (
-                articles.map((articleSource, index) => {
-                    return (
-                        <Row
-                            // TODO: Use something better than index as key
-                            key={index}
-                            className={'home-article'}
-                        >
-                            <Col>
-                                <Article
-                                    title={articleSource.article.title}
-                                    {...(articleSource.article.description !=
-                                    null
-                                        ? {
-                                              description:
-                                                  articleSource.article
-                                                      .description,
-                                          }
-                                        : {})}
-                                    {...(articleSource.article.photo != null
-                                        ? {
-                                              img_src:
-                                                  articleSource.article.photo,
-                                          }
-                                        : {})}
-                                    article_link={articleSource.article.link}
-                                    source={articleSource.source}
-                                    {...(articleSource.article
-                                        .publication_date != null
-                                        ? {
-                                              timestamp:
-                                                  articleSource.article
-                                                      .publication_date,
-                                          }
-                                        : {})}
-                                />
-                            </Col>
-                        </Row>
-                    );
-                })
+                <>
+                    {articles.map((articleSource, index) => {
+                        return (
+                            <Row
+                                // TODO: Use something better than index as key
+                                key={index}
+                                className={'home-article'}
+                            >
+                                <Col>
+                                    <Article
+                                        title={articleSource.article.title}
+                                        {...(articleSource.article
+                                            .description != null
+                                            ? {
+                                                  description:
+                                                      articleSource.article
+                                                          .description,
+                                              }
+                                            : {})}
+                                        {...(articleSource.article.photo != null
+                                            ? {
+                                                  img_src:
+                                                      articleSource.article
+                                                          .photo,
+                                              }
+                                            : {})}
+                                        article_link={
+                                            articleSource.article.link
+                                        }
+                                        source={articleSource.source}
+                                        {...(articleSource.article
+                                            .publication_date != null
+                                            ? {
+                                                  timestamp:
+                                                      articleSource.article
+                                                          .publication_date,
+                                              }
+                                            : {})}
+                                    />
+                                </Col>
+                            </Row>
+                        );
+                    })}
+                </>
             )}
         </Container>
     );

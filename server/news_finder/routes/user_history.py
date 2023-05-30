@@ -3,7 +3,7 @@ from flask_cors import CORS
 from http import HTTPStatus
 from jsonschema import SchemaError, validate, ValidationError
 import sys
-from typing import List
+from typing import List, Set
 
 from news_finder.db import get_db
 from news_finder.response import (
@@ -86,21 +86,23 @@ async def store_user_history() -> Response:
         where={"url": data["articleLink"]}, include={"labels": True}
     )
 
-    if clicked_article is None:
+    if clicked_article is None or clicked_article.labels is None:
         return make_response_from_error(
             HTTPStatus.INTERNAL_SERVER_ERROR,
             ErrorKind.ServerError,
         )
 
-    labels: List[str] = []
-    if clicked_article.labels is None:
-        return make_response_from_error(
-            HTTPStatus.INTERNAL_SERVER_ERROR,
-            ErrorKind.ServerError,
-        )
+    label_source_history = await db.userlabelhistory.find_unique(
+        where={"user_id": user.id}
+    )
+    label_set: Set[str] = set(
+        [] if label_source_history is None else label_source_history.labels
+    )
 
     for label in clicked_article.labels:
-        labels.append(label.label)
+        label_set.add(label.label)
+
+    labels: List[str] = list(label_set)
 
     source = await db.newssources.find_unique(where={"id": clicked_article.source_id})
 
@@ -111,15 +113,41 @@ async def store_user_history() -> Response:
         )
 
     # Url of the source,labels,user
-    await db.userarticlehistory.create(
+    await db.userlabelhistory.upsert(
+        where={"user_id": user.id},
         data={
-            "labels": labels,
-            "user": {
-                "connect": {
-                    "id": user.id,
-                }
+            "create": {
+                "labels": labels,
+                "user": {
+                    "connect": {
+                        "id": user.id,
+                    }
+                },
             },
-            "source_url": source.url,
-        }
+            "update": {"labels": {"set": labels}},
+        },
     )
+    await db.userarticlehistory.upsert(
+        where={
+            "user_id_article_id": {"user_id": user.id, "article_id": clicked_article.id}
+        },
+        data={
+            "create": {
+                "user": {"connect": {"id": user.id}},
+                "article": {"connect": {"id": clicked_article.id}},
+            },
+            "update": {},
+        },
+    )
+    await db.usersourcehistory.upsert(
+        where={"user_id_source_id": {"user_id": user.id, "source_id": source.id}},
+        data={
+            "create": {
+                "user": {"connect": {"id": user.id}},
+                "source": {"connect": {"id": source.id}},
+            },
+            "update": {"amount": {"increment": 1}},
+        },
+    )
+
     return make_success_response()

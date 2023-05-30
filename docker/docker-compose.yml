@@ -73,7 +73,9 @@ services:
       retries: 10
 
   client:
-    build: ./client
+    build: 
+      context: ../
+      dockerfile: ./client/Dockerfile
     restart: unless-stopped
     ports:
       - "8080:8080"

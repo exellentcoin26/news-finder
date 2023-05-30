@@ -113,22 +113,106 @@
   <article role="main" class="flex-1">
     
   <h1>Source code for news_finder.routes.article</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_cors</span> <span class="kn">import</span> <span class="n">CORS</span>
+
 <span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">HTTPStatus</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">prisma.models</span> <span class="kn">import</span> <span class="n">NewsArticles</span>
+<span class="kn">from</span> <span class="nn">prisma.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">NewsArticlesInclude</span><span class="p">,</span>
+    <span class="n">NewsArticlesOrderByInput</span><span class="p">,</span>
+    <span class="n">NewsArticlesWhereInput</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">news_finder.db</span> <span class="kn">import</span> <span class="n">get_db</span>
-<span class="kn">from</span> <span class="nn">news_finder.utils.error_response</span> <span class="kn">import</span> <span class="n">make_error_response</span><span class="p">,</span> <span class="n">ResponseError</span>
+<span class="kn">from</span> <span class="nn">news_finder.response</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_response_from_error</span><span class="p">,</span>
+    <span class="n">ErrorKind</span><span class="p">,</span>
+    <span class="n">make_success_response</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">article_bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s2">&quot;/article&quot;</span><span class="p">)</span>
+<span class="n">CORS</span><span class="p">(</span><span class="n">article_bp</span><span class="p">,</span> <span class="n">supports_credentials</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="remove_updated"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.article.remove_updated">[docs]</a><span class="k">def</span> <span class="nf">remove_updated</span><span class="p">(</span><span class="n">articles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NewsArticles</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NewsArticles</span><span class="p">]:</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NewsArticles</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">articles</span><span class="p">:</span>
+        <span class="c1"># Remove old versions that have been updated</span>
+        <span class="k">if</span> <span class="n">article</span><span class="o">.</span><span class="n">similar_articles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># article id -&gt; datatime timestamp</span>
+            <span class="n">similar_article_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">article</span><span class="o">.</span><span class="n">similar_articles</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="n">sim</span><span class="o">.</span><span class="n">similar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">),</span> <span class="s2">&quot;similar for similar articles cannot be none&quot;</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="n">sim</span><span class="o">.</span><span class="n">similar</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">),</span> <span class="s2">&quot;similar.similar_source for similar article cannot be none&quot;</span>
+
+                <span class="k">if</span> <span class="n">sim</span><span class="o">.</span><span class="n">similar</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">similar_article_sources</span><span class="p">[</span><span class="n">sim</span><span class="o">.</span><span class="n">similar</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                    <span class="n">similar_article_sources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">similar</span><span class="o">.</span><span class="n">source_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="n">sim</span><span class="o">.</span><span class="n">similar</span><span class="o">.</span><span class="n">publication_date</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(),</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">article</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">similar_article_sources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">source_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="o">&gt;</span> <span class="n">article</span><span class="o">.</span><span class="n">publication_date</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="NewsArticlesFindParams"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.article.NewsArticlesFindParams">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">NewsArticlesFindParams</span><span class="p">:</span>
+    <span class="n">take</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">skip</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">include</span><span class="p">:</span> <span class="n">NewsArticlesInclude</span>
+    <span class="n">where</span><span class="p">:</span> <span class="n">NewsArticlesWhereInput</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">order</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NewsArticlesOrderByInput</span><span class="p">]</span>
+
+<div class="viewcode-block" id="NewsArticlesFindParams.add_where"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.article.NewsArticlesFindParams.add_where">[docs]</a>    <span class="k">def</span> <span class="nf">add_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">where</span><span class="p">:</span> <span class="n">NewsArticlesWhereInput</span><span class="p">,</span> <span class="n">relation</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;OR&quot;</span><span class="p">,</span> <span class="s2">&quot;AND&quot;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Create a filter from both conditions using the provided relation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">NewsArticlesWhereInput</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">relation</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="p">,</span> <span class="n">where</span><span class="p">]})</span></div>
+
+<div class="viewcode-block" id="NewsArticlesFindParams.add_include"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.article.NewsArticlesFindParams.add_include">[docs]</a>    <span class="k">def</span> <span class="nf">add_include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include</span><span class="p">:</span> <span class="n">NewsArticlesInclude</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">include</span><span class="p">,</span> <span class="o">**</span><span class="n">include</span><span class="p">}</span></div></div>
+
 
 
 <div class="viewcode-block" id="get_articles"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.article.get_articles">[docs]</a><span class="nd">@article_bp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">get_articles</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get a json with all the articles and their news source. set the `amount` and</span>
-<span class="sd">    `offset` parameters to specify a range of articles to retrieve.</span>
+<span class="sd">    Get a json with all the articles and their news source.</span>
+
+<span class="sd">    Articles are ordened by recency and versions that have an upadate are emitted.</span>
+
+<span class="sd">    # Parameters:</span>
+<span class="sd">        - amount: Amount of articles to retrieve.</span>
+<span class="sd">        - offset: Offset in the article selection list.</span>
+<span class="sd">        - label: Filter for the articles to retrieve.</span>
+<span class="sd">        - sortBy:</span>
+<span class="sd">            * recency (default)</span>
+<span class="sd">            * popularity</span>
+<span class="sd">            * source</span>
 
 <span class="sd">    # Articles json structure:</span>
 
@@ -143,6 +227,7 @@
 <span class="sd">                        &quot;description&quot;: &quot;The most interesting article about a cat in a tree.&quot;</span>
 <span class="sd">                        &quot;photo&quot;: &quot;https://www.test-photo.io&quot;,</span>
 <span class="sd">                        &quot;link&quot;: &quot;https:foo.article/article1.html&quot;</span>
+<span class="sd">                        &quot;publication_date&quot;: 2021-09-27 15:22:00</span>
 <span class="sd">                    }</span>
 <span class="sd">                },</span>
 <span class="sd">                {</span>
@@ -152,6 +237,7 @@
 <span class="sd">                        &quot;description&quot;: &quot;The most interesting article about a cat on its way home.&quot;</span>
 <span class="sd">                        &quot;photo&quot;: null</span>
 <span class="sd">                        &quot;link&quot;: &quot;https:foo.article/article2.html&quot;</span>
+<span class="sd">                        &quot;publication_date&quot;: 2021-09-30 08:16:00</span>
 <span class="sd">                },</span>
 <span class="sd">                ...</span>
 <span class="sd">            ]</span>
@@ -161,51 +247,191 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">amount</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">50</span><span class="p">)</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">IncorrectParameters</span><span class="p">,</span>
-            <span class="s2">&quot;Parameters to get request are not integer values&quot;</span><span class="p">,</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span>
+        <span class="n">sort_by</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sortBy&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;recency&quot;</span>
+
+        <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;recency&quot;</span><span class="p">,</span> <span class="s2">&quot;popularity&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sortBy has invalid value `</span><span class="si">{</span><span class="n">sort_by</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
             <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">IncorrectParameters</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_db</span><span class="p">()</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">articles</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">newsarticles</span><span class="o">.</span><span class="n">find_many</span><span class="p">(</span>
-            <span class="n">take</span><span class="o">=</span><span class="n">amount</span><span class="p">,</span>
-            <span class="n">skip</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
-            <span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-            <span class="c1"># hardcode order for now</span>
-            <span class="c1"># TODO: Remove this hardcode</span>
-            <span class="n">order</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span><span class="p">},</span>
-        <span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+    <span class="n">article_find_params</span> <span class="o">=</span> <span class="n">NewsArticlesFindParams</span><span class="p">(</span>
+        <span class="n">take</span><span class="o">=</span><span class="n">amount</span><span class="p">,</span>
+        <span class="n">skip</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+        <span class="n">include</span><span class="o">=</span><span class="n">NewsArticlesInclude</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;similar_articles&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;similar&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;include&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}}}</span>
+                <span class="p">},</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="n">where</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">order</span><span class="o">=</span><span class="p">[],</span>
+    <span class="p">)</span>
+
+    <span class="k">match</span> <span class="n">sort_by</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;recency&quot;</span><span class="p">:</span>
+            <span class="n">article_find_params</span><span class="o">.</span><span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span><span class="p">})</span>
+        <span class="k">case</span> <span class="s2">&quot;popularity&quot;</span><span class="p">:</span>
+            <span class="c1"># Group all history entries by article id when they are not NULL. Count the</span>
+            <span class="c1"># entries per group and return the appropriate amount with a descending</span>
+            <span class="c1"># count.</span>
+
+            <span class="n">popular_articles</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">query_raw</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
+<span class="s2">                SELECT article_id, COUNT(*) as count</span>
+<span class="s2">                FROM &quot;UserArticleHistory&quot;</span>
+<span class="s2">                WHERE article_id IS NOT NULL</span>
+<span class="s2">                GROUP BY article_id</span>
+<span class="s2">                ORDER BY count DESC</span>
+<span class="s2">                OFFSET </span><span class="si">{</span><span class="n">offset</span><span class="si">}</span>
+<span class="s2">                LIMIT </span><span class="si">{</span><span class="n">amount</span><span class="si">}</span>
+<span class="s2">                &quot;&quot;&quot;</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+            <span class="n">popular_article_ids</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">popular_article</span><span class="p">[</span><span class="s2">&quot;article_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">popular_article</span> <span class="ow">in</span> <span class="n">popular_articles</span>
+            <span class="p">]</span>
+
+            <span class="n">article_find_params</span><span class="o">.</span><span class="n">add_where</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="n">popular_article_ids</span><span class="p">}},</span> <span class="s2">&quot;AND&quot;</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span>
+            <span class="n">article_find_params</span><span class="o">.</span><span class="n">add_include</span><span class="p">({</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">category</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">article_find_params</span><span class="o">.</span><span class="n">add_where</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;some&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;contains&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">}}}},</span> <span class="s2">&quot;AND&quot;</span>
         <span class="p">)</span>
 
-    <span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;articles&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">articles</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">newsarticles</span><span class="o">.</span><span class="n">find_many</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">article_find_params</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Remove older version of article that has newer entry in list.</span>
+    <span class="n">articles</span> <span class="o">=</span> <span class="n">remove_updated</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
+
+    <span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;articles&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">sort_by</span> <span class="o">==</span> <span class="s2">&quot;popularity&quot;</span><span class="p">:</span>
+        <span class="n">articles</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">article</span><span class="p">:</span> <span class="n">popular_article_ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">sort_by</span> <span class="o">==</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span>
+        <span class="n">cookie</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cookie</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">user_cookie</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">usercookies</span><span class="o">.</span><span class="n">find_unique</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cookie&quot;</span><span class="p">:</span> <span class="n">cookie</span><span class="p">})</span>
+
+            <span class="k">if</span> <span class="n">user_cookie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                    <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+                    <span class="n">ErrorKind</span><span class="o">.</span><span class="n">CookieNotFound</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">source_priority_list</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">usersourcehistory</span><span class="o">.</span><span class="n">find_many</span><span class="p">(</span>
+                <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_cookie</span><span class="o">.</span><span class="n">user_id</span><span class="p">},</span> <span class="n">order</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">source_priority_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">source_id</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">source_priority_list</span><span class="p">]</span>
+
+            <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n">NewsArticles</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">article</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">return</span> <span class="n">source_priority_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+            <span class="n">articles</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">articles</span><span class="p">:</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">article</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">),</span> <span class="s2">&quot;article should always have a source associated with it&quot;</span>
 
         <span class="n">news_source</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span>
+        <span class="c1"># TODO: Define set of response objects with TypedDict.</span>
+        <span class="n">entry</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">news_source</span><span class="p">,</span>
+            <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">photo</span><span class="p">,</span>
+                <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
 
-        <span class="n">response</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">news_source</span><span class="p">,</span>
-                <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-                    <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">photo</span><span class="p">,</span>
-                    <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">}</span>
+        <span class="k">if</span> <span class="n">article</span><span class="o">.</span><span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;article&quot;</span><span class="p">][</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">article</span><span class="o">.</span><span class="n">publication_date</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+
+        <span class="n">response</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">make_success_response</span><span class="p">(</span><span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_similar_articles"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.article.get_similar_articles">[docs]</a><span class="nd">@article_bp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/similar/&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_similar_articles</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+    <span class="n">article_link</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">))</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_db</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">current_article</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">newsarticles</span><span class="o">.</span><span class="n">find_unique</span><span class="p">(</span>
+            <span class="n">where</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">article_link</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">response</span><span class="p">),</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span></div>
+        <span class="k">assert</span> <span class="n">current_article</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;article should always exist in database&quot;</span>
+
+        <span class="k">assert</span> <span class="n">current_article</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;article should always have an id&quot;</span>
+
+        <span class="n">similar_articles</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">similararticles</span><span class="o">.</span><span class="n">find_many</span><span class="p">(</span>
+            <span class="n">where</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id1&quot;</span><span class="p">:</span> <span class="n">current_article</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">response</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;articles&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">similar_articles</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">pair</span><span class="o">.</span><span class="n">id1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="s2">&quot;article in similar articles table should always have an id&quot;</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">pair</span><span class="o">.</span><span class="n">id2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="s2">&quot;article in similar articles table should always have a similar article associated with it with an id&quot;</span>
+
+        <span class="n">similar_article</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">newsarticles</span><span class="o">.</span><span class="n">find_unique</span><span class="p">(</span>
+            <span class="n">where</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">pair</span><span class="o">.</span><span class="n">id2</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">similar_article</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="s2">&quot;similar article should always exist in the database&quot;</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">similar_article</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="s2">&quot;an article should always have a source associated with it&quot;</span>
+
+        <span class="n">response</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">similar_article</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="n">similar_article</span><span class="o">.</span><span class="n">url</span><span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">make_success_response</span><span class="p">(</span><span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
 </pre></div>
 
   </article>

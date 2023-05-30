@@ -113,14 +113,24 @@
   <article role="main" class="flex-1">
     
   <h1>Source code for news_finder.routes.rss</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">jsonify</span>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">request</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">ParseResult</span><span class="p">,</span> <span class="n">urlparse</span>
 <span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">HTTPStatus</span>
 <span class="kn">from</span> <span class="nn">jsonschema</span> <span class="kn">import</span> <span class="n">SchemaError</span><span class="p">,</span> <span class="n">validate</span><span class="p">,</span> <span class="n">ValidationError</span>
 <span class="kn">from</span> <span class="nn">prisma.errors</span> <span class="kn">import</span> <span class="n">UniqueViolationError</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">validators.url</span> <span class="kn">import</span> <span class="n">url</span> <span class="k">as</span> <span class="n">validate_url</span>  <span class="c1"># type: ignore</span>
+
+<span class="kn">from</span> <span class="nn">prisma.models</span> <span class="kn">import</span> <span class="n">RssEntries</span>
+<span class="kn">from</span> <span class="nn">prisma.types</span> <span class="kn">import</span> <span class="n">RssEntriesCreateWithoutRelationsInput</span>
 
 <span class="kn">from</span> <span class="nn">news_finder.db</span> <span class="kn">import</span> <span class="n">get_db</span>
-<span class="kn">from</span> <span class="nn">news_finder.utils.error_response</span> <span class="kn">import</span> <span class="n">make_error_response</span><span class="p">,</span> <span class="n">ResponseError</span>
+<span class="kn">from</span> <span class="nn">news_finder.response</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_response_from_error</span><span class="p">,</span>
+    <span class="n">ErrorKind</span><span class="p">,</span>
+    <span class="n">make_success_response</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -146,7 +156,7 @@
 <span class="sd">            ]</span>
 <span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="c1"># pyright: ignore</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span>
 
     <span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_db</span><span class="p">()</span>
@@ -158,41 +168,50 @@
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-                <span class="n">ResponseError</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+            <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+                <span class="n">ErrorKind</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span>
             <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">source</span><span class="o">.</span><span class="n">rss</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-                <span class="n">ResponseError</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+            <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span> <span class="n">ErrorKind</span><span class="o">.</span><span class="n">NewsSourceNotFound</span>
             <span class="p">)</span>
 
-        <span class="n">urls</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">rss_feeds</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">rss_entry</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">rss</span><span class="p">:</span>
-            <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rss_entry</span><span class="o">.</span><span class="n">feed</span><span class="p">)</span>
+            <span class="n">rss_feeds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">rss_entry</span><span class="o">.</span><span class="n">feed</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">rss_entry</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+            <span class="p">)</span>
 
-        <span class="n">response_source</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feeds&quot;</span><span class="p">:</span> <span class="n">urls</span><span class="p">}</span>
+        <span class="n">response_source</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feeds&quot;</span><span class="p">:</span> <span class="n">rss_feeds</span><span class="p">}</span>
 
-        <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">response_source</span><span class="p">),</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">make_success_response</span><span class="p">(</span><span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span> <span class="n">response_source</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">feeds</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RssEntries</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rssentries</span><span class="o">.</span><span class="n">find_many</span><span class="p">(</span>
+                <span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+                <span class="n">ErrorKind</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span>
+            <span class="p">)</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">feeds</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">rssentries</span><span class="o">.</span><span class="n">find_many</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
-        <span class="p">)</span>
+        <span class="n">response</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feeds&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">for</span> <span class="n">feed</span> <span class="ow">in</span> <span class="n">feeds</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">feed</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">),</span> <span class="s2">&quot;feed should always have a source associated with it&quot;</span>
 
-    <span class="n">response</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feeds&quot;</span><span class="p">:</span> <span class="p">[]}</span>
-    <span class="k">for</span> <span class="n">feed</span> <span class="ow">in</span> <span class="n">feeds</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">feed</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="p">),</span> <span class="s2">&quot;feed should always have a source associated with it&quot;</span>
+            <span class="n">news_source</span> <span class="o">=</span> <span class="n">feed</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">news_source</span> <span class="o">=</span> <span class="n">feed</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">response</span><span class="p">[</span><span class="s2">&quot;feeds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">news_source</span><span class="p">,</span> <span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">feed</span><span class="o">.</span><span class="n">feed</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">feed</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+            <span class="p">)</span>
 
-        <span class="n">response</span><span class="p">[</span><span class="s2">&quot;feeds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">news_source</span><span class="p">,</span> <span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">feed</span><span class="o">.</span><span class="n">feed</span><span class="p">})</span>
-
-    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">response</span><span class="p">),</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">make_success_response</span><span class="p">(</span><span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="add_rss_feed"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.rss.add_rss_feed">[docs]</a><span class="nd">@rss_bp</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
@@ -206,96 +225,110 @@
 <span class="sd">    .. code-block:: json</span>
 
 <span class="sd">        {</span>
-<span class="sd">            &quot;feeds&quot;: [</span>
-<span class="sd">                &quot;https://www.vrt.be/vrtnws/nl.rss.articles.xml&quot;,</span>
-<span class="sd">                ...</span>
-<span class="sd">            ]</span>
+<span class="sd">            &quot;name&quot;: &quot;VRT Wereld nieuws&quot;,</span>
+<span class="sd">            &quot;feed&quot;: &quot;https://www.vrt.be/vrtnws/nl.rss.articles.xml&quot;,</span>
+<span class="sd">            &quot;category&quot;: &quot;binnenland&quot;,</span>
+<span class="sd">            &quot;interval&quot;: 5,</span>
 <span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
         <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;feeds&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;list off rss feeds to be added&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-            <span class="p">},</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">},</span>
         <span class="p">},</span>
-        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;feeds&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;feed&quot;</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">InvalidJson</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">InvalidJson</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">validate</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">JsonValidationError</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span> <span class="n">ErrorKind</span><span class="o">.</span><span class="n">JsonValidationError</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="n">SchemaError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;jsonschema is invalid: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">e</span>
 
     <span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_db</span><span class="p">()</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">batch_</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">rss_feed</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;feeds&quot;</span><span class="p">]:</span>
-        <span class="c1"># Extract news source and news source url from rss feed url</span>
-        <span class="c1"># No idea why pyright thinks the type can be `Unknown`, but this &quot;fixes&quot; it.</span>
-        <span class="c1"># TODO: Fixme</span>
-        <span class="n">url_components</span><span class="p">:</span> <span class="n">ParseResult</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">rss_feed</span><span class="p">)</span>  <span class="c1"># pyright: ignore</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url_components</span><span class="p">,</span> <span class="n">ParseResult</span><span class="p">)</span>
+    <span class="n">feed_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">feed_url</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;feed&quot;</span><span class="p">]</span>
+    <span class="n">feed_category</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">feed_interval</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="n">news_source</span> <span class="o">=</span> <span class="n">url_components</span><span class="o">.</span><span class="n">netloc</span>
-        <span class="n">news_source_url</span> <span class="o">=</span> <span class="n">url_components</span><span class="o">.</span><span class="n">scheme</span> <span class="o">+</span> <span class="s2">&quot;://&quot;</span> <span class="o">+</span> <span class="n">url_components</span><span class="o">.</span><span class="n">netloc</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">validate_url</span><span class="p">(</span><span class="n">feed_url</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span> <span class="n">ErrorKind</span><span class="o">.</span><span class="n">InvalidFeedUrl</span><span class="p">,</span> <span class="s2">&quot;Feed url is invalid&quot;</span>
+        <span class="p">)</span>
 
+    <span class="c1"># No idea why pyright thinks the type can be `Unknown`, but this &quot;fixes&quot; it.</span>
+    <span class="c1"># TODO: Fixme</span>
+    <span class="n">url_components</span><span class="p">:</span> <span class="n">ParseResult</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">feed_url</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url_components</span><span class="p">,</span> <span class="n">ParseResult</span><span class="p">)</span>
+
+    <span class="n">news_source</span> <span class="o">=</span> <span class="n">url_components</span><span class="o">.</span><span class="n">netloc</span>
+    <span class="n">news_source_url</span> <span class="o">=</span> <span class="n">url_components</span><span class="o">.</span><span class="n">scheme</span> <span class="o">+</span> <span class="s2">&quot;://&quot;</span> <span class="o">+</span> <span class="n">url_components</span><span class="o">.</span><span class="n">netloc</span>
+
+    <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Update news-source with new rss entry if news-source already present,</span>
         <span class="c1"># else insert a new news-source with the rss feed.</span>
-        <span class="n">b</span><span class="o">.</span><span class="n">newssources</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+        <span class="n">rss_create</span><span class="p">:</span> <span class="n">RssEntriesCreateWithoutRelationsInput</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">feed_name</span><span class="p">,</span>
+            <span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">feed_url</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">feed_category</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">feed_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rss_create</span><span class="p">[</span><span class="s2">&quot;interval&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feed_interval</span>
+
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">newssources</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
             <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">news_source</span><span class="p">},</span>
             <span class="n">data</span><span class="o">=</span><span class="p">{</span>
                 <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">news_source</span><span class="p">,</span>
                     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">news_source_url</span><span class="p">,</span>
-                    <span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">rss_feed</span><span class="p">}},</span>
+                    <span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="n">rss_create</span><span class="p">},</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">[</span>
-                            <span class="p">{</span>
-                                <span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">rss_feed</span><span class="p">,</span>
-                            <span class="p">}</span>
-                        <span class="p">]</span>
-                    <span class="p">}</span>
-                <span class="p">},</span>
+                <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">rss_create</span><span class="p">]}},</span>
             <span class="p">},</span>
         <span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">await</span> <span class="n">b</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">UniqueViolationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">UniqueViolationError</span><span class="p">,</span>
-            <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">)),</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
             <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">UniqueViolationError</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">)),</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span></div>
+    <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+        <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rss_feeds_modified&quot;</span><span class="p">},</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rss_feeds_modified&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+            <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">make_success_response</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="delete_rss"><a class="viewcode-back" href="../../../news_finder.routes.html#news_finder.routes.rss.delete_rss">[docs]</a><span class="nd">@rss_bp</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_rss</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;data&quot;: {},</span>
 <span class="sd">    Delete rss feeds from the database</span>
 
 <span class="sd">    # Feed json structure: (checked using schema validation)</span>
@@ -314,25 +347,28 @@
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
         <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;feeds&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;list of rss feeds to be deleted&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;list off rss feeds to be deleted&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-            <span class="p">},</span>
+            <span class="p">}</span>
         <span class="p">},</span>
         <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;feeds&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">InvalidJson</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">InvalidJson</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">validate</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">JsonValidationError</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">JsonValidationError</span><span class="p">,</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="n">SchemaError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;jsonschema is invalid: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
@@ -346,26 +382,28 @@
             <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">feed</span><span class="p">},</span> <span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">feed_entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-                <span class="n">ResponseError</span><span class="o">.</span><span class="n">RecordNotFoundError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span>
+            <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+                <span class="n">ErrorKind</span><span class="o">.</span><span class="n">RecordNotFoundError</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">feed_entry</span><span class="o">.</span><span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-                <span class="n">ResponseError</span><span class="o">.</span><span class="n">RecordNotFoundError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+            <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+                <span class="n">ErrorKind</span><span class="o">.</span><span class="n">RecordNotFoundError</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="n">sources</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">feed_entry</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
     <span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">batch_</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">feed</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;feeds&quot;</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">()</span>
         <span class="n">b</span><span class="o">.</span><span class="n">rssentries</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="n">feed</span><span class="p">})</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">b</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">with_traceback</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-            <span class="n">ResponseError</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+        <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+            <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+            <span class="n">ErrorKind</span><span class="o">.</span><span class="n">ServerError</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
@@ -373,13 +411,23 @@
             <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">},</span> <span class="n">include</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">source_entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">make_error_response</span><span class="p">(</span>
-                <span class="n">ResponseError</span><span class="o">.</span><span class="n">RecordNotFoundError</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span>
+            <span class="k">return</span> <span class="n">make_response_from_error</span><span class="p">(</span>
+                <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+                <span class="n">ErrorKind</span><span class="o">.</span><span class="n">RecordNotFoundError</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">source_entry</span><span class="o">.</span><span class="n">rss</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">newssources</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">})</span>
 
-    <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span></div>
+    <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+        <span class="n">where</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rss_feeds_modified&quot;</span><span class="p">},</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rss_feeds_modified&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+            <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">make_success_response</span><span class="p">()</span></div>
 </pre></div>
 
   </article>
