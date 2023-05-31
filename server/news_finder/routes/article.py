@@ -170,7 +170,7 @@ async def get_articles() -> Response:
             # count.
 
             popular_articles = await db.query_raw(
-                f""" 
+                f"""
                 SELECT article_id, COUNT(*) as count
                 FROM "UserArticleHistory"
                 WHERE article_id IS NOT NULL
@@ -229,7 +229,10 @@ async def get_articles() -> Response:
 
             def key(article: NewsArticles) -> int:
                 assert article.source is not None
-                return source_priority_list.index(article.source.id)
+                try:
+                    return source_priority_list.index(article.source.id)
+                except ValueError:
+                    return len(source_priority_list)
 
             articles.sort(key=key)
 
