@@ -186,6 +186,7 @@ async def get_articles() -> Response:
 
             article_find_params.add_where({"id": {"in": popular_article_ids}}, "AND")
         case "source":
+            article_find_params.order.append({"publication_date": "desc"})
             article_find_params.add_include({"source": True})
 
     if category is not None:
