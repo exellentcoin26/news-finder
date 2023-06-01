@@ -1,5 +1,8 @@
+import sys
 from flask import Blueprint, Response, make_response
 from werkzeug.exceptions import BadRequest, HTTPException
+
+import traceback
 
 error_bp = Blueprint("error", __name__)
 
@@ -21,6 +24,6 @@ def generic_error(e: Exception) -> Response:
     if isinstance(e, HTTPException):
         return make_response(e)
 
-    print(e.with_traceback(None))
+    traceback.print_exc(file=sys.stderr)
 
-    return Response("<h1>500 - error occurred</h1>", status=500)
+    return Response(traceback.format_exc(), status=500)
